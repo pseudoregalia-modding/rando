@@ -1,0 +1,21 @@
+[package]
+name = "pseudoregalia-rando"
+description = "a gamemode for pseudoregalia which shuffles pickups"
+repository = "https://github.com/bananaturtlesandwich/pseudoregalia-rando"
+version = "0.1.0"
+authors = ["spuds"]
+edition = "2021"
+
+[dependencies]
+eframe = { version = "0.22", default-features = false, features = ["glow", "persistence"] }
+unreal_asset = { git = "https://github.com/astrotechies/unrealmodding", package = "unreal_asset", rev = "dfcc3e2"}
+unpak = { version = "1.0", default-features = false, features = ["asset-paths"] }
+strum = { version = "0.25", features = ["derive"] }
+rand = "0.8"
+egui-modal = "0.2"
+rfd = "0.11"
+thiserror = "1.0"
+autoupdater = "0.3"
+
+[build-dependencies]
+winres = "0.1"
