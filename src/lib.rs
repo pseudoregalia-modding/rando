@@ -1,9 +1,9 @@
 use eframe::egui;
 
-// mod io;
-// mod logic;
-// mod map;
-// mod writing;
+mod io;
+mod logic;
+mod map;
+mod writing;
 
 pub struct Rando {
     notifs: egui_modal::Modal,
@@ -218,11 +218,11 @@ impl eframe::App for Rando {
                     .clicked()
                 {
                     std::fs::remove_dir_all(self.pak.join("rando_p")).unwrap_or_default();
-                    // notify!(
-                    //     self,
-                    //     logic::randomise(self),
-                    //     "seed has been generated, written and installed"
-                    // );
+                    notify!(
+                        self,
+                        logic::randomise(self),
+                        "seed has been generated, written and installed"
+                    );
                     std::fs::remove_dir_all(self.pak.join("rando_p")).unwrap_or_default();
                 }
             });

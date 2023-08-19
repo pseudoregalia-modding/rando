@@ -43,10 +43,8 @@ pub fn set_location<C: std::io::Read + std::io::Seek>(
     index: usize,
     asset: &mut Asset<C>,
     new: Vector<f64>,
-    offset: (f64, f64, f64),
 ) {
     let mut name_map = asset.get_name_map();
-    let (x, y, z) = offset;
     let Some(transform) = get_transform_index(index, asset) else {
         return
     };
@@ -61,9 +59,9 @@ pub fn set_location<C: std::io::Read + std::io::Seek>(
         Some(scale) => {
             if let Property::StructProperty(struc) = scale {
                 if let Property::VectorProperty(vec) = &mut struc.value[0] {
-                    vec.value.x.0 = new.x + x;
-                    vec.value.y.0 = new.y + y;
-                    vec.value.z.0 = new.z + z;
+                    vec.value.x.0 = new.x;
+                    vec.value.y.0 = new.y;
+                    vec.value.z.0 = new.z;
                 }
             }
         }
