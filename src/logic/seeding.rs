@@ -9,16 +9,22 @@ fn update(
     data: &mut Data,
 ) -> bool {
     // see if there's any requirements met and what they are
+    let current = || {
+        possible[0..checks.len()]
+            .iter()
+            .chain(data.overworld.values().flatten().map(|check| &check.drop))
+    };
     if !locks.iter().all(|lock| match lock {
         Lock::Location(loc) => locations.contains(loc),
-        Lock::Movement(movement) => {
-            let both: Vec<_> = possible[0..checks.len()]
-                .iter()
-                .chain(data.overworld.values().flatten().map(|check| &check.drop))
-                .collect();
-            movement.iter().fold(true, |acc, ability| {
-                acc && both.contains(&&Drop::Ability(*ability))
-            })
+        Lock::Movement(movement) => movement.iter().fold(true, |acc, ability| {
+            acc && current().any(|drop| drop == &Drop::Ability(*ability))
+        }),
+        Lock::SmallKey => current().any(|drop| matches!(drop, Drop::SmallKey)),
+        Lock::Ending => {
+            current().fold(0, |acc, drop| match matches!(drop, Drop::BigKey) {
+                true => acc + 1,
+                false => acc,
+            }) >= 5
         }
     }) {
         return false;
@@ -31,6 +37,12 @@ fn update(
                 .iter()
                 // not all abilities allow movement
                 .position(|drop| matches!(drop, Drop::Ability(_))),
+            Lock::SmallKey => possible[0..checks.len()]
+                .iter()
+                .position(|drop| matches!(drop, Drop::SmallKey)),
+            Lock::Ending => possible[0..checks.len()]
+                .iter()
+                .position(|drop| matches!(drop, Drop::BigKey)),
         } {
             let mut check = checks.remove(i);
             check.drop = possible.remove(i);

@@ -81,14 +81,7 @@ pub fn write(
                                     Ok(())
                                 };
                                 match &drop {
-                                    Drop::Ability(ability) => {
-                                        if class != "upgrade base"{
-                                            replace(36)?;
-                                        }
-                                        let chest = map.asset_data.exports[i]
-                                            .get_normal_export_mut()
-                                            .ok_or(Error::Assumption)?;
-                                    }
+                                    Drop::Ability(ability) => todo!(),
                                     Drop::SmallKey => todo!(),
                                     Drop::BigKey => todo!(),
                                     Drop::Health => todo!(),

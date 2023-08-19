@@ -1,3 +1,5 @@
+mod drop;
+pub use drop::*;
 mod checks;
 pub use checks::CHECKS;
 mod seeding;
@@ -15,12 +17,9 @@ pub enum Context {
     Overworld(&'static str),
 }
 
-#[derive(PartialEq, Clone, Copy, Debug, strum::AsRefStr)]
-pub enum Abilities {}
-
 #[derive(Clone, Copy, Debug, strum::AsRefStr, PartialEq)]
 pub enum Drop {
-    Ability(Abilities),
+    Ability(Ability),
     SmallKey,
     BigKey,
     Health,
@@ -37,5 +36,7 @@ pub struct Check {
 #[derive(Debug)]
 pub enum Lock {
     Location(Locations),
-    Movement(&'static [Abilities]),
+    Movement(&'static [Ability]),
+    SmallKey,
+    Ending,
 }
