@@ -143,7 +143,7 @@ macro_rules! notify {
             ),
             Err(e) => $self
                 .notifs
-                .open_dialog(Some(":/"), Some(e), Some(egui_modal::Icon::Error)),
+                .open_dialog(Some("owo"), Some(e), Some(egui_modal::Icon::Error)),
         }
     };
 }

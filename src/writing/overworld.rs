@@ -3,7 +3,7 @@ use unreal_asset::reader::ArchiveTrait;
 use super::*;
 
 pub fn write(
-    checks: std::collections::HashMap<Locations, Vec<Check>>,
+    checks: std::collections::BTreeMap<Locations, Vec<Check>>,
     app: &crate::Rando,
     pak: &repak::PakReader,
     mod_pak: &Mod,
@@ -14,7 +14,7 @@ pub fn write(
         for thread in checks.into_iter().map(
             |(location, checks)| -> Result<std::thread::ScopedJoinHandle<Result<(), Error>>, Error> {
                 Ok(thread.spawn(move || {
-                    let mut path = format!("{PREFIX}{location}.umap");
+                    let mut path = PREFIX.to_string() + location.as_ref() + ".umap";
                     let mut map = extract(app, pak, &path)?;
                     path = MOD.to_string() + &path;
                     for Check { name, drop, .. } in checks {

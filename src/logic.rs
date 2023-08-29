@@ -9,10 +9,10 @@ pub use locations::Locations;
 
 #[derive(Debug)]
 pub struct Data {
-    pub overworld: std::collections::HashMap<Locations, Vec<Check>>,
+    pub overworld: std::collections::BTreeMap<Locations, Vec<Check>>,
 }
 
-#[derive(Clone, Copy, Debug, strum::AsRefStr, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub enum Drop {
     Ability(Ability),
     SmallKey,

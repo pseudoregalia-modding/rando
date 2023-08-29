@@ -75,8 +75,9 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
     }
     let mut possible: Vec<Drop> = pool.iter().map(|check| check.drop).collect();
     let mut checks: Vec<Check> = Vec::with_capacity(pool.len());
+
     let mut data = Data {
-        overworld: std::collections::HashMap::with_capacity(Locations::COUNT),
+        overworld: std::collections::BTreeMap::new(),
     };
     let mut locations = Vec::with_capacity(Locations::COUNT);
     let mut rng = rand::thread_rng();

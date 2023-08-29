@@ -1,6 +1,8 @@
 use super::*;
 
-#[derive(Debug, PartialEq, Eq, Hash, Clone, strum::Display, strum::EnumIter, strum::EnumCount)]
+#[derive(
+    Debug, PartialEq, Eq, PartialOrd, Ord, Clone, strum::AsRefStr, strum::EnumIter, strum::EnumCount,
+)]
 pub enum Locations {
     #[strum(serialize = "ZONE_Dungeon")]
     DilapidatedDungeon,
