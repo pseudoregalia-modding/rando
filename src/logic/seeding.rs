@@ -53,13 +53,11 @@ fn update(
 }
 
 fn push(check: Check, data: &mut Data) {
-    match check.context {
-        Context::Overworld(..) => match data.overworld.get_mut(&check.location) {
-            Some(checks) => checks.push(check),
-            None => {
-                data.overworld.insert(check.location.clone(), vec![check]);
-            }
-        },
+    match data.overworld.get_mut(&check.location) {
+        Some(checks) => checks.push(check),
+        None => {
+            data.overworld.insert(check.location.clone(), vec![check]);
+        }
     }
 }
 

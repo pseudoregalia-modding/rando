@@ -12,11 +12,6 @@ pub struct Data {
     pub overworld: std::collections::HashMap<Locations, Vec<Check>>,
 }
 
-#[derive(Debug)]
-pub enum Context {
-    Overworld(&'static str),
-}
-
 #[derive(Clone, Copy, Debug, strum::AsRefStr, PartialEq)]
 pub enum Drop {
     Ability(Ability),
@@ -28,7 +23,7 @@ pub enum Drop {
 #[derive(Debug)]
 pub struct Check {
     pub location: Locations,
-    pub context: Context,
+    pub name: &'static str,
     pub drop: Drop,
     locks: &'static [Lock],
 }
