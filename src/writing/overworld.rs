@@ -9,7 +9,7 @@ pub fn write(
     mod_pak: &Mod,
 ) -> Result<(), Error> {
     // reference so it isn't moved
-    let used = &std::sync::Arc::new(std::sync::Mutex::new(Vec::with_capacity(checks.len())));
+    let counter = &std::sync::Arc::new(std::sync::Mutex::new(0));
     std::thread::scope(|thread| -> Result<(), Error> {
         for thread in checks.into_iter().map(
             |(location, checks)| -> Result<std::thread::ScopedJoinHandle<Result<(), Error>>, Error> {
@@ -17,14 +17,12 @@ pub fn write(
                     let mut path = format!("{PREFIX}{location}.umap");
                     let mut map = extract(app, pak, &path)?;
                     path = MOD.to_string() + &path;
-                    let mut name_map = map.get_name_map();
                     for Check { name, drop, .. } in checks {
-                        let mut i = map
+                        let Some(mut i) = map
                             .asset_data
                             .exports
                             .iter()
-                            .position(|ex| ex.get_base_export().object_name == name)
-                            .ok_or(Error::Assumption)?;
+                            .position(|ex| ex.get_base_export().object_name == name) else {continue};
                         let class = map
                             .get_import(map.asset_data.exports[i].get_base_export().class_index)
                             .map(|import| import.object_name.get_owned_content())
@@ -44,46 +42,30 @@ pub fn write(
                                 &mut map,
                                 loc,
                             );
-                            let mut name = name.to_string();
-                            // create unique id to prevent multiple checks being registered as collected
-                            let mut counter: u16 =
-                                match name.rfind(|ch: char| ch.to_digit(10).is_none()) {
-                                    Some(index) if index != name.len() - 1 => name
-                                        .drain(index + 1..)
-                                        .collect::<String>()
-                                        .parse()?,
-                                    _ => 1,
-                                };
-                            while used.lock()?.contains(&format!("{name}{counter}")) {
-                                counter += 1;
-                            }
-                            used.lock()?.push(format!("{name}{counter}"));
-                            let norm = &mut map.asset_data.exports[insert]
-                                .get_normal_export_mut()
-                                .ok_or(Error::Assumption)?;
-                            match norm.properties.iter_mut().find_map(|prop| {
-                                cast!(Property, StrProperty, prop)
-                                    .filter(|id| id.name == "ID")
-                            }) {
-                                Some(id) => id.value = Some(format!("{name}{counter}")),
-                                None => norm.properties.push(Property::StrProperty(
-                                    str_property::StrProperty {
-                                        name: name_map.get_mut().add_fname("ID"),
-                                        ancestry: Ancestry { ancestry: Vec::new() },
-                                        property_guid: None,
-                                        duplication_index: 0,
-                                        value: Some(format!("{name}{counter}")),
-                                    },
-                                )),
-                            }
                             i = insert;
                             Ok(())
                         };
                         match &drop {
-                            Drop::Ability(_) => todo!(),
-                            Drop::SmallKey => todo!(),
-                            Drop::BigKey => todo!(),
-                            Drop::Health => todo!(),
+                            Drop::Ability(ability) => {
+                                if class != "BP_UpgradeBase_C"{
+                                    replace(5)?
+                                }
+                                let ability = map.add_fname(ability.as_ref());
+                                // upgradebase is 6 exports long
+                                let actor = map.asset_data.exports.len() - 6;
+                                let Some(norm) = map.asset_data.exports[actor].get_normal_export_mut() else {continue};
+                                let Property::NameProperty(row) = &mut norm.properties[7] else {continue};
+                                row.value = ability;
+                                let Property::IntProperty(id) = &mut norm.properties[5] else {continue};
+                                id.value = *counter.lock()?;
+                                // can't use += because the i32 is behind a MutexGuard
+                                use std::ops::AddAssign;
+                                counter.lock()?.add_assign(1);
+                            }
+                            Drop::SmallKey if class != "BP_GenericKey_C" => replace(24)?,
+                            Drop::BigKey if class != "BP_GenericKey_C" => replace(18)?,
+                            Drop::Health if class != "BP_HealthPiece_C" => replace(11)?,
+                            _ => ()
                         }
                     }
                     map.rebuild_name_map();

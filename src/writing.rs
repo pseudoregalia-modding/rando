@@ -1,7 +1,7 @@
 use super::logic::*;
 use super::Mod;
 use crate::{io::*, map::*};
-use unreal_asset::{cast, exports::*, properties::*, unversioned::Ancestry};
+use unreal_asset::{exports::*, properties::*};
 
 mod overworld;
 
@@ -15,8 +15,8 @@ pub enum Error {
     Io(#[from] std::io::Error),
     #[error("parse: {0}")]
     Parse(#[from] std::num::ParseIntError),
-    #[error("locked poisoned name vec")]
-    VecPoison,
+    #[error("locked poisoned counter")]
+    CounterPoison,
     #[error("locked poisoned writer")]
     WriterPoison,
     #[error("extracted poisoned writer")]
@@ -27,8 +27,6 @@ pub enum Error {
     Strip(#[from] std::path::StripPrefixError),
     #[error("thread failed to complete")]
     Thread,
-    #[error("data was not as expected - you may have an older version of the game")]
-    Assumption,
 }
 
 macro_rules! stub {
@@ -52,8 +50,8 @@ stub!(
     WriterPoison
 );
 stub!(
-    std::sync::PoisonError<std::sync::MutexGuard<'_, Vec<String>>>,
-    VecPoison
+    std::sync::PoisonError<std::sync::MutexGuard<'_, i32>>,
+    CounterPoison
 );
 stub!(Box<dyn std::any::Any + Send + 'static>, Thread);
 
@@ -88,7 +86,7 @@ pub fn write(data: Data, app: &crate::Rando) -> Result<(), Error> {
         None,
     )));
     overworld::write(data.overworld, app, &pak, &mod_pak)?;
-    let mut mod_pak = Mod::try_unwrap(mod_pak)?.into_inner()?;
+    let mod_pak = Mod::try_unwrap(mod_pak)?.into_inner()?;
     // change the logo so people know it worked
     // let logo = MOD.to_string() + "HUD/Menu/Blue-Fire-Logo.uasset";
     // mod_pak.write_file(
