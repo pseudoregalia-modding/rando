@@ -9,7 +9,7 @@ pub use locations::Location;
 
 #[derive(Debug)]
 pub struct Data {
-    pub overworld: std::collections::BTreeMap<Location, Vec<Check>>,
+    pub overworld: std::collections::BTreeMap<&'static str, Vec<Check>>,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq)]

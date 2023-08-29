@@ -1,33 +1,37 @@
 use super::*;
 
-#[derive(
-    Debug, PartialEq, Eq, PartialOrd, Ord, Clone, strum::AsRefStr, strum::EnumIter, strum::EnumCount,
-)]
+#[derive(Debug, PartialEq, strum::EnumIter, strum::EnumCount)]
 pub enum Location {
-    #[strum(serialize = "ZONE_Dungeon")]
     DilapidatedDungeon,
-    // #[strum(serialize = "ZONE_LowerCastle")]
     // CastleSansa,
-    // #[strum(serialize = "Zone_Caves")]
     // Underbelly,
-    // #[strum(serialize = "Zone_Upper")]
     // SansaKeep,
-    // #[strum(serialize = "ZONE_Exterior")]
     // EmptyBailey,
-    // #[strum(serialize = "Zone_Library")]
     // ListlessLibrary,
-    // #[strum(serialize = "Zone_Theatre")]
     // TwilightTheatre,
-    // #[strum(serialize = "Zone_Tower")]
     // TowerRuins,
-    // #[strum(serialize = "Zone_PrincessChambers")]
     // FinalBoss,
 }
+
+use Location::*;
 
 impl Location {
     pub const fn locks(&self) -> &[&[Lock]] {
         match self {
-            Location::DilapidatedDungeon => &[&[]],
+            DilapidatedDungeon => &[&[]],
+        }
+    }
+    pub const fn as_str(&self) -> &'static str {
+        match self {
+            DilapidatedDungeon => "ZONE_Dungeon",
+            // CastleSansa => "ZONE_LowerCastle",
+            // Underbelly => "Zone_Caves",
+            // SansaKeep => "Zone_Upper",
+            // EmptyBailey => "ZONE_Exterior",
+            // ListlessLibrary => "Zone_Library",
+            // TwilightTheatre => "Zone_Theatre",
+            // TowerRuins => "Zone_Tower",
+            // FinalBoss => "Zone_PrincessChambers",
         }
     }
 }

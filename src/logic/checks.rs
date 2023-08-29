@@ -5,7 +5,7 @@ pub const CHECKS: [Check; 3] = [
         location: Location::DilapidatedDungeon,
         index: 355,
         drop: Drop::Ability(Ability::DreamBreaker),
-        locks: &[],
+        locks: &[Lock::Movement(&[Ability::DreamBreaker])],
     },
     Check {
         location: Location::DilapidatedDungeon,

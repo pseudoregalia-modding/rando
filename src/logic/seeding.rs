@@ -17,10 +17,8 @@ fn update(
     if !locks.iter().all(|lock| match lock {
         Lock::Location(loc) => loc
             .iter()
-            .fold(false, |acc, loc| acc || locations.contains(loc)),
-        Lock::Movement(movement) => movement.iter().fold(true, |acc, ability| {
-            acc && current().any(|drop| drop == &Drop::Ability(*ability))
-        }),
+            .any(|loc| locations.contains(loc)),
+        Lock::Movement(movement) => movement.iter().all(|ability| current().any(|drop| drop == &Drop::Ability(*ability))),
         Lock::SmallKey => current().any(|drop| matches!(drop, Drop::SmallKey)),
         Lock::Ending => {
             current().fold(0, |acc, drop| match matches!(drop, Drop::BigKey) {
@@ -55,10 +53,10 @@ fn update(
 }
 
 fn push(check: Check, data: &mut Data) {
-    match data.overworld.get_mut(&check.location) {
+    match data.overworld.get_mut(check.location.as_str()) {
         Some(checks) => checks.push(check),
         None => {
-            data.overworld.insert(check.location.clone(), vec![check]);
+            data.overworld.insert(check.location.as_str(), vec![check]);
         }
     }
 }
