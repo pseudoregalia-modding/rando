@@ -3,7 +3,7 @@ use strum::{EnumCount, IntoEnumIterator};
 
 fn update(
     locks: &[Lock],
-    locations: &[Locations],
+    locations: &[Location],
     possible: &mut Vec<Drop>,
     checks: &mut Vec<Check>,
     data: &mut Data,
@@ -15,7 +15,9 @@ fn update(
             .chain(data.overworld.values().flatten().map(|check| &check.drop))
     };
     if !locks.iter().all(|lock| match lock {
-        Lock::Location(loc) => locations.contains(loc),
+        Lock::Location(loc) => loc
+            .iter()
+            .fold(false, |acc, loc| acc || locations.contains(loc)),
         Lock::Movement(movement) => movement.iter().fold(true, |acc, ability| {
             acc && current().any(|drop| drop == &Drop::Ability(*ability))
         }),
@@ -79,15 +81,15 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
     let mut data = Data {
         overworld: std::collections::BTreeMap::new(),
     };
-    let mut locations = Vec::with_capacity(Locations::COUNT);
+    let mut locations = Vec::with_capacity(Location::COUNT);
     let mut rng = rand::thread_rng();
-    while locations.len() != Locations::COUNT && !pool.is_empty() {
+    while locations.len() != Location::COUNT && !pool.is_empty() {
         // shuffle the possible drops
         use rand::seq::SliceRandom;
         possible.shuffle(&mut rng);
         checks.shuffle(&mut rng);
         // update accessible locations
-        for loc in Locations::iter() {
+        for loc in Location::iter() {
             if !locations.contains(&loc)
                 && loc
                     .locks()

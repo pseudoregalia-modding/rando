@@ -3,7 +3,7 @@ use unreal_asset::reader::ArchiveTrait;
 use super::*;
 
 pub fn write(
-    checks: std::collections::BTreeMap<Locations, Vec<Check>>,
+    checks: std::collections::BTreeMap<Location, Vec<Check>>,
     app: &crate::Rando,
     pak: &repak::PakReader,
     mod_pak: &Mod,
