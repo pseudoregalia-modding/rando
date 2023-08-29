@@ -10,14 +10,14 @@ pub fn transplant<C: std::io::Seek + std::io::Read, D: std::io::Seek + std::io::
     index: usize,
     recipient: &mut Asset<C>,
     donor: &Asset<D>,
-) {
+) -> Result<(), crate::writing::Error> {
     let mut children = super::get_actor_exports(index, donor, recipient.asset_data.exports.len());
 
     // make sure the actor has a unique object name
     super::give_unique_name(
         &mut children[0].get_base_export_mut().object_name,
         recipient,
-    );
+    )?;
 
     let actor_ref = PackageIndex::new(recipient.asset_data.exports.len() as i32 + 1);
     // add the actor to persistent level
@@ -132,4 +132,5 @@ pub fn transplant<C: std::io::Seek + std::io::Read, D: std::io::Seek + std::io::
         i += 1;
     }
     recipient.imports.append(&mut imports);
+    Ok(())
 }

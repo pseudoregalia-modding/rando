@@ -53,7 +53,10 @@ fn get_actor_exports<C: std::io::Seek + std::io::Read>(
 }
 
 /// creates and assigns a unique name
-fn give_unique_name<C: std::io::Seek + std::io::Read>(orig: &mut FName, asset: &mut Asset<C>) {
+fn give_unique_name<C: std::io::Seek + std::io::Read>(
+    orig: &mut FName,
+    asset: &mut Asset<C>,
+) -> Result<(), crate::writing::Error> {
     // for the cases where the number is unnecessary
 
     if orig
@@ -61,12 +64,12 @@ fn give_unique_name<C: std::io::Seek + std::io::Read>(orig: &mut FName, asset: &
         .is_none()
     {
         *orig = orig.get_content(|name| asset.add_fname(name));
-        return;
+        return Ok(());
     }
     let mut name = orig.get_owned_content();
     let mut counter: u16 = match name.rfind(|ch: char| ch.to_digit(10).is_none()) {
         Some(index) if index != name.len() - 1 => {
-            name.drain(index + 1..).collect::<String>().parse().unwrap()
+            name.drain(index + 1..).collect::<String>().parse()?
         }
         _ => 1,
     };
@@ -76,7 +79,7 @@ fn give_unique_name<C: std::io::Seek + std::io::Read>(orig: &mut FName, asset: &
     {
         counter += 1;
     }
-    *orig = asset.add_fname(&format!("{name}{counter}"))
+    Ok(*orig = asset.add_fname(&format!("{name}{counter}")))
 }
 
 /// on all possible export references

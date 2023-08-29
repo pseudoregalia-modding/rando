@@ -5,15 +5,18 @@ use super::*;
 pub fn write(
     checks: std::collections::HashMap<Locations, Vec<Check>>,
     app: &crate::Rando,
-    pak: &unpak::Pak,
+    pak: &repak::PakReader,
+    mod_pak: &Mod,
 ) -> Result<(), Error> {
-    // use reference so the vector isn't moved
+    // reference so it isn't moved
     let used = &std::sync::Arc::new(std::sync::Mutex::new(Vec::with_capacity(checks.len())));
     std::thread::scope(|thread| -> Result<(), Error> {
         for thread in checks.into_iter().map(
             |(location, checks)| -> Result<std::thread::ScopedJoinHandle<Result<(), Error>>, Error> {
                 Ok(thread.spawn(move || {
-                    let (mut map, loc) = extract(app, pak, &format!("{PREFIX}{location}.umap"))?;
+                    let mut path = format!("{PREFIX}{location}.umap");
+                    let mut map = extract(app, pak, &path)?;
+                    path = MOD.to_string() + &path;
                     let mut name_map = map.get_name_map();
                     for Check { context, drop, .. } in checks {
                         match context {
@@ -30,13 +33,13 @@ pub fn write(
                                     .unwrap_or_default();
                                 let mut replace = |actor: usize| -> Result<(), Error> {
                                     // unfortunately i can't share this between threads
-                                    let donor = open_from_bytes(
+                                    let donor = open_slice(
                                         include_bytes!("../collectibles.umap"),
                                         include_bytes!("../collectibles.uexp"),
                                     )?;
                                     delete(i, &mut map);
                                     let insert = map.asset_data.exports.len();
-                                    transplant(actor, &mut map, &donor);
+                                    transplant(actor, &mut map, &donor)?;
                                     let loc = get_location(i, &map);
                                     set_location(
                                         insert,
@@ -50,15 +53,14 @@ pub fn write(
                                             Some(index) if index != name.len() - 1 => name
                                                 .drain(index + 1..)
                                                 .collect::<String>()
-                                                .parse()
-                                                .unwrap(),
+                                                .parse()?,
                                             _ => 1,
                                         };
-                                    while used.lock().unwrap().contains(&format!("{name}{counter}"))
+                                    while used.lock()?.contains(&format!("{name}{counter}"))
                                     {
                                         counter += 1;
                                     }
-                                    used.lock().unwrap().push(format!("{name}{counter}"));
+                                    used.lock()?.push(format!("{name}{counter}"));
                                     let norm = &mut map.asset_data.exports[insert]
                                         .get_normal_export_mut()
                                         .ok_or(Error::Assumption)?;
@@ -91,12 +93,12 @@ pub fn write(
                         }
                     }
                     map.rebuild_name_map();
-                    save(&mut map, &loc)?;
+                    save(&mut map, mod_pak, &path)?;
                     Ok(())
                 }))
             },
         ) {
-            thread?.join().unwrap()?
+            thread?.join()??
         }
         Ok(())
     })?;

@@ -1,28 +1,38 @@
-use std::{fs::File, io::Cursor, path::Path};
-use unreal_asset::{engine_version::EngineVersion::VER_UE5_1, error::Error, Asset};
+use unreal_asset::{engine_version::EngineVersion::VER_UE4_25, Asset};
 
-pub fn open(file: impl AsRef<Path>) -> Result<Asset<File>, Error> {
-    Asset::new(
-        File::open(&file)?,
-        File::open(file.as_ref().with_extension("uexp")).ok(),
-        VER_UE5_1,
+pub fn open(asset: Vec<u8>, bulk: Vec<u8>) -> Result<super::Asset<Vec<u8>>, crate::writing::Error> {
+    Ok(Asset::new(
+        std::io::Cursor::new(asset),
+        Some(std::io::Cursor::new(bulk)),
+        VER_UE4_25,
         None,
-    )
+    )?)
 }
 
-pub fn open_from_bytes<'chain>(
+pub fn open_slice<'chain>(
     asset: &'chain [u8],
     bulk: &'chain [u8],
-) -> Result<Asset<Cursor<&'chain [u8]>>, Error> {
-    Asset::new(Cursor::new(asset), Some(Cursor::new(bulk)), VER_UE5_1, None)
+) -> Result<super::Asset<&'chain [u8]>, crate::writing::Error> {
+    Ok(Asset::new(
+        std::io::Cursor::new(asset),
+        Some(std::io::Cursor::new(bulk)),
+        VER_UE4_25,
+        None,
+    )?)
 }
 
 pub fn save<C: std::io::Read + std::io::Seek>(
-    asset: &mut Asset<C>,
-    path: impl AsRef<Path>,
-) -> Result<(), Error> {
-    asset.write_data(
-        &mut File::create(&path)?,
-        Some(&mut File::create(path.as_ref().with_extension("uexp"))?),
-    )
+    map: &mut Asset<C>,
+    mod_pak: &super::Mod,
+    path: &str,
+) -> Result<(), crate::writing::Error> {
+    let mut asset = std::io::Cursor::new(vec![]);
+    let mut bulk = std::io::Cursor::new(vec![]);
+    map.write_data(&mut asset, Some(&mut bulk))?;
+    mod_pak.lock()?.write_file(path, asset.into_inner())?;
+    mod_pak.lock()?.write_file(
+        &path.replace(".uasset", ".uexp").replace(".umap", ".uexp"),
+        bulk.into_inner(),
+    )?;
+    Ok(())
 }
