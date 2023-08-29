@@ -23,7 +23,7 @@ pub enum Drop {
 #[derive(Debug)]
 pub struct Check {
     pub location: Location,
-    pub name: &'static str,
+    pub index: usize,
     pub drop: Drop,
     locks: &'static [Lock],
 }

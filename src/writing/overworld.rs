@@ -17,14 +17,9 @@ pub fn write(
                     let mut path = PREFIX.to_string() + location.as_ref() + ".umap";
                     let mut map = extract(app, pak, &path)?;
                     path = MOD.to_string() + &path;
-                    for Check { name, drop, .. } in checks {
-                        let Some(mut i) = map
-                            .asset_data
-                            .exports
-                            .iter()
-                            .position(|ex| ex.get_base_export().object_name == name) else {continue};
+                    for Check { mut index, drop, .. } in checks {
                         let class = map
-                            .get_import(map.asset_data.exports[i].get_base_export().class_index)
+                            .get_import(map.asset_data.exports[index].get_base_export().class_index)
                             .map(|import| import.object_name.get_owned_content())
                             .unwrap_or_default();
                         let mut replace = |actor: usize| -> Result<(), Error> {
@@ -33,16 +28,16 @@ pub fn write(
                                 include_bytes!("../assets/collectibles.umap"),
                                 include_bytes!("../assets/collectibles.uexp"),
                             )?;
-                            delete(i, &mut map);
+                            delete(index, &mut map);
                             let insert = map.asset_data.exports.len();
                             transplant(actor, &mut map, &donor)?;
-                            let loc = get_location(i, &map);
+                            let loc = get_location(index, &map);
                             set_location(
                                 insert,
                                 &mut map,
                                 loc,
                             );
-                            i = insert;
+                            index = insert;
                             Ok(())
                         };
                         match &drop {
