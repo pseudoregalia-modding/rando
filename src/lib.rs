@@ -39,7 +39,7 @@ impl Rando {
         let mut font = egui::FontDefinitions::default();
         font.font_data.insert(
             "alittlepot".to_string(),
-            egui::FontData::from_static(include_bytes!("alittlepot.ttf")),
+            egui::FontData::from_static(include_bytes!("assets/alittlepot.ttf")),
         );
         font.families
             .get_mut(&egui::FontFamily::Proportional)
@@ -159,6 +159,8 @@ impl eframe::App for Rando {
                 );
                 ui.label(egui::RichText::new("by spuds").italics().size(15.0));
             });
+            ui.add_space(10.0);
+            ui.separator();
             ui.horizontal(|ui| {
                 ui.checkbox(&mut self.autoupdate, "autoupdate");
                 ui.label(&self.pak_str);

@@ -32,8 +32,8 @@ pub fn write(
                         let mut replace = |actor: usize| -> Result<(), Error> {
                             // unfortunately i can't share this between threads
                             let donor = open_slice(
-                                include_bytes!("../collectibles.umap"),
-                                include_bytes!("../collectibles.uexp"),
+                                include_bytes!("../assets/collectibles.umap"),
+                                include_bytes!("../assets/collectibles.uexp"),
                             )?;
                             delete(i, &mut map);
                             let insert = map.asset_data.exports.len();

@@ -7,9 +7,9 @@ fn main() -> Result<(), eframe::Error> {
         "",
         eframe::NativeOptions {
             initial_window_size: Some(eframe::epaint::Vec2::new(400.0, 275.0)),
-            resizable: false,
+            // resizable: false,
             icon_data: Some(eframe::IconData {
-                rgba: include_bytes!("umby.rgba").to_vec(),
+                rgba: include_bytes!("assets/sybil.rgba").to_vec(),
                 width: 32,
                 height: 32,
             }),
