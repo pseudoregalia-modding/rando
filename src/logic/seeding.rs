@@ -83,7 +83,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
     };
     let mut locations = Vec::with_capacity(Location::COUNT);
     let mut rng = rand::thread_rng();
-    while locations.len() != Location::COUNT && !pool.is_empty() {
+    while locations.len() != Location::COUNT || !pool.is_empty() {
         // shuffle the possible drops
         use rand::seq::SliceRandom;
         possible.shuffle(&mut rng);
