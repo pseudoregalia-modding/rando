@@ -78,7 +78,7 @@ fn extract(
 
 pub fn write(data: Data, app: &crate::Rando) -> Result<(), Error> {
     let mut sync = app.pak()?;
-    let pak = repak::PakReader::new(&mut sync, repak::Version::V9)?;
+    let pak = repak::PakReader::new(&mut sync, repak::Version::V11)?;
     let mod_pak = std::sync::Arc::new(std::sync::Mutex::new(repak::PakWriter::new(
         std::io::BufWriter::new(std::fs::File::create(app.pak.join("rando_p.pak"))?),
         repak::Version::V9,
@@ -86,17 +86,6 @@ pub fn write(data: Data, app: &crate::Rando) -> Result<(), Error> {
         None,
     )));
     overworld::write(data.overworld, app, &pak, &mod_pak)?;
-    let mod_pak = Mod::try_unwrap(mod_pak)?.into_inner()?;
-    // change the logo so people know it worked
-    // let logo = MOD.to_string() + "HUD/Menu/Blue-Fire-Logo.uasset";
-    // mod_pak.write_file(
-    //     &logo,
-    //     &mut std::io::Cursor::new(include_bytes!("blueprints/logo.uasset")),
-    // )?;
-    // mod_pak.write_file(
-    //     &logo.replace(".uasset", ".uexp"),
-    //     &mut std::io::Cursor::new(include_bytes!("blueprints/logo.uexp")),
-    // )?;
-    mod_pak.write_index()?;
+    Mod::try_unwrap(mod_pak)?.into_inner()?.write_index()?;
     Ok(())
 }

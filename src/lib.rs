@@ -152,15 +152,10 @@ impl eframe::App for Rando {
     fn update(&mut self, ctx: &eframe::egui::Context, _: &mut eframe::Frame) {
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.horizontal(|ui| {
-                ui.heading(
-                    egui::RichText::new("pseudoregalia rando")
-                        .underline()
-                        .size(40.0),
-                );
+                ui.heading(egui::RichText::new("pseudoregalia rando").size(40.0));
                 ui.label(egui::RichText::new("by spuds").italics().size(15.0));
             });
-            ui.add_space(10.0);
-            ui.separator();
+            ui.add_space(5.0);
             ui.horizontal(|ui| {
                 ui.checkbox(&mut self.autoupdate, "autoupdate");
                 ui.label(&self.pak_str);
@@ -177,7 +172,6 @@ impl eframe::App for Rando {
                     }
                 }
             });
-            ui.separator();
             ui.columns(2, |ui| {
                 ui[0].checkbox(&mut self.abilities, "Abilities");
                 ui[0].checkbox(&mut self.health, "Health");
