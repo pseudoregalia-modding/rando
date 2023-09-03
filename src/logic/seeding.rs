@@ -15,10 +15,10 @@ fn update(
             .chain(data.overworld.values().flatten().map(|check| &check.drop))
     };
     if !locks.iter().all(|lock| match lock {
-        Lock::Location(loc) => loc
+        Lock::Location(loc) => loc.iter().any(|loc| locations.contains(loc)),
+        Lock::Movement(movement) => movement
             .iter()
-            .any(|loc| locations.contains(loc)),
-        Lock::Movement(movement) => movement.iter().all(|ability| current().any(|drop| drop == &Drop::Ability(*ability))),
+            .all(|ability| current().any(|drop| drop == &Drop::Ability(*ability))),
         Lock::SmallKey => current().any(|drop| matches!(drop, Drop::SmallKey)),
         Lock::Ending => {
             current().fold(0, |acc, drop| match matches!(drop, Drop::BigKey) {
@@ -81,7 +81,8 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
     };
     let mut locations = Vec::with_capacity(Location::COUNT);
     let mut rng = rand::thread_rng();
-    while locations.len() != Location::COUNT || !pool.is_empty() {
+    // change to or once documentation is done
+    while locations.len() != Location::COUNT && !pool.is_empty() {
         // shuffle the possible drops
         use rand::seq::SliceRandom;
         possible.shuffle(&mut rng);

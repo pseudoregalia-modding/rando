@@ -30,8 +30,8 @@ pub struct Check {
 
 #[derive(Debug)]
 pub enum Lock {
-    Location(&'static [Location]),
-    Movement(&'static [Ability]),
+    Location(Location),
+    Movement(&'static [&'static [Ability]]),
     SmallKey,
     Ending,
 }
