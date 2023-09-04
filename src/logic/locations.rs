@@ -11,7 +11,8 @@ pub enum Location {
     Sunsetter,
     EmptyBailey,
     TowerRuins,
-    Underbelly,
+    Hole,
+    MainUnderbelly,
     PillarRoom,
     MainTheatre,
     // FinalBoss,
@@ -21,6 +22,7 @@ use Ability as A;
 use Location as L;
 
 impl Location {
+    // need to include some reverse directions
     pub const fn locks(&self) -> &[&[Lock]] {
         match self {
             L::Prison => &[],
@@ -57,7 +59,29 @@ impl Location {
                 ],
                 // to actually get into the tower you could abuse solar wind flips but that's advanced af
             ],
-            L::Underbelly => &[&[Lock::Location(L::Prison)]],
+            L::Hole => &[
+                &[
+                    Lock::Location(L::SansaKeep),
+                    Lock::Movement(&[A::HeliacalPower]),
+                ],
+                &[
+                    Lock::Location(L::SansaKeep),
+                    Lock::Movement(&[A::SunGreaves]),
+                ],
+                &[
+                    Lock::Location(L::SansaKeep),
+                    Lock::Movement(&[A::Sunsetter]),
+                ],
+            ],
+            L::MainUnderbelly => &[
+                &[Lock::Location(L::Prison)],
+                // just so I don't need to rewrite conditions
+                &[
+                    Lock::Location(L::TowerRuins),
+                    Lock::Movement(&[A::Sunsetter]),
+                ],
+                &[Lock::Location(L::Hole), Lock::Movement(&[A::Sunsetter])],
+            ],
             L::PillarRoom => &[
                 // this is via the entrance above the normal entrance but needs some moar to get in maybe make separate
                 &[
@@ -119,7 +143,7 @@ impl Location {
             L::SansaKeep | L::Sunsetter => "Zone_Upper",
             L::EmptyBailey => "ZONE_Exterior",
             L::TowerRuins => "Zone_Tower",
-            L::Underbelly => "Zone_Caves",
+            L::Hole | L::MainUnderbelly => "Zone_Caves",
             L::PillarRoom | L::MainTheatre => "Zone_Theatre",
             // L::FinalBoss => "Zone_PrincessChambers",
         }
