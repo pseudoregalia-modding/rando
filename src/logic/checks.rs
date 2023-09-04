@@ -3,7 +3,7 @@ use super::*;
 use Ability as A;
 use Location as L;
 
-pub const CHECKS: [Check; 31] = [
+pub const CHECKS: [Check; 39] = [
     // not listing dream breaker since there's nothing it could be replaced by
     // the first thing you see
     Check {
@@ -248,26 +248,16 @@ pub const CHECKS: [Check; 31] = [
         ],
     },
     Check {
-        location: L::SansaKeep,
+        location: L::Sunsetter,
         index: 392,
         drop: Drop::Ability(A::Sunsetter),
-        // either get over the wall with parkour or use key so need to refactor locks lol
-        locks: &[
-            &[Lock::SmallKey],
-            &[Lock::Movement(&[Ability::SunGreaves])],
-            &[Lock::Movement(&[Ability::ClingGem])],
-        ],
+        locks: &[],
     },
     Check {
-        location: L::SansaKeep,
+        location: L::Sunsetter,
         index: 251,
         drop: Drop::Health,
-        // uses same parkour or key rule but also with height stuff
-        locks: &[
-            &[Lock::SmallKey],
-            &[Lock::Movement(&[Ability::SunGreaves])],
-            &[Lock::Movement(&[Ability::ClingGem])],
-        ],
+        locks: &[],
     },
     Check {
         location: L::SansaKeep,
@@ -312,6 +302,35 @@ pub const CHECKS: [Check; 31] = [
         drop: Drop::Ability(A::SolarWind),
         locks: &[&[Lock::Movement(&[A::Slide])]],
     },
+    Check {
+        location: L::EmptyBailey,
+        index: 66,
+        drop: Drop::Health,
+        locks: &[
+            &[Lock::Movement(&[A::Sunsetter, A::Slide])],
+            &[Lock::Movement(&[A::SunGreaves])],
+        ],
+    },
+    Check {
+        location: L::EmptyBailey,
+        index: 105,
+        drop: Drop::Ability(A::Empathy),
+        locks: &[
+            &[Lock::Movement(&[
+                A::Slide,
+                A::SolarWind,
+                A::Sunsetter,
+                A::HeliacalPower,
+            ])],
+            &[Lock::Movement(&[
+                A::Slide,
+                A::SolarWind,
+                A::Sunsetter,
+                A::SunGreaves,
+            ])],
+            &[Lock::Movement(&[A::Slide, A::SolarWind, A::ClingGem])],
+        ],
+    },
     // Tower ruins
     Check {
         location: L::TowerRuins,
@@ -324,5 +343,73 @@ pub const CHECKS: [Check; 31] = [
         index: 56,
         drop: Drop::BigKey,
         locks: &[&[Lock::Movement(&[A::SunGreaves, A::ClingGem])]],
+    },
+    Check {
+        location: L::PillarRoom,
+        index: 1080,
+        drop: Drop::Ability(A::AerialFinesse),
+        locks: &[&[
+            Lock::Movement(&[A::ClingGem, A::SunGreaves]),
+            Lock::Movement(&[A::Slide, A::SolarWind, A::ClingGem]),
+            Lock::Movement(&[A::Slide, A::SolarWind, A::SunGreaves]),
+        ]],
+    },
+    Check {
+        location: L::MainTheatre,
+        index: 843,
+        drop: Drop::Health,
+        locks: &[],
+    },
+    Check {
+        location: L::MainTheatre,
+        index: 802,
+        drop: Drop::BigKey,
+        // there's one gap in the open green room with enemies which is too big
+        locks: &[
+            &[Lock::Movement(&[
+                A::Strikebreak,
+                A::SoulCutter,
+                A::ClingGem,
+                A::Slide,
+                A::SolarWind,
+            ])],
+            &[Lock::Movement(&[
+                A::Strikebreak,
+                A::SoulCutter,
+                A::ClingGem,
+                A::HeliacalPower,
+            ])],
+            &[Lock::Movement(&[
+                A::Strikebreak,
+                A::SoulCutter,
+                A::ClingGem,
+                A::SunGreaves,
+            ])],
+        ],
+    },
+    Check {
+        location: L::MainTheatre,
+        index: 1079,
+        drop: Drop::Ability(A::SoulCutter),
+        locks: &[&[Lock::Movement(&[A::Strikebreak])]],
+    },
+    Check {
+        location: L::MainTheatre,
+        index: 844,
+        drop: Drop::Health,
+        locks: &[&[
+            Lock::Movement(&[A::SunGreaves]),
+            Lock::Movement(&[A::ClingGem]),
+        ]],
+    },
+    Check {
+        location: L::MainTheatre,
+        index: 1081,
+        drop: Drop::Ability(A::Empathy),
+        locks: &[&[
+            Lock::SmallKey,
+            Lock::Movement(&[A::SunGreaves]),
+            Lock::Movement(&[A::ClingGem]),
+        ]],
     },
 ];
