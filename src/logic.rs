@@ -7,12 +7,7 @@ pub use seeding::randomise;
 mod locations;
 pub use locations::Location;
 
-#[derive(Debug)]
-pub struct Data {
-    pub overworld: std::collections::BTreeMap<&'static str, Vec<Check>>,
-}
-
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Drop {
     Ability(Ability),
     SmallKey,
@@ -25,13 +20,13 @@ pub struct Check {
     pub location: Location,
     pub index: usize,
     pub drop: Drop,
-    locks: &'static [Lock],
+    locks: &'static [&'static [Lock]],
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub enum Lock {
     Location(Location),
-    Movement(&'static [&'static [Ability]]),
+    Movement(&'static [Ability]),
     SmallKey,
     Ending,
 }

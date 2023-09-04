@@ -2,33 +2,38 @@ use super::*;
 use strum::{EnumCount, IntoEnumIterator};
 
 fn update(
-    locks: &[Lock],
+    locks: &[&[Lock]],
     locations: &[Location],
     possible: &mut Vec<Drop>,
     checks: &mut Vec<Check>,
-    data: &mut Data,
+    overworld: &mut std::collections::BTreeMap<&'static str, Vec<Check>>,
 ) -> bool {
     // see if there's any requirements met and what they are
     let current = || {
         possible[0..checks.len()]
             .iter()
-            .chain(data.overworld.values().flatten().map(|check| &check.drop))
+            .chain(overworld.values().flatten().map(|check| &check.drop))
     };
-    if !locks.iter().all(|lock| match lock {
-        Lock::Location(loc) => loc.iter().any(|loc| locations.contains(loc)),
-        Lock::Movement(movement) => movement
-            .iter()
-            .all(|ability| current().any(|drop| drop == &Drop::Ability(*ability))),
-        Lock::SmallKey => current().any(|drop| matches!(drop, Drop::SmallKey)),
-        Lock::Ending => {
-            current().fold(0, |acc, drop| match matches!(drop, Drop::BigKey) {
-                true => acc + 1,
-                false => acc,
-            }) >= 5
-        }
-    }) {
-        return false;
-    }
+    let locks: Vec<_> = locks
+        .iter()
+        .copied()
+        .filter(|locks| {
+            locks.iter().all(|lock| match lock {
+                Lock::Location(loc) => locations.contains(&loc),
+                Lock::Movement(movement) => movement
+                    .iter()
+                    .all(|ability| current().any(|drop| drop == &Drop::Ability(*ability))),
+                Lock::SmallKey => current().any(|drop| matches!(drop, Drop::SmallKey)),
+                Lock::Ending => {
+                    current().fold(0, |acc, drop| match matches!(drop, Drop::BigKey) {
+                        true => acc + 1,
+                        false => acc,
+                    }) >= 5
+                }
+            })
+        })
+        .flatten()
+        .collect();
     for lock in locks {
         // freeze any progression items where they are
         while let Some(i) = match lock {
@@ -46,17 +51,17 @@ fn update(
         } {
             let mut check = checks.remove(i);
             check.drop = possible.remove(i);
-            push(check, data);
+            push(check, overworld);
         }
     }
     true
 }
 
-fn push(check: Check, data: &mut Data) {
-    match data.overworld.get_mut(check.location.as_str()) {
+fn push(check: Check, overworld: &mut std::collections::BTreeMap<&'static str, Vec<Check>>) {
+    match overworld.get_mut(check.location.as_str()) {
         Some(checks) => checks.push(check),
         None => {
-            data.overworld.insert(check.location.as_str(), vec![check]);
+            overworld.insert(check.location.as_str(), vec![check]);
         }
     }
 }
@@ -76,9 +81,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
     let mut possible: Vec<Drop> = pool.iter().map(|check| check.drop).collect();
     let mut checks: Vec<Check> = Vec::with_capacity(pool.len());
 
-    let mut data = Data {
-        overworld: std::collections::BTreeMap::new(),
-    };
+    let mut overworld = std::collections::BTreeMap::new();
     let mut locations = Vec::with_capacity(Location::COUNT);
     let mut rng = rand::thread_rng();
     // change to or once documentation is done
@@ -90,10 +93,13 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
         // update accessible locations
         for loc in Location::iter() {
             if !locations.contains(&loc)
-                && loc
-                    .locks()
-                    .iter()
-                    .any(|locks| update(locks, &locations, &mut possible, &mut checks, &mut data))
+                && update(
+                    loc.locks(),
+                    &locations,
+                    &mut possible,
+                    &mut checks,
+                    &mut overworld,
+                )
             {
                 locations.push(loc);
             }
@@ -106,7 +112,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
                     &locations,
                     &mut possible,
                     &mut checks,
-                    &mut data,
+                    &mut overworld,
                 )
             {
                 checks.push(pool.remove(i));
@@ -120,10 +126,10 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
                     &locations,
                     &mut possible,
                     &mut checks,
-                    &mut data,
+                    &mut overworld,
                 )
             {
-                push(unrandomised.remove(i), &mut data);
+                push(unrandomised.remove(i), &mut overworld);
             }
         }
     }
@@ -131,20 +137,16 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
         check.drop = drop
     }
     for check in checks {
-        push(check, &mut data)
+        push(check, &mut overworld)
     }
-    data.overworld = data
-        .overworld
+    overworld = overworld
         .into_iter()
         .map(|(key, value)| (key, value.into_iter().filter(in_pool).collect()))
         .collect();
     std::fs::write(
         "spoiler_log.txt",
-        format!(
-            "{:#?}",
-            data.overworld.values().flatten().collect::<Vec<_>>(),
-        ),
+        format!("{:#?}", overworld.values().flatten().collect::<Vec<_>>(),),
     )
     .unwrap_or_default();
-    crate::writing::write(data, app).map_err(|e| e.to_string())
+    crate::writing::write(overworld, app).map_err(|e| e.to_string())
 }

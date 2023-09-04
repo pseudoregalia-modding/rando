@@ -76,7 +76,10 @@ fn extract(
     )
 }
 
-pub fn write(data: Data, app: &crate::Rando) -> Result<(), Error> {
+pub fn write(
+    checks: std::collections::BTreeMap<&'static str, Vec<Check>>,
+    app: &crate::Rando,
+) -> Result<(), Error> {
     let mut sync = app.pak()?;
     let pak = repak::PakReader::new(&mut sync, repak::Version::V11)?;
     let mod_pak = std::sync::Arc::new(std::sync::Mutex::new(repak::PakWriter::new(
@@ -85,7 +88,7 @@ pub fn write(data: Data, app: &crate::Rando) -> Result<(), Error> {
         "../../../".to_string(),
         None,
     )));
-    overworld::write(data.overworld, app, &pak, &mod_pak)?;
+    overworld::write(checks, app, &pak, &mod_pak)?;
     Mod::try_unwrap(mod_pak)?.into_inner()?.write_index()?;
     Ok(())
 }
