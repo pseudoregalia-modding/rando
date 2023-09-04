@@ -15,7 +15,7 @@ pub enum Location {
     MainUnderbelly,
     PillarRoom,
     MainTheatre,
-    // FinalBoss,
+    FinalBoss,
 }
 
 use Ability as A;
@@ -27,10 +27,19 @@ impl Location {
         match self {
             L::Prison => &[],
             L::StrongEyes => &[&[Lock::Location(L::Prison), Lock::Movement(&[A::Slide])]],
-            L::CastleSansa => &[&[Lock::Location(L::StrongEyes), Lock::SmallKey]],
+            L::CastleSansa => &[
+                &[Lock::Location(L::StrongEyes), Lock::SmallKey],
+                &[Lock::Location(L::EmptyBailey)],
+            ],
             L::MainLibrary => &[&[Lock::Location(L::CastleSansa)]],
             L::Restricted => &[&[Lock::Location(L::MainLibrary), Lock::SmallKey]],
-            L::SansaKeep => &[&[Lock::Location(L::CastleSansa)]],
+            L::SansaKeep => &[
+                &[Lock::Location(L::CastleSansa)],
+                &[
+                    Lock::Location(L::MainTheatre),
+                    Lock::Movement(&[A::ClingGem]),
+                ],
+            ],
             L::Sunsetter => &[
                 &[Lock::Location(L::SansaKeep), Lock::SmallKey],
                 &[
@@ -39,7 +48,10 @@ impl Location {
                 ],
                 &[Lock::Location(L::SansaKeep), Lock::Movement(&[A::ClingGem])],
             ],
-            L::EmptyBailey => &[&[Lock::Location(L::CastleSansa)]],
+            L::EmptyBailey => &[
+                &[Lock::Location(L::CastleSansa)],
+                &[Lock::Location(L::MainUnderbelly)],
+            ],
             L::TowerRuins => &[
                 &[
                     Lock::Location(L::EmptyBailey),
@@ -124,15 +136,22 @@ impl Location {
                     Lock::Location(L::SansaKeep),
                     Lock::Movement(&[A::Slide, A::SolarWind, A::ClingGem]),
                 ],
+                &[Lock::Location(L::Prison), Lock::Movement(&[A::SunGreaves])],
+                &[Lock::Location(L::Prison), Lock::Movement(&[A::ClingGem])],
                 &[
                     Lock::Location(L::Prison),
-                    Lock::Movement(&[A::ClingGem, A::SunGreaves]),
+                    Lock::Movement(&[A::Slide, A::SolarWind, A::HeliacalPower]),
                 ],
                 &[
                     Lock::Location(L::Prison),
-                    Lock::Movement(&[A::Slide, A::SolarWind, A::ClingGem]),
+                    Lock::Movement(&[A::AscendantLight, A::HeliacalPower]),
                 ],
             ],
+            L::FinalBoss => &[&[
+                Lock::Location(L::TowerRuins),
+                Lock::Movement(&[A::SunGreaves, A::ClingGem]),
+                Lock::Ending,
+            ]],
         }
     }
     pub const fn as_str(&self) -> &'static str {
@@ -145,7 +164,7 @@ impl Location {
             L::TowerRuins => "Zone_Tower",
             L::Hole | L::MainUnderbelly => "Zone_Caves",
             L::PillarRoom | L::MainTheatre => "Zone_Theatre",
-            // L::FinalBoss => "Zone_PrincessChambers",
+            L::FinalBoss => "Zone_PrincessChambers",
         }
     }
 }

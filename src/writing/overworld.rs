@@ -9,7 +9,8 @@ pub fn write(
     mod_pak: &Mod,
 ) -> Result<(), Error> {
     // reference so it isn't moved
-    let counter = &std::sync::Arc::new(std::sync::Mutex::new(1));
+    let abilities = &std::sync::Arc::new(std::sync::Mutex::new(1));
+    let big_keys = &std::sync::Arc::new(std::sync::Mutex::new(1));
     std::thread::scope(|thread| -> Result<(), Error> {
         for thread in checks.into_iter().map(
             |(location, checks)| -> Result<std::thread::ScopedJoinHandle<Result<(), Error>>, Error> {
@@ -59,20 +60,33 @@ pub fn write(
                                     })),
                                 }
                                 match norm.properties.iter_mut().find_map(|prop| unreal_asset::cast!(Property, IntProperty, prop)){
-                                    Some(id) => id.value = *counter.lock()?,
+                                    Some(id) => id.value = *abilities.lock()?,
                                     None => norm.properties.push(Property::IntProperty(int_property::IntProperty {
                                         name: names.get_mut().add_fname("ID"),
                                         property_guid: Some(Default::default()),
-                                        value: *counter.lock()?,
+                                        value: *abilities.lock()?,
                                         ..Default::default()
                                     })),
                                 }
                                 // can't use += because the i32 is behind a MutexGuard
                                 use std::ops::AddAssign;
-                                counter.lock()?.add_assign(1);
+                                abilities.lock()?.add_assign(1);
                             }
                             Drop::SmallKey if class != "BP_GenericKey_C" => replace(24)?,
-                            Drop::BigKey if class != "BP_GenericKey_C" => replace(18)?,
+                            Drop::BigKey if class != "BP_GenericKey_C" => {
+                                replace(18)?;
+                                let mut names = map.get_name_map();
+                                let Some(norm) = map.asset_data.exports[index].get_normal_export_mut() else {continue};
+                                match norm.properties.iter_mut().find_map(|prop| unreal_asset::cast!(Property, IntProperty, prop)){
+                                    Some(id) => id.value = *big_keys.lock()?,
+                                    None => norm.properties.push(Property::IntProperty(int_property::IntProperty {
+                                        name: names.get_mut().add_fname("keyID"),
+                                        property_guid: Some(Default::default()),
+                                        value: *big_keys.lock()?,
+                                        ..Default::default()
+                                    })),
+                                }
+                            },
                             Drop::Health if class != "BP_HealthPiece_C" => replace(11)?,
                             _ => ()
                         }

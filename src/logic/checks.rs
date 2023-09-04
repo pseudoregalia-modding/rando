@@ -3,7 +3,7 @@ use super::*;
 use Ability as A;
 use Location as L;
 
-pub const CHECKS: [Check; 47] = [
+pub const CHECKS: [Check; 49] = [
     // not listing dream breaker since there's nothing it could be replaced by
     // the first thing you see
     Check {
@@ -24,6 +24,15 @@ pub const CHECKS: [Check; 47] = [
         index: 356,
         drop: Drop::Ability(A::Slide),
         locks: &[],
+    },
+    Check {
+        location: L::Prison,
+        index: 357,
+        drop: Drop::Ability(A::GoodGraces),
+        locks: &[
+            &[Lock::Movement(&[A::ClingGem])],
+            &[Lock::Movement(&[A::AscendantLight, A::SunGreaves])],
+        ],
     },
     // the little shit up in the rafters
     Check {
@@ -53,7 +62,6 @@ pub const CHECKS: [Check; 47] = [
         drop: Drop::SmallKey,
         locks: &[],
     },
-    // need to document dark section argh
     // it's good enough for the final boss to divert the speedrun
     Check {
         location: L::CastleSansa,
@@ -285,7 +293,30 @@ pub const CHECKS: [Check; 47] = [
             &[Lock::Movement(&[A::ClingGem])],
         ],
     },
-    // need to do the big key
+    Check {
+        location: L::SansaKeep,
+        index: 227,
+        drop: Drop::BigKey,
+        locks: &[
+            &[Lock::Movement(&[
+                A::AscendantLight,
+                A::ClingGem,
+                A::Sunsetter,
+            ])],
+            &[Lock::Movement(&[
+                A::AscendantLight,
+                A::ClingGem,
+                A::SunGreaves,
+            ])],
+            &[Lock::Movement(&[
+                A::Slide,
+                A::SolarWind,
+                A::Sunsetter,
+                A::ClingGem,
+                A::SunGreaves,
+            ])],
+        ],
+    },
     // Empty Bailey
     // in the building you slide into
     Check {
