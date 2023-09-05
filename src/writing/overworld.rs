@@ -18,17 +18,20 @@ pub fn write(
                     let mut path = PREFIX.to_string() + location + ".umap";
                     let mut map = extract(app, pak, &path)?;
                     path = MOD.to_string() + &path;
+                    // unfortunately i can't share this between threads
+                    let donor = open_slice(
+                        include_bytes!("../assets/collectibles.umap"),
+                        include_bytes!("../assets/collectibles.uexp"),
+                    )?;
+                    if location == "ZONE_Dungeon" {
+                        transplant(36, &mut map, &donor)?;
+                    }
                     for Check { mut index, drop, .. } in checks {
                         let class = map
                             .get_import(map.asset_data.exports[index].get_base_export().class_index)
                             .map(|import| import.object_name.get_owned_content())
                             .unwrap_or_default();
                         let mut replace = |actor: usize| -> Result<(), Error> {
-                            // unfortunately i can't share this between threads
-                            let donor = open_slice(
-                                include_bytes!("../assets/collectibles.umap"),
-                                include_bytes!("../assets/collectibles.uexp"),
-                            )?;
                             delete(index, &mut map);
                             let insert = map.asset_data.exports.len();
                             transplant(actor, &mut map, &donor)?;
