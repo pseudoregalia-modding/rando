@@ -26,7 +26,7 @@ pub struct Check {
 #[derive(Debug, Clone, Copy)]
 pub enum Lock {
     Location(Location),
-    Movement(&'static [Ability]),
+    Movement(&'static [&'static [Ability]]),
     SmallKey,
     Ending,
 }

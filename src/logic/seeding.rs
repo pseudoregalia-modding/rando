@@ -20,9 +20,11 @@ fn update(
         .filter(|locks| {
             locks.iter().all(|lock| match lock {
                 Lock::Location(loc) => locations.contains(&loc),
-                Lock::Movement(movement) => movement
-                    .iter()
-                    .all(|ability| current().any(|drop| drop == &Drop::Ability(*ability))),
+                Lock::Movement(movement) => movement.iter().any(|ability| {
+                    ability
+                        .iter()
+                        .all(|ability| current().any(|drop| drop == &Drop::Ability(*ability)))
+                }),
                 Lock::SmallKey => current().any(|drop| matches!(drop, Drop::SmallKey)),
                 Lock::Ending => {
                     current().fold(0, |acc, drop| match matches!(drop, Drop::BigKey) {
@@ -51,13 +53,13 @@ fn update(
         } {
             let mut check = checks.remove(i);
             check.drop = possible.remove(i);
-            push(check, overworld);
+            submit(check, overworld);
         }
     }
     true
 }
 
-fn push(check: Check, overworld: &mut std::collections::BTreeMap<&'static str, Vec<Check>>) {
+fn submit(check: Check, overworld: &mut std::collections::BTreeMap<&'static str, Vec<Check>>) {
     match overworld.get_mut(check.location.as_str()) {
         Some(checks) => checks.push(check),
         None => {
@@ -129,7 +131,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
                     &mut overworld,
                 )
             {
-                push(unrandomised.remove(i), &mut overworld);
+                submit(unrandomised.remove(i), &mut overworld);
             }
         }
     }
@@ -137,7 +139,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
         check.drop = drop
     }
     for check in checks {
-        push(check, &mut overworld)
+        submit(check, &mut overworld)
     }
     overworld = overworld
         .into_iter()

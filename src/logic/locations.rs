@@ -26,7 +26,7 @@ impl Location {
     pub const fn locks(&self) -> &[&[Lock]] {
         match self {
             L::Prison => &[],
-            L::StrongEyes => &[&[Lock::Location(L::Prison), Lock::Movement(&[A::Slide])]],
+            L::StrongEyes => &[&[Lock::Location(L::Prison), Lock::Movement(&[&[A::Slide]])]],
             L::CastleSansa => &[
                 &[Lock::Location(L::StrongEyes), Lock::SmallKey],
                 &[Lock::Location(L::EmptyBailey)],
@@ -37,76 +37,48 @@ impl Location {
                 &[Lock::Location(L::CastleSansa)],
                 &[
                     Lock::Location(L::MainTheatre),
-                    Lock::Movement(&[A::ClingGem]),
+                    Lock::Movement(&[&[A::ClingGem]]),
                 ],
             ],
             L::Sunsetter => &[
                 &[Lock::Location(L::SansaKeep), Lock::SmallKey],
                 &[
                     Lock::Location(L::SansaKeep),
-                    Lock::Movement(&[A::SunGreaves]),
+                    Lock::Movement(&[&[A::SunGreaves], &[A::ClingGem]]),
                 ],
-                &[Lock::Location(L::SansaKeep), Lock::Movement(&[A::ClingGem])],
             ],
             L::EmptyBailey => &[
                 &[Lock::Location(L::CastleSansa)],
                 &[Lock::Location(L::MainUnderbelly)],
             ],
-            L::TowerRuins => &[
-                &[
-                    Lock::Location(L::EmptyBailey),
-                    Lock::Movement(&[A::SunGreaves]),
-                ],
-                &[
-                    Lock::Location(L::EmptyBailey),
-                    Lock::Movement(&[A::HeliacalPower]),
-                ],
-                &[
-                    Lock::Location(L::EmptyBailey),
-                    Lock::Movement(&[A::ClingGem]),
-                ],
-                &[
-                    Lock::Location(L::EmptyBailey),
-                    Lock::Movement(&[A::Slide, A::Sunsetter]),
-                ],
-                // to actually get into the tower you could abuse solar wind flips but that's advanced af
-            ],
-            L::Hole => &[
-                &[
-                    Lock::Location(L::SansaKeep),
-                    Lock::Movement(&[A::HeliacalPower]),
-                ],
-                &[
-                    Lock::Location(L::SansaKeep),
-                    Lock::Movement(&[A::SunGreaves]),
-                ],
-                &[
-                    Lock::Location(L::SansaKeep),
-                    Lock::Movement(&[A::Sunsetter]),
-                ],
-            ],
+            L::TowerRuins => &[&[
+                Lock::Location(L::EmptyBailey),
+                Lock::Movement(&[
+                    &[A::SunGreaves],
+                    &[A::HeliacalPower],
+                    &[A::ClingGem],
+                    &[A::Slide, A::Sunsetter],
+                    // to actually get into the tower you could abuse solar wind flips but that's advanced af
+                ]),
+            ]],
+            L::Hole => &[&[
+                Lock::Location(L::SansaKeep),
+                Lock::Movement(&[&[A::HeliacalPower], &[A::SunGreaves], &[A::Sunsetter]]),
+            ]],
             L::MainUnderbelly => &[
                 &[Lock::Location(L::Prison)],
                 // just so I don't need to rewrite conditions
                 &[
                     Lock::Location(L::TowerRuins),
-                    Lock::Movement(&[A::Sunsetter]),
+                    Lock::Movement(&[&[A::Sunsetter]]),
                 ],
-                &[Lock::Location(L::Hole), Lock::Movement(&[A::Sunsetter])],
+                &[Lock::Location(L::Hole), Lock::Movement(&[&[A::Sunsetter]])],
             ],
             L::PillarRoom => &[
                 // this is via the entrance above the normal entrance but needs some moar to get in maybe make separate
                 &[
                     Lock::Location(L::CastleSansa),
-                    Lock::Movement(&[A::SunGreaves]),
-                ],
-                &[
-                    Lock::Location(L::CastleSansa),
-                    Lock::Movement(&[A::HeliacalPower]),
-                ],
-                &[
-                    Lock::Location(L::CastleSansa),
-                    Lock::Movement(&[A::ClingGem]),
+                    Lock::Movement(&[&[A::SunGreaves], &[A::HeliacalPower], &[A::ClingGem]]),
                 ],
                 &[Lock::Location(L::EmptyBailey)],
             ],
@@ -114,42 +86,38 @@ impl Location {
                 // this is via the softlock entrance
                 &[
                     Lock::Location(L::CastleSansa),
-                    Lock::Movement(&[A::ClingGem]),
-                ],
-                &[
-                    Lock::Location(L::CastleSansa),
-                    Lock::Movement(&[A::Slide, A::SolarWind, A::SunGreaves, A::HeliacalPower]),
-                ],
-                &[
-                    Lock::Location(L::PillarRoom),
-                    Lock::Movement(&[A::Sunsetter, A::ClingGem]),
+                    Lock::Movement(&[
+                        &[A::ClingGem],
+                        &[A::Slide, A::SolarWind, A::SunGreaves, A::HeliacalPower],
+                    ]),
                 ],
                 &[
                     Lock::Location(L::PillarRoom),
-                    Lock::Movement(&[A::Sunsetter, A::SunGreaves, A::HeliacalPower]),
+                    Lock::Movement(&[
+                        &[A::Sunsetter, A::ClingGem],
+                        &[A::Sunsetter, A::SunGreaves, A::HeliacalPower],
+                    ]),
                 ],
                 &[
                     Lock::Location(L::SansaKeep),
-                    Lock::Movement(&[A::ClingGem, A::SunGreaves]),
-                ],
-                &[
-                    Lock::Location(L::SansaKeep),
-                    Lock::Movement(&[A::Slide, A::SolarWind, A::ClingGem]),
-                ],
-                &[Lock::Location(L::Prison), Lock::Movement(&[A::SunGreaves])],
-                &[Lock::Location(L::Prison), Lock::Movement(&[A::ClingGem])],
-                &[
-                    Lock::Location(L::Prison),
-                    Lock::Movement(&[A::Slide, A::SolarWind, A::HeliacalPower]),
+                    Lock::Movement(&[
+                        &[A::ClingGem, A::SunGreaves],
+                        &[A::Slide, A::SolarWind, A::ClingGem],
+                    ]),
                 ],
                 &[
                     Lock::Location(L::Prison),
-                    Lock::Movement(&[A::AscendantLight, A::HeliacalPower]),
+                    Lock::Movement(&[
+                        &[A::SunGreaves],
+                        &[A::ClingGem],
+                        &[A::Slide, A::SolarWind, A::HeliacalPower],
+                        &[A::AscendantLight, A::HeliacalPower],
+                    ]),
                 ],
             ],
             L::FinalBoss => &[&[
                 Lock::Location(L::TowerRuins),
-                Lock::Movement(&[A::SunGreaves, A::ClingGem]),
+                Lock::Movement(&[&[A::SunGreaves, A::ClingGem]]),
                 Lock::Ending,
             ]],
         }
