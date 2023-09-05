@@ -41,30 +41,28 @@ pub fn write(
                             index = insert;
                             Ok(())
                         };
+                        // we always replace here since the same blueprint can have a different appearance
                         match &drop {
                             Drop::Ability(ability) => {
-                                // can't be arsed to check data
-                                // if class != "BP_UpgradeBase_C" {
-                                    replace(match ability {
-                                        Ability::SunGreaves
-                                        | Ability::Slide
-                                        | Ability::Sunsetter
-                                        | Ability::ClingGem
-                                        | Ability::AscendantLight
-                                        | Ability::SoulCutter
-                                        | Ability::Indignation
-                                        | Ability::SolarWind
-                                        | Ability::Strikebreak
-                                        | Ability::HeliacalPower => 5,
-                                        Ability::AerialFinesse
-                                        | Ability::Pilgrimage
-                                        | Ability::Empathy
-                                        | Ability::GoodGraces
-                                        | Ability::MartialProwess
-                                        | Ability::ClearMind
-                                        | Ability::Professional => 30,
-                                    })?;
-                                // }
+                                replace(match ability {
+                                    Ability::SunGreaves
+                                    | Ability::Slide
+                                    | Ability::Sunsetter
+                                    | Ability::ClingGem
+                                    | Ability::AscendantLight
+                                    | Ability::SoulCutter
+                                    | Ability::Indignation
+                                    | Ability::SolarWind
+                                    | Ability::Strikebreak
+                                    | Ability::HeliacalPower => 5,
+                                    Ability::AerialFinesse
+                                    | Ability::Pilgrimage
+                                    | Ability::Empathy
+                                    | Ability::GoodGraces
+                                    | Ability::MartialProwess
+                                    | Ability::ClearMind
+                                    | Ability::Professional => 30,
+                                })?;
                                 let ability_name = map.add_fname(ability.as_ref());
                                 let mut names = map.get_name_map();
                                 let Some(norm) = map.asset_data.exports[index].get_normal_export_mut() else {continue};
@@ -96,18 +94,14 @@ pub fn write(
                                 abilities.lock()?.add_assign(1);
                             }
                             Drop::SmallKey => {
-                                if class != "BP_GenericKey_C" {
-                                    replace(24)?
-                                }
+                                replace(24)?;
                                 let Some(norm) = map.asset_data.exports[index].get_normal_export_mut() else {continue};
                                 if let Some(i) = norm.properties.iter_mut().position(|prop| matches!(prop, Property::IntProperty(..))){
                                     norm.properties.remove(i);
                                 }
                             },
                             Drop::BigKey => {
-                                if class != "BP_GenericKey_C" {
-                                    replace(18)?;
-                                }
+                                replace(18)?;
                                 let mut names = map.get_name_map();
                                 let Some(norm) = map.asset_data.exports[index].get_normal_export_mut() else {continue};
                                 match norm.properties.iter_mut().find_map(|prop| unreal_asset::cast!(Property, IntProperty, prop)){
