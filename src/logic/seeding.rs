@@ -38,7 +38,7 @@ fn update(
         .collect();
     for lock in locks {
         // freeze any progression items where they are
-        while let Some(i) = match lock {
+        if let Some(i) = match lock {
             Lock::Location(..) => None,
             Lock::Movement(..) => possible[0..checks.len()]
                 .iter()
@@ -51,6 +51,20 @@ fn update(
                 .iter()
                 .position(|drop| matches!(drop, Drop::BigKey)),
         } {
+            // prevent randomising check to a place which needs it
+            if checks[i].locks.iter().any(|lock| {
+                lock.iter().all(|lock| match lock {
+                    Lock::Movement(abilities) => {
+                        abilities.iter().any(|ability| match possible[i] {
+                            Drop::Ability(a) => ability.contains(&a),
+                            _ => false,
+                        })
+                    }
+                    _ => false,
+                })
+            }) {
+                continue;
+            }
             let mut check = checks.remove(i);
             check.drop = possible.remove(i);
             submit(check, overworld);

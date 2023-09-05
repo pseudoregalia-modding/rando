@@ -120,7 +120,7 @@ pub const CHECKS: [Check; 49] = [
     // must not forget cool moon room
     Check {
         location: L::CastleSansa,
-        index: 789,
+        index: 790,
         drop: Drop::Ability(A::ClearMind),
         locks: &[&[Lock::Movement(&[
             &[A::ClingGem],
@@ -173,7 +173,7 @@ pub const CHECKS: [Check; 49] = [
     // i always forget this room exists - has two doors and levers on each side
     Check {
         location: L::CastleSansa,
-        index: 268,
+        index: 789,
         drop: Drop::Ability(A::GoodGraces),
         locks: &[&[Lock::Movement(&[&[A::ClingGem], &[A::SunGreaves]])]],
     },
@@ -184,8 +184,9 @@ pub const CHECKS: [Check; 49] = [
         index: 267,
         drop: Drop::Ability(A::SunGreaves),
         locks: &[&[Lock::Movement(&[
-            &[A::SunGreaves],
-            &[A::HeliacalPower],
+            &[A::Slide, A::SunGreaves],
+            &[A::Slide, A::HeliacalPower],
+            &[A::SunGreaves, A::HeliacalPower],
             &[A::ClingGem],
             &[A::Slide, A::SolarWind],
         ])]],
@@ -195,7 +196,7 @@ pub const CHECKS: [Check; 49] = [
         location: L::MainLibrary,
         index: 213,
         drop: Drop::Health,
-        locks: &[&[Lock::Movement(&[&[A::SunGreaves]])]],
+        locks: &[&[Lock::Movement(&[&[A::SunGreaves], &[A::ClingGem]])]],
     },
     // chillin in the hay
     Check {
@@ -296,7 +297,11 @@ pub const CHECKS: [Check; 49] = [
         location: L::EmptyBailey,
         index: 55,
         drop: Drop::BigKey,
-        locks: &[&[Lock::Movement(&[&[A::Sunsetter], &[A::SunGreaves]])]],
+        locks: &[&[Lock::Movement(&[
+            &[A::Sunsetter],
+            &[A::SunGreaves],
+            &[A::ClingGem],
+        ])]],
     },
     // the airy jump feels so schmoovey
     Check {
