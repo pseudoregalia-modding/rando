@@ -52,22 +52,21 @@ fn update(
                 .position(|drop| matches!(drop, Drop::BigKey)),
         } {
             // prevent randomising check to a place which needs it
-            if checks[i].locks.iter().any(|lock| {
+            if checks[i].locks.iter().all(|lock| {
                 lock.iter().all(|lock| match lock {
                     Lock::Movement(abilities) => {
-                        abilities.iter().any(|ability| match possible[i] {
-                            Drop::Ability(a) => ability.contains(&a),
-                            _ => false,
+                        abilities.iter().all(|ability| match possible[i] {
+                            Drop::Ability(a) => !ability.contains(&a),
+                            _ => true,
                         })
                     }
-                    _ => false,
+                    _ => true,
                 })
             }) {
-                continue;
+                let mut check = checks.remove(i);
+                check.drop = possible.remove(i);
+                submit(check, overworld);
             }
-            let mut check = checks.remove(i);
-            check.drop = possible.remove(i);
-            submit(check, overworld);
         }
     }
     true
@@ -100,8 +99,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
     let mut overworld = std::collections::BTreeMap::new();
     let mut locations = Vec::with_capacity(Location::COUNT);
     let mut rng = rand::thread_rng();
-    // change to or once documentation is done
-    while locations.len() != Location::COUNT && !pool.is_empty() {
+    while locations.len() != Location::COUNT || !pool.is_empty() {
         // shuffle the possible drops
         use rand::seq::SliceRandom;
         possible.shuffle(&mut rng);

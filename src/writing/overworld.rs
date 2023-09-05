@@ -46,18 +46,22 @@ pub fn write(
                                 if class != "BP_UpgradeBase_C"{
                                     replace(5)?
                                 }
-                                let ability = map.add_fname(ability.as_ref());
+                                let ability_name = map.add_fname(ability.as_ref());
                                 let mut names = map.get_name_map();
                                 let Some(norm) = map.asset_data.exports[index].get_normal_export_mut() else {continue};
                                 match norm.properties.iter_mut().find_map(|prop| unreal_asset::cast!(Property, NameProperty, prop)){
-                                    Some(row) => row.value = ability,
+                                    Some(row) => row.value = ability_name,
                                     None => norm.properties.push(Property::NameProperty(str_property::NameProperty {
                                         name: names.get_mut().add_fname("rowName"),
                                         ancestry: Default::default(),
                                         property_guid: Some(Default::default()),
                                         duplication_index: Default::default(),
-                                        value: ability
+                                        value: ability_name
                                     })),
+                                }
+                                match norm.properties.iter_mut().find_map(|prop| unreal_asset::cast!(Property, StructProperty, prop)){
+                                    Some(row) => *row = ability.data(names.get_mut()),
+                                    None => norm.properties.push(Property::StructProperty(ability.data(names.get_mut()))),
                                 }
                                 match norm.properties.iter_mut().find_map(|prop| unreal_asset::cast!(Property, IntProperty, prop)){
                                     Some(id) => id.value = *abilities.lock()?,
@@ -72,7 +76,15 @@ pub fn write(
                                 use std::ops::AddAssign;
                                 abilities.lock()?.add_assign(1);
                             }
-                            Drop::SmallKey if class != "BP_GenericKey_C" => replace(24)?,
+                            Drop::SmallKey => {
+                                if class != "BP_GenericKey_C" {
+                                    replace(24)?
+                                }
+                                let Some(norm) = map.asset_data.exports[index].get_normal_export_mut() else {continue};
+                                if let Some(i) = norm.properties.iter_mut().position(|prop| matches!(prop, Property::IntProperty(..))){
+                                    norm.properties.remove(i);
+                                }
+                            },
                             Drop::BigKey => {
                                 if class != "BP_GenericKey_C" {
                                     replace(18)?;

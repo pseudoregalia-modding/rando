@@ -10,20 +10,29 @@ pub const CHECKS: [Check; 49] = [
         location: L::Prison,
         index: 214,
         drop: Drop::Health,
-        locks: &[&[Lock::Movement(&[
-            &[A::Sunsetter],
-            &[A::AscendantLight],
-            // just enough space to do this
-            &[A::Slide, A::SolarWind],
-            &[A::ClingGem],
-        ])]],
+        locks: &[
+            &[Lock::Movement(&[
+                &[A::Sunsetter],
+                &[A::AscendantLight],
+                // just enough space to do this
+                &[A::Slide, A::SolarWind],
+                &[A::ClingGem],
+            ])],
+            // you can drop down from the entrance
+            &[Lock::Location(Location::CastleSansa)],
+        ],
     },
     // a speedrunner's one true love
     Check {
         location: L::Prison,
         index: 356,
         drop: Drop::Ability(A::Slide),
-        locks: &[],
+        locks: &[&[Lock::Movement(&[
+            &[A::Slide],
+            &[A::SunGreaves],
+            &[A::Sunsetter],
+            &[A::ClingGem],
+        ])]],
     },
     Check {
         location: L::Prison,
