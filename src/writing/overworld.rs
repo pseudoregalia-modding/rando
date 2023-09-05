@@ -53,9 +53,9 @@ pub fn write(
                                     | Ability::SoulCutter
                                     | Ability::Indignation
                                     | Ability::SolarWind
-                                    | Ability::Strikebreak
-                                    | Ability::HeliacalPower => 5,
-                                    Ability::AerialFinesse
+                                    | Ability::Strikebreak => 5,
+                                    Ability::HeliacalPower
+                                    | Ability::AerialFinesse
                                     | Ability::Pilgrimage
                                     | Ability::Empathy
                                     | Ability::GoodGraces

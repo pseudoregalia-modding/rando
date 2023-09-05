@@ -112,7 +112,7 @@ fn get_pak_str(pak: &std::path::Path) -> String {
 
 #[cfg(not(debug_assertions))]
 fn update() {
-    let api = autoupdater::apis::github::GithubApi::new("bananaturtlesandwich", "blue-fire-rando")
+    let api = autoupdater::apis::github::GithubApi::new("pseudoregalia-modding", "rando")
         .current_version(env!("CARGO_PKG_VERSION"));
     if let Ok(Some(asset)) = api.get_newer(None::<autoupdater::Sort>) {
         use autoupdater::apis::DownloadApiTrait;
