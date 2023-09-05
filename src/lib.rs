@@ -12,15 +12,11 @@ pub struct Rando {
     notifs: egui_modal::Modal,
     pak: std::path::PathBuf,
     pak_str: String,
-    autoupdate: bool,
     abilities: bool,
     small_keys: bool,
     big_keys: bool,
     health: bool,
 }
-
-#[cfg(not(debug_assertions))]
-const EXE: &str = "pseudoregalia-rando.exe";
 
 impl Rando {
     pub fn new(ctx: &eframe::CreationContext) -> Self {
@@ -49,23 +45,6 @@ impl Rando {
         ctx.egui_ctx.set_pixels_per_point(2.0);
 
         let notifs = egui_modal::Modal::new(&ctx.egui_ctx, "dialog");
-        let autoupdate = get_bool("autoupdate");
-
-        #[cfg(not(debug_assertions))]
-        if autoupdate {
-            std::thread::spawn(update);
-        }
-        #[cfg(not(debug_assertions))]
-        if std::fs::remove_file(format!("{EXE}.old")).is_ok() {
-            notifs.open_dialog(
-                Some("success"),
-                Some(format!(
-                    "successfully updated to {}",
-                    env!("CARGO_PKG_VERSION")
-                )),
-                Some(egui_modal::Icon::Success),
-            );
-        }
 
         let pak = match ctx.storage.and_then(|storage| storage.get_string("pak")) {
             Some(path) => path.into(),
@@ -81,7 +60,6 @@ impl Rando {
             notifs,
             pak,
             pak_str,
-            autoupdate,
             abilities: get_bool("abilities"),
             small_keys: get_bool("small keys"),
             big_keys: get_bool("big keys"),
@@ -104,33 +82,10 @@ fn ask_game_path() -> Option<std::path::PathBuf> {
 }
 
 fn get_pak_str(pak: &std::path::Path) -> String {
-    let mut pak_str = pak.to_str().unwrap_or_default().to_string();
-    pak_str.truncate(pak_str.len() - 13);
-    pak_str = "...".to_string() + &pak_str[(pak_str.len() - 50).clamp(0, 1000)..];
+    let mut pak_str: String = pak.to_str().unwrap_or_default().chars().rev().collect();
+    pak_str.truncate(75);
+    pak_str = "...".to_string() + &pak_str.chars().rev().collect::<String>();
     pak_str
-}
-
-#[cfg(not(debug_assertions))]
-fn update() {
-    let api = autoupdater::apis::github::GithubApi::new("pseudoregalia-modding", "rando")
-        .current_version(env!("CARGO_PKG_VERSION"));
-    if let Ok(Some(asset)) = api.get_newer(None::<autoupdater::Sort>) {
-        use autoupdater::apis::DownloadApiTrait;
-        if api
-            .download(
-                &asset
-                    .assets
-                    .into_iter()
-                    .find(|asset| asset.name == EXE)
-                    .unwrap(),
-                None::<autoupdater::Download>,
-            )
-            .is_ok()
-        {
-            std::process::Command::new(EXE).spawn().unwrap();
-            std::process::exit(0);
-        }
-    }
 }
 
 macro_rules! notify {
@@ -157,7 +112,6 @@ impl eframe::App for Rando {
             });
             ui.add_space(5.0);
             ui.horizontal(|ui| {
-                ui.checkbox(&mut self.autoupdate, "autoupdate");
                 ui.label(&self.pak_str);
                 if ui.button("...").clicked() {
                     if let Some(pak) = ask_game_path() {
@@ -234,7 +188,6 @@ impl eframe::App for Rando {
 
     fn save(&mut self, storage: &mut dyn eframe::Storage) {
         storage.set_string("pak", self.pak.to_str().unwrap_or_default().to_string());
-        storage.set_string("autoupdate", self.autoupdate.to_string());
         storage.set_string("abilities", self.abilities.to_string());
         storage.set_string("small keys", self.small_keys.to_string());
         storage.set_string("big keys", self.big_keys.to_string());

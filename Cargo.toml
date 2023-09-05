@@ -15,7 +15,6 @@ rand = "0.8"
 egui-modal = "0.2"
 rfd = "0.11"
 thiserror = "1.0"
-autoupdater = "0.3"
 
 [build-dependencies]
 winres = "0.1"
