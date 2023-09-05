@@ -1,7 +1,7 @@
 #[derive(PartialEq, Clone, Copy, Debug, strum::AsRefStr)]
 pub enum Ability {
-    #[strum(serialize = "attack")]
-    DreamBreaker,
+    // #[strum(serialize = "attack")]
+    // DreamBreaker,
     #[strum(serialize = "airKick")]
     SunGreaves,
     #[strum(serialize = "slide")]

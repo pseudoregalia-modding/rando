@@ -73,8 +73,10 @@ pub fn write(
                                 abilities.lock()?.add_assign(1);
                             }
                             Drop::SmallKey if class != "BP_GenericKey_C" => replace(24)?,
-                            Drop::BigKey if class != "BP_GenericKey_C" => {
-                                replace(18)?;
+                            Drop::BigKey => {
+                                if class != "BP_GenericKey_C" {
+                                    replace(18)?;
+                                }
                                 let mut names = map.get_name_map();
                                 let Some(norm) = map.asset_data.exports[index].get_normal_export_mut() else {continue};
                                 match norm.properties.iter_mut().find_map(|prop| unreal_asset::cast!(Property, IntProperty, prop)){
@@ -86,6 +88,9 @@ pub fn write(
                                         ..Default::default()
                                     })),
                                 }
+                                // same here lol
+                                use std::ops::AddAssign;
+                                abilities.lock()?.add_assign(1);
                             },
                             Drop::Health if class != "BP_HealthPiece_C" => replace(11)?,
                             _ => ()
