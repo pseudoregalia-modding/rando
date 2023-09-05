@@ -52,7 +52,7 @@ fn update(
                 .position(|drop| matches!(drop, Drop::BigKey)),
         } {
             // prevent randomising check to a place which needs it
-            if checks[i].locks.iter().all(|lock| {
+            if !checks[i].locks.iter().all(|lock| {
                 lock.iter().all(|lock| match lock {
                     Lock::Movement(abilities) => {
                         abilities.iter().all(|ability| match possible[i] {
@@ -63,10 +63,11 @@ fn update(
                     _ => true,
                 })
             }) {
-                let mut check = checks.remove(i);
-                check.drop = possible.remove(i);
-                submit(check, overworld);
+                return false;
             }
+            let mut check = checks.remove(i);
+            check.drop = possible.remove(i);
+            submit(check, overworld);
         }
     }
     true

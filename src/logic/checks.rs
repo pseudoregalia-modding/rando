@@ -336,7 +336,7 @@ pub const CHECKS: [Check; 49] = [
         drop: Drop::Ability(A::Empathy),
         locks: &[&[Lock::Movement(&[
             &[A::Slide, A::SolarWind, A::Sunsetter, A::HeliacalPower],
-            &[A::Slide, A::SolarWind, A::Sunsetter, A::SunGreaves],
+            &[A::Sunsetter, A::SunGreaves],
             &[A::Slide, A::SolarWind, A::ClingGem],
         ])]],
     },
