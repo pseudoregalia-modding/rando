@@ -1,7 +1,5 @@
 #[derive(PartialEq, Clone, Copy, Debug, strum::AsRefStr)]
 pub enum Ability {
-    // #[strum(serialize = "attack")]
-    // DreamBreaker,
     #[strum(serialize = "airKick")]
     SunGreaves,
     #[strum(serialize = "slide")]
@@ -38,15 +36,58 @@ pub enum Ability {
     Professional,
 }
 
+use unreal_asset::types::PackageIndex;
 use Ability as A;
 
 impl Ability {
     pub fn data(
         &self,
         mut names: std::cell::RefMut<unreal_asset::containers::NameMap>,
+        imports: &mut Vec<unreal_asset::Import>,
     ) -> unreal_asset::properties::struct_property::StructProperty {
         use unreal_asset::properties::*;
         let mut add = |name| names.add_fname(name);
+        let mut insert = 0;
+        let icon = match self {
+            A::SunGreaves => "icon_greaves",
+            A::Slide => "icon_slide",
+            A::Sunsetter => "icon_plunge",
+            A::ClingGem => "icon_clingGem",
+            A::AscendantLight => "icon_Light",
+            A::SoulCutter => "icon_Projectile",
+            A::Indignation => "icon_indignationEye",
+            A::SolarWind => "icon_slideJump",
+            A::Strikebreak => "icon_chargeAttack",
+            A::HeliacalPower => "icon_HeliacalPower",
+            A::AerialFinesse => "icon_recovery",
+            A::Pilgrimage => "icon_pilgrimage",
+            A::Empathy => "icon_Empathy",
+            A::GoodGraces => "icon_graces",
+            A::MartialProwess => "icon_martialProwress",
+            A::ClearMind => "icon_clearMind",
+            A::Professional => "no icon whoopsies :p",
+        };
+        let path = format!("/Game/MatTex/Textures/UI/icons/{icon}");
+        if !matches!(self, A::Professional) {
+            insert = -(imports.len() as i32) - 1;
+            let package = unreal_asset::Import {
+                class_package: add("/Script/CoreUObject"),
+                class_name: add("Package"),
+                outer_index: PackageIndex::default(),
+                object_name: add(&path),
+                optional: false,
+            };
+            imports.push(package);
+            let texture = unreal_asset::Import {
+                class_package: add("/Script/Engine"),
+                class_name: add("Texture2D"),
+                outer_index: PackageIndex::new(insert),
+                object_name: add(&icon),
+                optional: false,
+            };
+            imports.push(texture);
+            insert -= 1;
+        }
         let struct_name = add("upgradeData");
         let struct_type = add("ST_UpgradeData");
         // let id = add("ID_9_B00677A74523CD5A81278D9E39D20FDE");
@@ -56,7 +97,7 @@ impl Ability {
         let instructions = add("Instructions_17_A2BE3D8F4B1ADC98F9B35CAADB8B61D5");
         let description = add("Description_18_B60793FD498439DB9A403CBD619DE9F0");
         let extended = add("ExtendedDescription_22_FA4653E041E5216157FF7998802317B9");
-        // let display = add("DisplayImage_30_ECF7EFC64CBA612E75C67B946B8DD873");
+        let display = add("DisplayImage_30_ECF7EFC64CBA612E75C67B946B8DD873");
         let array_type = Some(add("Text"));
         let guid = Some(Guid([0; 16]));
         let text =
@@ -145,9 +186,9 @@ impl Ability {
                         | A::SoulCutter
                         | A::Indignation
                         | A::SolarWind
-                        | A::Strikebreak
-                        | A::HeliacalPower => 0,
-                        A::AerialFinesse
+                        | A::Strikebreak => 0,
+                        A::HeliacalPower
+                        | A::AerialFinesse
                         | A::Pilgrimage
                         | A::Empathy
                         | A::GoodGraces
@@ -169,7 +210,7 @@ impl Ability {
                         A::Indignation => "Higher Power gives you increased combat capabilities.",
                         A::SolarWind => "Jump while Sliding.",
                         A::Strikebreak => "Hold Attack until your weapon is ready, release to strike.",
-                        A::HeliacalPower => "Allows you to preform an additional air kick",
+                        A::HeliacalPower => "Allows you to perform an additional air kick",
                         A::AerialFinesse => "Press Jump during your knockback state to regain balance.",
                         A::Pilgrimage => "You can move slowly while channeling a Heal",
                         A::Empathy => "Bonus Power is built from attacks.",
@@ -334,30 +375,14 @@ Activation is easier when you move along walls, not directly into them.
                     },
                     ..Default::default()
                 }),
-                // don't think this is necessary either
-                // Property::ObjectProperty(object_property::ObjectProperty {
-                //     name: display,
-                //     value: match self {
-                //         A::SunGreaves => todo!(),
-                //         A::Slide => todo!(),
-                //         A::Sunsetter => todo!(),
-                //         A::ClingGem => todo!(),
-                //         A::AscendantLight => todo!(),
-                //         A::SoulCutter => todo!(),
-                //         A::Indignation => todo!(),
-                //         A::SolarWind => todo!(),
-                //         A::Strikebreak => todo!(),
-                //         A::HeliacalPower => todo!(),
-                //         A::AerialFinesse => todo!(),
-                //         A::Pilgrimage => todo!(),
-                //         A::Empathy => todo!(),
-                //         A::GoodGraces => todo!(),
-                //         A::MartialProwess => todo!(),
-                //         A::ClearMind => todo!(),
-                //         A::Professional => todo!(),
-                //     },
-                //     ..Default::default()
-                // }),
+                Property::ObjectProperty(object_property::ObjectProperty {
+                    name: display,
+                    value: PackageIndex::new(match self {
+                        A::Professional => 0,
+                        _=>insert
+                    }),
+                    ..Default::default()
+                }),
             ],
             ..Default::default()
         }

@@ -79,8 +79,8 @@ pub fn write(
                                     })),
                                 }
                                 match norm.properties.iter_mut().find_map(|prop| unreal_asset::cast!(Property, StructProperty, prop)){
-                                    Some(row) => *row = ability.data(names.get_mut()),
-                                    None => norm.properties.push(Property::StructProperty(ability.data(names.get_mut()))),
+                                    Some(row) => *row = ability.data(names.get_mut(), &mut map.imports),
+                                    None => norm.properties.push(Property::StructProperty(ability.data(names.get_mut(), &mut map.imports))),
                                 }
                                 match norm.properties.iter_mut().find_map(|prop| unreal_asset::cast!(Property, IntProperty, prop)){
                                     Some(id) => id.value = *abilities.lock()?,
