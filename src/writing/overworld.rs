@@ -43,9 +43,28 @@ pub fn write(
                         };
                         match &drop {
                             Drop::Ability(ability) => {
-                                if class != "BP_UpgradeBase_C"{
-                                    replace(5)?
-                                }
+                                // can't be arsed to check data
+                                // if class != "BP_UpgradeBase_C" {
+                                    replace(match ability {
+                                        Ability::SunGreaves
+                                        | Ability::Slide
+                                        | Ability::Sunsetter
+                                        | Ability::ClingGem
+                                        | Ability::AscendantLight
+                                        | Ability::SoulCutter
+                                        | Ability::Indignation
+                                        | Ability::SolarWind
+                                        | Ability::Strikebreak
+                                        | Ability::HeliacalPower => 5,
+                                        Ability::AerialFinesse
+                                        | Ability::Pilgrimage
+                                        | Ability::Empathy
+                                        | Ability::GoodGraces
+                                        | Ability::MartialProwess
+                                        | Ability::ClearMind
+                                        | Ability::Professional => 30,
+                                    })?;
+                                // }
                                 let ability_name = map.add_fname(ability.as_ref());
                                 let mut names = map.get_name_map();
                                 let Some(norm) = map.asset_data.exports[index].get_normal_export_mut() else {continue};
@@ -102,7 +121,7 @@ pub fn write(
                                 }
                                 // same here lol
                                 use std::ops::AddAssign;
-                                abilities.lock()?.add_assign(1);
+                                big_keys.lock()?.add_assign(1);
                             },
                             Drop::Health if class != "BP_HealthPiece_C" => replace(11)?,
                             _ => ()
