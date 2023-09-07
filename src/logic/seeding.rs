@@ -91,7 +91,11 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
     };
     let (mut pool, mut unrandomised): (Vec<Check>, Vec<Check>) =
         CHECKS.into_iter().partition(in_pool);
-    if pool.len() <= 1 {
+    if pool.len() <= 1
+        || (!app.abilities && app.small_keys && !app.big_keys && !app.health)
+        || (!app.abilities && !app.small_keys && app.big_keys && !app.health)
+        || (!app.abilities && !app.small_keys && !app.big_keys && app.health)
+    {
         return Err("you haven't picked enough checks for anything to be random - include more checks in the pool".to_string());
     }
     let mut possible: Vec<Drop> = pool.iter().map(|check| check.drop).collect();
