@@ -233,11 +233,11 @@ pub const CHECKS: [Check; 49] = [
         index: 393,
         drop: Drop::Ability(A::Strikebreak),
         locks: &[&[Lock::Movement(&[
-            &[A::Slide, A::Strikebreak, A::SolarWind],
-            &[A::Slide, A::Strikebreak, A::SunGreaves],
-            &[A::Slide, A::Strikebreak, A::ClingGem],
+            &[A::Strikebreak, A::Slide, A::SolarWind],
+            &[A::Strikebreak, A::SunGreaves],
+            &[A::Strikebreak, A::ClingGem],
             // this is if you come from a certain entrance which is free
-            &[A::Slide, A::Strikebreak, A::HeliacalPower],
+            &[A::Strikebreak, A::HeliacalPower],
         ])]],
     },
     // backflip is honestly the best combo finisher

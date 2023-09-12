@@ -78,7 +78,12 @@ impl Location {
                 // this is via the entrance above the normal entrance but needs some moar to get in maybe make separate
                 &[
                     Lock::Location(L::CastleSansa),
-                    Lock::Movement(&[&[A::SunGreaves], &[A::HeliacalPower], &[A::ClingGem]]),
+                    Lock::Movement(&[
+                        &[A::SunGreaves],
+                        &[A::HeliacalPower],
+                        &[A::ClingGem],
+                        &[A::Sunsetter],
+                    ]),
                 ],
                 &[Lock::Location(L::EmptyBailey)],
             ],
