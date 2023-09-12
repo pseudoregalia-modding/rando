@@ -8,55 +8,58 @@ fn update(
     checks: &mut Vec<Check>,
     overworld: &mut std::collections::BTreeMap<&'static str, Vec<Check>>,
 ) -> bool {
+    if locks.is_empty() {
+        return true;
+    }
     // see if there's any requirements met and what they are
     let current = || {
         possible[0..checks.len()]
             .iter()
             .chain(overworld.values().flatten().map(|check| &check.drop))
     };
-    let locks: Vec<_> = locks
-        .iter()
-        .copied()
-        .filter(|locks| {
-            locks.iter().all(|lock| match lock {
-                Lock::Location(loc) => locations.contains(&loc),
-                Lock::Movement(movement) => movement.iter().any(|ability| {
-                    ability
-                        .iter()
-                        .all(|ability| current().any(|drop| drop == &Drop::Ability(*ability)))
-                }),
-                Lock::SmallKey => current().any(|drop| matches!(drop, Drop::SmallKey)),
-                Lock::Ending => {
-                    current().fold(0, |acc, drop| match matches!(drop, Drop::BigKey) {
-                        true => acc + 1,
-                        false => acc,
-                    }) >= 5
-                }
-            })
+    match locks.iter().copied().find(|locks| {
+        locks.iter().all(|lock| match lock {
+            Lock::Location(loc) => locations.contains(&loc),
+            Lock::Movement(movement) => movement.iter().any(|ability| {
+                ability
+                    .iter()
+                    .all(|ability| current().any(|drop| drop == &Drop::Ability(*ability)))
+            }),
+            // need to decrement small keys :p
+            Lock::SmallKey => current().any(|drop| matches!(drop, Drop::SmallKey)),
+            Lock::Ending => {
+                current().fold(0, |acc, drop| match matches!(drop, Drop::BigKey) {
+                    true => acc + 1,
+                    false => acc,
+                }) >= 5
+            }
         })
-        .flatten()
-        .collect();
-    for lock in locks {
-        // freeze any progression items where they are
-        if let Some(i) = match lock {
-            Lock::Location(..) => None,
-            Lock::Movement(..) => possible[0..checks.len()]
-                .iter()
-                // not all abilities allow movement
-                .position(|drop| matches!(drop, Drop::Ability(_))),
-            Lock::SmallKey => possible[0..checks.len()]
-                .iter()
-                .position(|drop| matches!(drop, Drop::SmallKey)),
-            Lock::Ending => possible[0..checks.len()]
-                .iter()
-                .position(|drop| matches!(drop, Drop::BigKey)),
-        } {
-            let mut check = checks.remove(i);
-            check.drop = possible.remove(i);
-            submit(check, overworld);
+    }) {
+        Some(locks) => {
+            for lock in locks {
+                // freeze any progression items where they are
+                while let Some(i) = match lock {
+                    Lock::Location(..) => None,
+                    Lock::Movement(..) => possible[0..checks.len()]
+                        .iter()
+                        // not all abilities allow movement
+                        .position(|drop| matches!(drop, Drop::Ability(_))),
+                    Lock::SmallKey => possible[0..checks.len()]
+                        .iter()
+                        .position(|drop| matches!(drop, Drop::SmallKey)),
+                    Lock::Ending => possible[0..checks.len()]
+                        .iter()
+                        .position(|drop| matches!(drop, Drop::BigKey)),
+                } {
+                    let mut check = checks.remove(i);
+                    check.drop = possible.remove(i);
+                    submit(check, overworld);
+                }
+            }
+            true
         }
+        None => false,
     }
-    true
 }
 
 fn submit(check: Check, overworld: &mut std::collections::BTreeMap<&'static str, Vec<Check>>) {
