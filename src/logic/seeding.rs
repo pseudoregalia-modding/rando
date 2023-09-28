@@ -78,98 +78,78 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
         Drop::BigKey => app.big_keys,
         Drop::Health => app.health,
     };
-    let seed = || -> Result<std::collections::BTreeMap<_, _>, String> {
-        let (mut pool, mut unrandomised): (Vec<_>, Vec<_>) = CHECKS.into_iter().partition(in_pool);
-        if pool.len() <= 1
-            || (!app.abilities && app.small_keys && !app.big_keys && !app.health)
-            || (!app.abilities && !app.small_keys && app.big_keys && !app.health)
-            || (!app.abilities && !app.small_keys && !app.big_keys && app.health)
-        {
-            return Err("you haven't picked enough checks for anything to be random - include more checks in the pool".to_string());
-        }
-        let mut possible: Vec<Drop> = pool.iter().map(|check| check.drop).collect();
-        let mut checks: Vec<Check> = Vec::with_capacity(pool.len());
+    let (mut pool, mut unrandomised): (Vec<_>, Vec<_>) = CHECKS.into_iter().partition(in_pool);
+    if pool.len() <= 1
+        || (!app.abilities && app.small_keys && !app.big_keys && !app.health)
+        || (!app.abilities && !app.small_keys && app.big_keys && !app.health)
+        || (!app.abilities && !app.small_keys && !app.big_keys && app.health)
+    {
+        return Err("you haven't picked enough checks for anything to be random - include more checks in the pool".to_string());
+    }
+    let mut possible: Vec<Drop> = pool.iter().map(|check| check.drop).collect();
+    let mut checks: Vec<Check> = Vec::with_capacity(pool.len());
 
-        let mut overworld = std::collections::BTreeMap::new();
-        let mut locations = Vec::with_capacity(Location::COUNT);
-        let mut rng = rand::thread_rng();
-        while locations.len() != Location::COUNT || !pool.is_empty() {
-            // shuffle the possible drops
-            use rand::seq::SliceRandom;
-            possible.shuffle(&mut rng);
-            checks.shuffle(&mut rng);
-            // update accessible locations
-            for loc in Location::iter() {
-                if !locations.contains(&loc)
-                    && update(
-                        loc.locks(),
-                        &locations,
-                        &mut possible,
-                        &mut checks,
-                        &mut overworld,
-                    )
-                {
-                    locations.push(loc);
-                }
-            }
-            // update accessible editable checks
-            for i in (0..pool.len()).rev() {
-                if locations.contains(&pool[i].location)
-                    && update(
-                        pool[i].locks,
-                        &locations,
-                        &mut possible,
-                        &mut checks,
-                        &mut overworld,
-                    )
-                {
-                    checks.push(pool.remove(i));
-                }
-            }
-            // update progression with unrandomised
-            for i in (0..unrandomised.len()).rev() {
-                if locations.contains(&unrandomised[i].location)
-                    && update(
-                        unrandomised[i].locks,
-                        &locations,
-                        &mut possible,
-                        &mut checks,
-                        &mut overworld,
-                    )
-                {
-                    submit(unrandomised.remove(i), &mut overworld);
-                }
+    let mut overworld = std::collections::BTreeMap::new();
+    let mut locations = Vec::with_capacity(Location::COUNT);
+    let mut rng = rand::thread_rng();
+    while locations.len() != Location::COUNT || !pool.is_empty() {
+        // shuffle the possible drops
+        use rand::seq::SliceRandom;
+        possible.shuffle(&mut rng);
+        checks.shuffle(&mut rng);
+        // update accessible locations
+        for loc in Location::iter() {
+            if !locations.contains(&loc)
+                && update(
+                    loc.locks(),
+                    &locations,
+                    &mut possible,
+                    &mut checks,
+                    &mut overworld,
+                )
+            {
+                locations.push(loc)
             }
         }
-        for (check, drop) in checks.iter_mut().zip(possible.into_iter()) {
-            check.drop = drop
-        }
-        for check in checks {
-            submit(check, &mut overworld)
-        }
-        overworld = overworld
-            .into_iter()
-            .map(|(key, value)| (key, value.into_iter().filter(in_pool).collect()))
-            .collect();
-        Ok(overworld)
-    };
-    let overworld = loop {
-        let overworld = seed()?;
-        for check in overworld.values().flatten() {
-            if let Drop::Ability(a) = check.drop {
-                for locks in check.locks.iter() {
-                    for lock in locks.iter() {
-                        if let Lock::Movement(abilities) = lock {
-                            if abilities.iter().all(|abilities| abilities.contains(&a)) {
-                                continue;
-                            }
-                        }
-                    }
-                }
+        // update accessible editable checks
+        for i in (0..pool.len()).rev() {
+            if locations.contains(&pool[i].location)
+                && update(
+                    pool[i].locks,
+                    &locations,
+                    &mut possible,
+                    &mut checks,
+                    &mut overworld,
+                )
+            {
+                checks.push(pool.remove(i))
             }
         }
-        break overworld;
-    };
+        // update progression with unrandomised
+        for i in (0..unrandomised.len()).rev() {
+            if locations.contains(&unrandomised[i].location)
+                && update(
+                    unrandomised[i].locks,
+                    &locations,
+                    &mut possible,
+                    &mut checks,
+                    &mut overworld,
+                )
+            {
+                submit(unrandomised.remove(i), &mut overworld)
+            }
+        }
+    }
+    for (check, drop) in checks.iter_mut().zip(possible.into_iter()) {
+        check.drop = drop
+    }
+    for check in checks {
+        submit(check, &mut overworld)
+    }
+    overworld = overworld
+        .into_iter()
+        .map(|(key, value)| (key, value.into_iter().filter(in_pool).collect()))
+        .collect();
     std::fs::write(
         "spoiler_log.txt",
         format!("{:#?}", overworld.values().flatten().collect::<Vec<_>>(),),
