@@ -15,7 +15,7 @@ pub enum Drop {
     Health,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Check {
     pub location: Location,
     pub index: usize,
