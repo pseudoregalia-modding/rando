@@ -81,8 +81,10 @@ pub fn write(
     app: &crate::Rando,
 ) -> Result<(), Error> {
     let mut sync = app.pak()?;
-    let pak = repak::PakReader::new(&mut sync, repak::Version::V11)?;
-    let mod_pak = std::sync::Arc::new(std::sync::Mutex::new(repak::PakWriter::new(
+    let pak = repak::PakBuilder::new()
+        .oodle(|| OodleLZ_Decompress)
+        .reader_with_version(&mut sync, repak::Version::V11)?;
+    let mod_pak = std::sync::Arc::new(std::sync::Mutex::new(repak::PakBuilder::new().writer(
         std::io::BufWriter::new(std::fs::File::create(app.pak.join("rando_p.pak"))?),
         repak::Version::V9,
         "../../../".to_string(),
@@ -91,4 +93,24 @@ pub fn write(
     overworld::write(checks, app, &pak, &mod_pak)?;
     Mod::try_unwrap(mod_pak)?.into_inner()?.write_index()?;
     Ok(())
+}
+
+#[link(name = "oo2core_win64", kind = "static")]
+extern "C" {
+    fn OodleLZ_Decompress(
+        compBuf: *mut u8,
+        compBufSize: usize,
+        rawBuf: *mut u8,
+        rawLen: usize,
+        fuzzSafe: u32,
+        checkCRC: u32,
+        verbosity: u32,
+        decBufBase: u64,
+        decBufSize: usize,
+        fpCallback: u64,
+        callbackUserData: u64,
+        decoderMemory: *mut u8,
+        decoderMemorySize: usize,
+        threadPhase: u32,
+    ) -> i32;
 }
