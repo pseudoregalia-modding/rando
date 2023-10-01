@@ -1,13 +1,7 @@
 use super::*;
-use strum::{EnumCount, IntoEnumIterator};
 
-fn submit(check: Check, overworld: &mut std::collections::BTreeMap<&'static str, Vec<Check>>) {
-    match overworld.get_mut(check.location.as_str()) {
-        Some(checks) => checks.push(check),
-        None => {
-            overworld.insert(check.location.as_str(), vec![check]);
-        }
-    }
+fn possible(checks: &[Check]) -> bool {
+    true
 }
 
 pub fn randomise(app: &crate::Rando) -> Result<(), String> {
@@ -26,21 +20,28 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
         return Err("you haven't picked enough checks for anything to be random - include more checks in the pool".to_string());
     }
 
-    let mut overworld = std::collections::BTreeMap::new();
+    let mut overworld = std::collections::BTreeMap::<_, Vec<_>>::new();
     let mut rng = rand::thread_rng();
-    // shuffle the possible drops
-    use rand::seq::SliceRandom;
-    let mut checks = pool.clone();
-    let mut possible: Vec<Drop> = pool.iter().map(|check| check.drop).collect();
-    possible.shuffle(&mut rng);
-    for (check, drop) in checks.iter_mut().zip(possible.into_iter()) {
-        check.drop = drop;
-    }
-    for check in checks {
-        submit(check, &mut overworld)
-    }
-    for check in unrandomised.clone() {
-        submit(check, &mut overworld)
+    loop {
+        let mut checks = pool.clone();
+        let mut drops: Vec<Drop> = checks.iter().map(|check| check.drop).collect();
+        use rand::seq::SliceRandom;
+        drops.shuffle(&mut rng);
+        for (check, drop) in checks.iter_mut().zip(drops.into_iter()) {
+            check.drop = drop;
+        }
+        checks.extend_from_slice(&unrandomised);
+        if possible(&checks) {
+            for check in checks {
+                match overworld.get_mut(check.location.as_str()) {
+                    Some(checks) => checks.push(check),
+                    None => {
+                        overworld.insert(check.location.as_str(), vec![check]);
+                    }
+                }
+            }
+            break;
+        }
     }
     overworld = overworld
         .into_iter()
