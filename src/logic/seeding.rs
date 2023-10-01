@@ -1,7 +1,74 @@
 use super::*;
+use strum::{EnumCount, IntoEnumIterator};
+
+fn accessible(locks: &[&[Lock]], locations: &[Location], obtainable: &[Drop]) -> bool {
+    if locks.is_empty() {
+        return true;
+    }
+    // see if there's any requirements met and what they are
+    locks
+        .iter()
+        .copied()
+        .find(|locks| {
+            locks.iter().all(|lock| match lock {
+                Lock::Location(loc) => locations.contains(&loc),
+                Lock::Movement(movement) => movement.iter().any(|ability| {
+                    ability.iter().all(|ability| {
+                        obtainable
+                            .iter()
+                            .any(|drop| drop == &Drop::Ability(*ability))
+                    })
+                }),
+                // need to decrement small keys :p
+                Lock::SmallKey => obtainable.iter().any(|drop| matches!(drop, Drop::SmallKey)),
+                Lock::Ending => {
+                    obtainable
+                        .iter()
+                        .fold(0, |acc, drop| match matches!(drop, Drop::BigKey) {
+                            true => acc + 1,
+                            false => acc,
+                        })
+                        >= 5
+                }
+            })
+        })
+        .is_some()
+}
 
 fn possible(checks: &[Check]) -> bool {
-    true
+    let mut locations: Vec<Location> = Vec::with_capacity(Location::COUNT);
+    let mut checks = checks.to_vec();
+    let mut locations_len = 0;
+    let mut obtainable = Vec::with_capacity(checks.len());
+    let mut obtainable_len = 0;
+    loop {
+        for loc in Location::iter() {
+            if !locations.contains(&loc) {
+                if accessible(loc.locks(), &locations, &obtainable) {
+                    locations.push(loc)
+                }
+            }
+        }
+        let slated: Vec<_> = checks
+            .iter()
+            .enumerate()
+            .rev()
+            .filter_map(|(i, check)| accessible(check.locks, &locations, &obtainable).then_some(i))
+            .collect();
+        for i in slated {
+            obtainable.push(checks.remove(i).drop)
+        }
+        // if all locations accessible then possible
+        if locations.len() == Location::COUNT {
+            break true;
+        }
+        // if no change in location or drop count then impossible
+        if locations.len() == locations_len && obtainable.len() == obtainable_len {
+            break false;
+        }
+        locations_len = locations.len();
+        obtainable_len = obtainable.len();
+    }
 }
 
 pub fn randomise(app: &crate::Rando) -> Result<(), String> {
