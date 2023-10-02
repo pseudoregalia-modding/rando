@@ -30,7 +30,7 @@ pub const CHECKS: [Check; 49] = [
         locks: &[&[Lock::Movement(&[
             &[A::Slide],
             &[A::SunGreaves],
-            &[A::Sunsetter],
+            &[A::Sunsetter, A::HeliacalPower],
             &[A::ClingGem],
         ])]],
     },
