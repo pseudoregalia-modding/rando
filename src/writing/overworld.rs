@@ -12,7 +12,7 @@ pub fn write(
     let abilities = &std::sync::Arc::new(std::sync::Mutex::new(1));
     let big_keys = &std::sync::Arc::new(std::sync::Mutex::new(1));
     std::thread::scope(|thread| -> Result<(), Error> {
-        for thread in checks.into_iter().map(
+        let threads: Vec<_> = checks.into_iter().map(
             |(location, checks)| -> Result<std::thread::ScopedJoinHandle<Result<(), Error>>, Error> {
                 Ok(thread.spawn(move || {
                     let mut path = PREFIX.to_string() + location + ".umap";
@@ -129,7 +129,8 @@ pub fn write(
                     Ok(())
                 }))
             },
-        ) {
+        ).collect();
+        for thread in threads {
             thread?.join()??
         }
         Ok(())
