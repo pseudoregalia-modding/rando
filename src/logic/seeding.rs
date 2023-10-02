@@ -53,7 +53,11 @@ fn possible(checks: &[Check]) -> bool {
             .iter()
             .enumerate()
             .rev()
-            .filter_map(|(i, check)| accessible(check.locks, &locations, &obtainable).then_some(i))
+            .filter_map(|(i, check)| {
+                (locations.contains(&check.location)
+                    && accessible(check.locks, &locations, &obtainable))
+                .then_some(i)
+            })
             .collect();
         for i in slated {
             obtainable.push(checks.remove(i).drop)
