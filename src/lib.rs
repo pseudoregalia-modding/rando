@@ -5,7 +5,6 @@ mod logic;
 mod map;
 mod writing;
 
-type Mod = std::sync::Arc<std::sync::Mutex<repak::PakWriter<std::io::BufWriter<std::fs::File>>>>;
 type Asset<T> = unreal_asset::Asset<std::io::Cursor<T>>;
 
 pub struct Rando {

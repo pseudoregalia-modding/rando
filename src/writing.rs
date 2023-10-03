@@ -1,5 +1,4 @@
 use super::logic::*;
-use super::Mod;
 use crate::{io::*, map::*};
 use unreal_asset::{exports::*, properties::*};
 
@@ -15,45 +14,17 @@ pub enum Error {
     Io(#[from] std::io::Error),
     #[error("parse: {0}")]
     Parse(#[from] std::num::ParseIntError),
-    #[error("locked poisoned counter")]
-    CounterPoison,
-    #[error("locked poisoned writer")]
-    WriterPoison,
-    #[error("extracted poisoned writer")]
-    InnerMutex(#[from] std::sync::PoisonError<repak::PakWriter<std::io::BufWriter<std::fs::File>>>),
-    #[error("some threads are still using writer")]
-    InnerArc,
     #[error("failed to strip prefix when writing file to pak")]
     Strip(#[from] std::path::StripPrefixError),
     #[error("thread failed to complete")]
     Thread,
 }
 
-macro_rules! stub {
-    ($type: ty, $variant: ident) => {
-        impl From<$type> for Error {
-            fn from(_: $type) -> Self {
-                Self::$variant
-            }
-        }
-    };
+impl From<Box<dyn std::any::Any + Send + 'static>> for Error {
+    fn from(_: Box<dyn std::any::Any + Send + 'static>) -> Self {
+        Self::Thread
+    }
 }
-
-stub!(
-    std::sync::Arc<std::sync::Mutex<repak::PakWriter<std::io::BufWriter<std::fs::File>>>>,
-    InnerArc
-);
-stub!(
-    std::sync::PoisonError<
-        std::sync::MutexGuard<'_, repak::PakWriter<std::io::BufWriter<std::fs::File>>>,
-    >,
-    WriterPoison
-);
-stub!(
-    std::sync::PoisonError<std::sync::MutexGuard<'_, i32>>,
-    CounterPoison
-);
-stub!(Box<dyn std::any::Any + Send + 'static>, Thread);
 
 pub const MOD: &str = "pseudoregalia/Content/";
 
@@ -84,14 +55,14 @@ pub fn write(
     let pak = repak::PakBuilder::new()
         .oodle(|| OodleLZ_Decompress)
         .reader_with_version(&mut sync, repak::Version::V11)?;
-    let mod_pak = std::sync::Arc::new(std::sync::Mutex::new(repak::PakBuilder::new().writer(
+    let mut mod_pak = repak::PakBuilder::new().writer(
         std::io::BufWriter::new(std::fs::File::create(app.pak.join("rando_p.pak"))?),
         repak::Version::V9,
         "../../../".to_string(),
         None,
-    )));
-    overworld::write(checks, app, &pak, &mod_pak)?;
-    Mod::try_unwrap(mod_pak)?.into_inner()?.write_index()?;
+    );
+    overworld::write(checks, app, &pak, &mut mod_pak)?;
+    mod_pak.write_index()?;
     Ok(())
 }
 

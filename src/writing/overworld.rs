@@ -6,14 +6,14 @@ pub fn write(
     checks: std::collections::BTreeMap<&'static str, Vec<Check>>,
     app: &crate::Rando,
     pak: &repak::PakReader,
-    mod_pak: &Mod,
+    mod_pak: &mut repak::PakWriter<std::io::BufWriter<std::fs::File>>,
 ) -> Result<(), Error> {
     // reference so it isn't moved
     let abilities = &std::sync::atomic::AtomicI32::new(1);
     let big_keys = &std::sync::atomic::AtomicI32::new(1);
     std::thread::scope(|thread| -> Result<(), Error> {
         let threads: Vec<_> = checks.into_iter().map(
-            |(location, checks)| -> Result<std::thread::ScopedJoinHandle<Result<(), Error>>, Error> {
+            |(location, checks)| -> Result<std::thread::ScopedJoinHandle<Result<_, Error>>, Error> {
                 Ok(thread.spawn(move || {
                     let mut path = PREFIX.to_string() + location + ".umap";
                     let mut map = extract(app, pak, &path)?;
@@ -122,13 +122,20 @@ pub fn write(
                         }
                     }
                     map.rebuild_name_map();
-                    save(&mut map, mod_pak, &path)?;
-                    Ok(())
+                    let mut asset = std::io::Cursor::new(vec![]);
+                    let mut bulk = std::io::Cursor::new(vec![]);
+                    map.write_data(&mut asset, Some(&mut bulk))?;
+                    Ok((path, asset, bulk))
                 }))
             },
         ).collect();
         for thread in threads {
-            thread?.join()??
+            let (path, asset, bulk) = thread?.join()??;
+            mod_pak.write_file(&path, asset.into_inner())?;
+            mod_pak.write_file(
+                &path.replace(".uasset", ".uexp").replace(".umap", ".uexp"),
+                bulk.into_inner(),
+            )?;
         }
         Ok(())
     })?;

@@ -20,19 +20,3 @@ pub fn open_slice<'chain>(
         None,
     )?)
 }
-
-pub fn save<C: std::io::Read + std::io::Seek>(
-    map: &mut unreal_asset::Asset<C>,
-    mod_pak: &super::Mod,
-    path: &str,
-) -> Result<(), crate::writing::Error> {
-    let mut asset = std::io::Cursor::new(vec![]);
-    let mut bulk = std::io::Cursor::new(vec![]);
-    map.write_data(&mut asset, Some(&mut bulk))?;
-    mod_pak.lock()?.write_file(path, asset.into_inner())?;
-    mod_pak.lock()?.write_file(
-        &path.replace(".uasset", ".uexp").replace(".umap", ".uexp"),
-        bulk.into_inner(),
-    )?;
-    Ok(())
-}
