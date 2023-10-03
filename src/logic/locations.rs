@@ -107,16 +107,16 @@ impl Location {
                     Lock::Location(L::SansaKeep),
                     Lock::Movement(&[
                         &[A::ClingGem, A::SunGreaves],
+                        &[A::ClingGem, A::HeliacalPower],
                         &[A::Slide, A::SolarWind, A::ClingGem],
                     ]),
                 ],
                 &[
                     Lock::Location(L::Prison),
                     Lock::Movement(&[
-                        &[A::SunGreaves],
-                        &[A::ClingGem],
-                        &[A::Slide, A::SolarWind, A::HeliacalPower],
-                        &[A::AscendantLight, A::HeliacalPower],
+                        &[A::ClingGem, A::SunGreaves],
+                        &[A::ClingGem, A::HeliacalPower],
+                        &[A::Slide, A::SolarWind, A::ClingGem],
                     ]),
                 ],
             ],

@@ -172,7 +172,10 @@ pub const CHECKS: [Check; 49] = [
         index: 788,
         drop: Drop::Ability(A::Pilgrimage),
         locks: &[&[Lock::Movement(&[
-            &[A::AscendantLight],
+            &[A::AscendantLight, A::Sunsetter],
+            &[A::AscendantLight, A::SunGreaves],
+            &[A::AscendantLight, A::SunGreaves],
+            &[A::AscendantLight, A::Slide, A::SolarWind],
             &[A::SunGreaves, A::HeliacalPower],
             &[A::ClingGem, A::HeliacalPower],
             &[A::ClingGem, A::Sunsetter],
