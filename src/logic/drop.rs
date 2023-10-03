@@ -82,7 +82,7 @@ impl Ability {
                 class_package: add("/Script/Engine"),
                 class_name: add("Texture2D"),
                 outer_index: PackageIndex::new(insert),
-                object_name: add(&icon),
+                object_name: add(icon),
                 optional: false,
             };
             imports.push(texture);

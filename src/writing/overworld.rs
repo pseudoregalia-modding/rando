@@ -9,8 +9,8 @@ pub fn write(
     mod_pak: &Mod,
 ) -> Result<(), Error> {
     // reference so it isn't moved
-    let abilities = &std::sync::Arc::new(std::sync::Mutex::new(1));
-    let big_keys = &std::sync::Arc::new(std::sync::Mutex::new(1));
+    let abilities = &std::sync::atomic::AtomicI32::new(1);
+    let big_keys = &std::sync::atomic::AtomicI32::new(1);
     std::thread::scope(|thread| -> Result<(), Error> {
         let threads: Vec<_> = checks.into_iter().map(
             |(location, checks)| -> Result<std::thread::ScopedJoinHandle<Result<(), Error>>, Error> {
@@ -84,17 +84,16 @@ pub fn write(
                                     None => norm.properties.push(Property::StructProperty(ability.data(names.get_mut(), &mut map.imports))),
                                 }
                                 match norm.properties.iter_mut().find_map(|prop| unreal_asset::cast!(Property, IntProperty, prop)){
-                                    Some(id) => id.value = *abilities.lock()?,
+                                    Some(id) => id.value = abilities.load(std::sync::atomic::Ordering::Relaxed),
                                     None => norm.properties.push(Property::IntProperty(int_property::IntProperty {
                                         name: names.get_mut().add_fname("ID"),
                                         property_guid: Some(Default::default()),
-                                        value: *abilities.lock()?,
+                                        value: abilities.load(std::sync::atomic::Ordering::Relaxed),
                                         ..Default::default()
                                     })),
                                 }
                                 // can't use += because the i32 is behind a MutexGuard
-                                use std::ops::AddAssign;
-                                abilities.lock()?.add_assign(1);
+                                abilities.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
                             }
                             Drop::SmallKey => {
                                 replace(24)?;
@@ -108,17 +107,15 @@ pub fn write(
                                 let mut names = map.get_name_map();
                                 let Some(norm) = map.asset_data.exports[index].get_normal_export_mut() else {continue};
                                 match norm.properties.iter_mut().find_map(|prop| unreal_asset::cast!(Property, IntProperty, prop)){
-                                    Some(id) => id.value = *big_keys.lock()?,
+                                    Some(id) => id.value = big_keys.load(std::sync::atomic::Ordering::Relaxed),
                                     None => norm.properties.push(Property::IntProperty(int_property::IntProperty {
                                         name: names.get_mut().add_fname("keyID"),
                                         property_guid: Some(Default::default()),
-                                        value: *big_keys.lock()?,
+                                        value: big_keys.load(std::sync::atomic::Ordering::Relaxed),
                                         ..Default::default()
                                     })),
                                 }
-                                // same here lol
-                                use std::ops::AddAssign;
-                                big_keys.lock()?.add_assign(1);
+                                big_keys.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
                             },
                             Drop::Health if class != "BP_HealthPiece_C" => replace(11)?,
                             _ => ()

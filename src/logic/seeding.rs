@@ -6,33 +6,29 @@ fn accessible(locks: &[&[Lock]], locations: &[Location], obtainable: &[Drop]) ->
         return true;
     }
     // see if there's any requirements met and what they are
-    locks
-        .iter()
-        .copied()
-        .find(|locks| {
-            locks.iter().all(|lock| match lock {
-                Lock::Location(loc) => locations.contains(&loc),
-                Lock::Movement(movement) => movement.iter().any(|ability| {
-                    ability.iter().all(|ability| {
-                        obtainable
-                            .iter()
-                            .any(|drop| drop == &Drop::Ability(*ability))
-                    })
-                }),
-                // need to decrement small keys :p
-                Lock::SmallKey => obtainable.iter().any(|drop| matches!(drop, Drop::SmallKey)),
-                Lock::Ending => {
+    locks.iter().copied().any(|locks| {
+        locks.iter().all(|lock| match lock {
+            Lock::Location(loc) => locations.contains(loc),
+            Lock::Movement(movement) => movement.iter().any(|ability| {
+                ability.iter().all(|ability| {
                     obtainable
                         .iter()
-                        .fold(0, |acc, drop| match matches!(drop, Drop::BigKey) {
-                            true => acc + 1,
-                            false => acc,
-                        })
-                        >= 5
-                }
-            })
+                        .any(|drop| drop == &Drop::Ability(*ability))
+                })
+            }),
+            // need to decrement small keys :p
+            Lock::SmallKey => obtainable.iter().any(|drop| matches!(drop, Drop::SmallKey)),
+            Lock::Ending => {
+                obtainable
+                    .iter()
+                    .fold(0, |acc, drop| match matches!(drop, Drop::BigKey) {
+                        true => acc + 1,
+                        false => acc,
+                    })
+                    >= 5
+            }
         })
-        .is_some()
+    })
 }
 
 fn possible(checks: &[Check]) -> bool {
@@ -43,10 +39,8 @@ fn possible(checks: &[Check]) -> bool {
     let mut obtainable_len = 0;
     loop {
         for loc in Location::iter() {
-            if !locations.contains(&loc) {
-                if accessible(loc.locks(), &locations, &obtainable) {
-                    locations.push(loc)
-                }
+            if !locations.contains(&loc) && accessible(loc.locks(), &locations, &obtainable) {
+                locations.push(loc)
             }
         }
         let slated: Vec<_> = checks
