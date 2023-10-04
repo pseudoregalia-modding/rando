@@ -12,7 +12,7 @@ pub enum Error {
     Repak(#[from] repak::Error),
     #[error("io: {0}")]
     Io(#[from] std::io::Error),
-    #[error("parse: {0}")]
+    #[error("parsing int: {0}")]
     Parse(#[from] std::num::ParseIntError),
     #[error("failed to strip prefix when writing file to pak")]
     Strip(#[from] std::path::StripPrefixError),

@@ -5,8 +5,8 @@ use Location as L;
 
 pub const CHECKS: [Check; 49] = [
     // not listing dream breaker since there's nothing it could be replaced by
-    // the first thing you see
     Check {
+        description: "where the first health piece is",
         location: L::Prison,
         index: 214,
         drop: Drop::Health,
@@ -22,8 +22,8 @@ pub const CHECKS: [Check; 49] = [
             &[Lock::Location(Location::CastleSansa)],
         ],
     },
-    // a speedrunner's one true love
     Check {
+        description: "where slide normally is",
         location: L::Prison,
         index: 356,
         drop: Drop::Ability(A::Slide),
@@ -35,6 +35,7 @@ pub const CHECKS: [Check; 49] = [
         ])]],
     },
     Check {
+        description: "black hole parkour off the beaten path",
         location: L::Prison,
         index: 357,
         drop: Drop::Ability(A::GoodGraces),
@@ -43,8 +44,8 @@ pub const CHECKS: [Check; 49] = [
             &[A::AscendantLight, A::SunGreaves],
         ])]],
     },
-    // the little shit up in the rafters
     Check {
+        description: "up in the rafters",
         location: L::StrongEyes,
         index: 186,
         drop: Drop::SmallKey,
@@ -54,29 +55,29 @@ pub const CHECKS: [Check; 49] = [
             &[A::ClingGem],
         ])]],
     },
-    // missable high-walled room next to key
     Check {
+        description: "missable high walled room",
         location: L::StrongEyes,
         index: 215,
         drop: Drop::Health,
         locks: &[&[Lock::Movement(&[&[A::SunGreaves], &[A::ClingGem]])]],
     },
-    // kill strong eyes, get the prize
     Check {
+        description: "strong eyes' lair",
         location: L::StrongEyes,
         index: 185,
         drop: Drop::SmallKey,
         locks: &[],
     },
-    // it's good enough for the final boss to divert the speedrun
     Check {
+        description: "where indignation normally is",
         location: L::CastleSansa,
         index: 787,
         drop: Drop::Ability(A::Indignation),
         locks: &[],
     },
-    // chillin by the window
     Check {
+        description: "chillin' on a ledge by the window",
         location: L::CastleSansa,
         index: 444,
         drop: Drop::SmallKey,
@@ -88,15 +89,15 @@ pub const CHECKS: [Check; 49] = [
             &[A::Slide, A::SolarWind],
         ])]],
     },
-    // idk what's professional about the outfit tbh
     Check {
+        description: "where the professional normally is",
         location: L::CastleSansa,
         index: 791,
         drop: Drop::Ability(A::Professional),
         locks: &[&[Lock::SmallKey]],
     },
-    // just around the corner...
     Check {
+        description: "tucked deep in the bouncer room",
         location: L::CastleSansa,
         index: 495,
         drop: Drop::Health,
@@ -105,8 +106,8 @@ pub const CHECKS: [Check; 49] = [
             &[A::SunGreaves, A::HeliacalPower],
         ])]],
     },
-    // has the extremely slappable wheel guys to help you
     Check {
+        description: "the extremely slappable wheel guy room",
         location: L::CastleSansa,
         index: 494,
         drop: Drop::Health,
@@ -116,8 +117,8 @@ pub const CHECKS: [Check; 49] = [
             &[A::ClingGem],
         ])]],
     },
-    // keeping you company in the softlock room
     Check {
+        description: "the old softlock room",
         location: L::CastleSansa,
         index: 498,
         drop: Drop::Health,
@@ -126,8 +127,8 @@ pub const CHECKS: [Check; 49] = [
             &[A::Slide, A::SolarWind, A::SunGreaves, A::HeliacalPower],
         ])]],
     },
-    // must not forget cool moon room
     Check {
+        description: "cool moon room",
         location: L::CastleSansa,
         index: 790,
         drop: Drop::Ability(A::ClearMind),
@@ -136,15 +137,15 @@ pub const CHECKS: [Check; 49] = [
             &[A::Slide, A::SolarWind, A::SunGreaves, A::HeliacalPower],
         ])]],
     },
-    // through a tunnel over the haze and up
     Check {
+        description: "through the wallkick tunnel",
         location: L::CastleSansa,
         index: 443,
         drop: Drop::SmallKey,
         locks: &[&[Lock::Movement(&[&[A::SunGreaves], &[A::ClingGem]])]],
     },
-    // just by the normal castle entrance
     Check {
+        description: "in the pit next to the dungeon entrance",
         location: L::CastleSansa,
         index: 497,
         drop: Drop::Health,
@@ -154,8 +155,8 @@ pub const CHECKS: [Check; 49] = [
             &[A::ClingGem],
         ])]],
     },
-    // taunting you between the two entrances
     Check {
+        description: "on the ledge above the bailey entrance",
         location: L::CastleSansa,
         index: 496,
         drop: Drop::Health,
@@ -166,8 +167,8 @@ pub const CHECKS: [Check; 49] = [
             &[A::Slide, A::SolarWind, A::SunGreaves],
         ])]],
     },
-    // bouncing on the dude is really annoying
     Check {
+        description: "next to a bouncer in the massive room",
         location: L::CastleSansa,
         index: 788,
         drop: Drop::Ability(A::Pilgrimage),
@@ -182,16 +183,16 @@ pub const CHECKS: [Check; 49] = [
             &[A::ClingGem, A::Slide, A::SolarWind],
         ])]],
     },
-    // i always forget this room exists - has two doors and levers on each side
     Check {
+        description: "in the room with two other ones to each side",
         location: L::CastleSansa,
         index: 789,
         drop: Drop::Ability(A::GoodGraces),
         locks: &[&[Lock::Movement(&[&[A::ClingGem], &[A::SunGreaves]])]],
     },
     // Listless Library
-    // one of the most unique movement mechanics in a any videogame - i applaud you rittz
     Check {
+        description: "where sun greaves normally are",
         location: L::MainLibrary,
         index: 267,
         drop: Drop::Ability(A::SunGreaves),
@@ -203,15 +204,15 @@ pub const CHECKS: [Check; 49] = [
             &[A::Slide, A::SolarWind],
         ])]],
     },
-    // the room after the sun greaves demo zone
     Check {
+        description: "in the buttress room",
         location: L::MainLibrary,
         index: 213,
         drop: Drop::Health,
         locks: &[&[Lock::Movement(&[&[A::SunGreaves], &[A::ClingGem]])]],
     },
-    // chillin in the hay
     Check {
+        description: "in the hay behind the locked door",
         location: L::Restricted,
         index: 268,
         drop: Drop::Ability(A::ClearMind),
@@ -222,16 +223,16 @@ pub const CHECKS: [Check; 49] = [
             &[A::ClingGem],
         ])]],
     },
-    // tucked deep in an alcove
     Check {
+        description: "tucked deep behind the locked door",
         location: L::Restricted,
         index: 214,
         drop: Drop::Health,
         locks: &[&[Lock::Movement(&[&[A::SunGreaves], &[A::ClingGem]])]],
     },
     // Sansa Keep
-    // rittz is probably really annoyed people keep saying there's a missing texture
     Check {
+        description: "where strikebreak normally is",
         location: L::SansaKeep,
         index: 393,
         drop: Drop::Ability(A::Strikebreak),
@@ -243,15 +244,15 @@ pub const CHECKS: [Check; 49] = [
             &[A::Strikebreak, A::HeliacalPower],
         ])]],
     },
-    // backflip is honestly the best combo finisher
     Check {
+        description: "where sunsetter normally is",
         location: L::Sunsetter,
         index: 392,
         drop: Drop::Ability(A::Sunsetter),
         locks: &[],
     },
-    // this key is entirely pointless
     Check {
+        description: "in an alcove next to the locked door",
         location: L::Sunsetter,
         index: 251,
         drop: Drop::Health,
@@ -261,15 +262,15 @@ pub const CHECKS: [Check; 49] = [
             &[A::Slide, A::SolarWind],
         ])]],
     },
-    // the key with a lever on each side
     Check {
+        description: "in the room with a lever on each side",
         location: L::SansaKeep,
         index: 226,
         drop: Drop::SmallKey,
         locks: &[],
     },
-    // tucked near the theatre entrance
     Check {
+        description: "tucked near the theatre entrance",
         location: L::SansaKeep,
         index: 394,
         drop: Drop::Ability(A::ClearMind),
@@ -281,6 +282,7 @@ pub const CHECKS: [Check; 49] = [
         ])]],
     },
     Check {
+        description: "at the end of the parkour",
         location: L::SansaKeep,
         index: 227,
         drop: Drop::BigKey,
@@ -297,15 +299,15 @@ pub const CHECKS: [Check; 49] = [
         ])]],
     },
     // Empty Bailey
-    // in the building you slide into
     Check {
+        description: "in the building you slide into",
         location: L::EmptyBailey,
         index: 56,
         drop: Drop::SmallKey,
         locks: &[&[Lock::Movement(&[&[A::Slide]])]],
     },
-    // the hand is where you want to stand >:/
     Check {
+        description: "guarded by the hand and soldier",
         location: L::EmptyBailey,
         index: 55,
         drop: Drop::BigKey,
@@ -315,15 +317,15 @@ pub const CHECKS: [Check; 49] = [
             &[A::ClingGem],
         ])]],
     },
-    // the airy jump feels so schmoovey
     Check {
+        description: "where solar wind normally is",
         location: L::EmptyBailey,
         index: 104,
         drop: Drop::Ability(A::SolarWind),
         locks: &[&[Lock::Movement(&[&[A::Slide]])]],
     },
-    // on the building in the middle
     Check {
+        description: "in the tower in the middle",
         location: L::EmptyBailey,
         index: 66,
         drop: Drop::Health,
@@ -332,8 +334,8 @@ pub const CHECKS: [Check; 49] = [
             &[A::SunGreaves],
         ])]],
     },
-    // CHEESE BELL
     Check {
+        description: "under the cheese bell",
         location: L::EmptyBailey,
         index: 105,
         drop: Drop::Ability(A::Empathy),
@@ -344,8 +346,8 @@ pub const CHECKS: [Check; 49] = [
         ])]],
     },
     // Underbelly
-    // hiding in the top right corner
     Check {
+        description: "near the entrance from sansa keep",
         location: L::Hole,
         index: 515,
         drop: Drop::Health,
@@ -354,8 +356,8 @@ pub const CHECKS: [Check; 49] = [
             &[A::Sunsetter, A::HeliacalPower],
         ])]],
     },
-    // literally the only other time soul cutter is used and speedrunners skipped it
     Check {
+        description: "the soul cutter lever room",
         location: L::Hole,
         index: 446,
         drop: Drop::BigKey,
@@ -365,8 +367,8 @@ pub const CHECKS: [Check; 49] = [
             &[A::Sunsetter, A::SoulCutter, A::ClingGem],
         ])]],
     },
-    // aw hell yea i love smacking holes in the fabric of reality
     Check {
+        description: "where ascendant light normally is",
         location: L::MainUnderbelly,
         index: 834,
         drop: Drop::Ability(A::AscendantLight),
@@ -378,15 +380,15 @@ pub const CHECKS: [Check; 49] = [
             &[A::Slide, A::SolarWind, A::HeliacalPower],
         ])]],
     },
-    // in an alcove behind some pillars
     Check {
+        description: "in an alcove behind some pillars",
         location: L::MainUnderbelly,
         index: 517,
         drop: Drop::Health,
         locks: &[],
     },
-    // a lot of people missed this one
     Check {
+        description: "on a missable ledge in the centre of underbelly",
         location: L::MainUnderbelly,
         index: 447,
         drop: Drop::SmallKey,
@@ -395,8 +397,8 @@ pub const CHECKS: [Check; 49] = [
             &[A::Slide, A::SolarWind],
         ])]],
     },
-    // really easy strikebreak nook to miss
     Check {
+        description: "black hole parkour behind strikebreak wall",
         location: L::MainUnderbelly,
         index: 835,
         drop: Drop::Ability(A::MartialProwess),
@@ -407,8 +409,8 @@ pub const CHECKS: [Check; 49] = [
             &[A::Strikebreak, A::AscendantLight, A::Slide, A::SolarWind],
         ])]],
     },
-    // i find it cool you can get this before sun greaves
     Check {
+        description: "behind the locked door",
         location: L::MainUnderbelly,
         index: 836,
         drop: Drop::Ability(A::HeliacalPower),
@@ -417,30 +419,30 @@ pub const CHECKS: [Check; 49] = [
             Lock::Movement(&[&[A::Slide, A::SunGreaves], &[A::Slide, A::Sunsetter]]),
         ]],
     },
-    // on top of the big building
     Check {
+        description: "on top of the big building",
         location: L::MainUnderbelly,
         index: 516,
         drop: Drop::Health,
         locks: &[&[Lock::Movement(&[&[A::SunGreaves], &[A::Sunsetter]])]],
     },
     // Tower Ruins
-    // the most broken ability in the game, in both ways
     Check {
+        description: "inside the tower",
         location: L::TowerRuins,
         index: 89,
         drop: Drop::Ability(A::ClingGem),
         locks: &[&[Lock::Movement(&[&[A::SunGreaves]])]],
     },
-    // dunno why it's there when the ending door is also right where it is
     Check {
+        description: "atop the tower",
         location: L::TowerRuins,
         index: 56,
         drop: Drop::BigKey,
         locks: &[&[Lock::Movement(&[&[A::SunGreaves, A::ClingGem]])]],
     },
-    // on a beam in a corner
     Check {
+        description: "on a beam in the corner",
         location: L::PillarRoom,
         index: 1080,
         drop: Drop::Ability(A::AerialFinesse),
@@ -450,15 +452,15 @@ pub const CHECKS: [Check; 49] = [
             &[A::Slide, A::SolarWind, A::SunGreaves],
         ])]],
     },
-    // hiding amid the boxes like a murderous goatling
     Check {
+        description: "hiding amid the boxes",
         location: L::MainTheatre,
         index: 843,
         drop: Drop::Health,
         locks: &[],
     },
-    // the most convoluted big key to get
     Check {
+        description: "behind three maximum security cages",
         location: L::MainTheatre,
         index: 802,
         drop: Drop::BigKey,
@@ -475,22 +477,22 @@ pub const CHECKS: [Check; 49] = [
             &[A::Strikebreak, A::SoulCutter, A::ClingGem, A::SunGreaves],
         ])]],
     },
-    // i'm so bad at aiming this lol
     Check {
+        description: "where soul cutter normally is",
         location: L::MainTheatre,
         index: 1079,
         drop: Drop::Ability(A::SoulCutter),
         locks: &[&[Lock::Movement(&[&[A::Strikebreak]])]],
     },
-    // right in the centre on a pillar
     Check {
+        description: "in the back on a pillar",
         location: L::MainTheatre,
         index: 844,
         drop: Drop::Health,
         locks: &[&[Lock::Movement(&[&[A::SunGreaves], &[A::ClingGem]])]],
     },
-    // next to the last check behind a locked door
     Check {
+        description: "behind the locked door",
         location: L::MainTheatre,
         index: 1081,
         drop: Drop::Ability(A::Empathy),

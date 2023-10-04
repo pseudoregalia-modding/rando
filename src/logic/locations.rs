@@ -127,7 +127,7 @@ impl Location {
             ]],
         }
     }
-    pub const fn as_str(&self) -> &'static str {
+    pub const fn file(&self) -> &'static str {
         match self {
             L::Prison | L::StrongEyes => "ZONE_Dungeon",
             L::CastleSansa => "ZONE_LowerCastle",
@@ -138,6 +138,19 @@ impl Location {
             L::Hole | L::MainUnderbelly => "Zone_Caves",
             L::PillarRoom | L::MainTheatre => "Zone_Theatre",
             L::FinalBoss => "Zone_PrincessChambers",
+        }
+    }
+    pub const fn name(&self) -> &'static str {
+        match self {
+            L::Prison | L::StrongEyes => "Dilapidated Dungeon",
+            L::CastleSansa => "Castle Sansa",
+            L::MainLibrary | L::Restricted => "Listless Library",
+            L::SansaKeep | L::Sunsetter => "Sansa Keep",
+            L::EmptyBailey => "Empty Bailey",
+            L::TowerRuins => "Tower Ruins",
+            L::Hole | L::MainUnderbelly => "Underbelly",
+            L::PillarRoom | L::MainTheatre => "Twilight Theatre",
+            L::FinalBoss => "Princess",
         }
     }
 }

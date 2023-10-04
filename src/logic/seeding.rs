@@ -98,10 +98,10 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
         checks.extend_from_slice(&unrandomised);
         if possible(&checks) {
             for check in checks {
-                match overworld.get_mut(check.location.as_str()) {
+                match overworld.get_mut(check.location.file()) {
                     Some(checks) => checks.push(check),
                     None => {
-                        overworld.insert(check.location.as_str(), vec![check]);
+                        overworld.insert(check.location.file(), vec![check]);
                     }
                 }
             }
@@ -112,10 +112,13 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
         .into_iter()
         .map(|(key, value)| (key, value.into_iter().filter(in_pool).collect()))
         .collect();
-    std::fs::write(
-        "spoiler_log.txt",
-        format!("{:#?}", overworld.values().flatten().collect::<Vec<_>>(),),
-    )
-    .unwrap_or_default();
+    let mut log = std::io::BufWriter::new(
+        std::fs::File::create("spoiler_log.txt").map_err(|e| e.to_string())?,
+    );
+    for val in overworld.values().flatten() {
+        use std::io::Write;
+        log.write_fmt(format_args!("{:?}\n", val))
+            .map_err(|e| e.to_string())?
+    }
     crate::writing::write(overworld, app).map_err(|e| e.to_string())
 }
