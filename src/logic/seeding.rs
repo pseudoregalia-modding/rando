@@ -76,7 +76,57 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
         Drop::BigKey => app.big_keys,
         Drop::Health => app.health,
     };
-    let (pool, unrandomised): (Vec<_>, Vec<_>) = CHECKS.into_iter().partition(in_pool);
+    let (mut pool, unrandomised): (Vec<_>, Vec<_>) = CHECKS.into_iter().partition(in_pool);
+    if true {
+        if let Some(i) = pool
+            .iter()
+            .position(|check| check.drop == Drop::Ability(Ability::SunGreaves))
+        {
+            pool.remove(i);
+        }
+        use Ability as A;
+        pool.extend([
+            Check {
+                description: "where sun greaves normally is",
+                location: Location::MainLibrary,
+                index: 1548,
+                drop: Drop::Ability(A::HeliacalPower),
+                locks: &[&[Lock::Movement(&[
+                    &[A::Slide, A::SunGreaves],
+                    &[A::Slide, A::HeliacalPower],
+                    &[A::SunGreaves, A::HeliacalPower],
+                    &[A::ClingGem],
+                    &[A::Slide, A::SolarWind],
+                ])]],
+            },
+            Check {
+                description: "where sun greaves normally is",
+                location: Location::MainLibrary,
+                index: 1554,
+                drop: Drop::Ability(A::HeliacalPower),
+                locks: &[&[Lock::Movement(&[
+                    &[A::Slide, A::SunGreaves],
+                    &[A::Slide, A::HeliacalPower],
+                    &[A::SunGreaves, A::HeliacalPower],
+                    &[A::ClingGem],
+                    &[A::Slide, A::SolarWind],
+                ])]],
+            },
+            Check {
+                description: "where sun greaves normally is",
+                location: Location::MainLibrary,
+                index: 1560,
+                drop: Drop::Ability(A::HeliacalPower),
+                locks: &[&[Lock::Movement(&[
+                    &[A::Slide, A::SunGreaves],
+                    &[A::Slide, A::HeliacalPower],
+                    &[A::SunGreaves, A::HeliacalPower],
+                    &[A::ClingGem],
+                    &[A::Slide, A::SolarWind],
+                ])]],
+            },
+        ]);
+    }
     if pool.len() <= 1
         || (!app.abilities && app.small_keys && !app.big_keys && !app.health)
         || (!app.abilities && !app.small_keys && app.big_keys && !app.health)

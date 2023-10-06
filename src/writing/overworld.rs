@@ -23,8 +23,22 @@ pub fn write(
                         include_bytes!("../assets/collectibles.umap"),
                         include_bytes!("../assets/collectibles.uexp"),
                     )?;
-                    if location == "ZONE_Dungeon" {
-                        transplant(36, &mut map, &donor)?;
+                    match location {
+                        "ZONE_Dungeon" => transplant(36, &mut map, &donor)?,
+                        "Zone_Library" if true => {
+                            use unreal_asset::types::vector::Vector;
+                            delete(267, &mut map);
+                            let mut place = |location: Vector<f64>|-> Result<(),Error>{
+                                let insert = map.asset_data.exports.len();
+                                transplant(30, &mut map, &donor)?;
+                                set_location(insert, &mut map, location);
+                                Ok(())
+                            };
+                            place(Vector::new(-4150.0, 9200.0, -100.0))?;
+                            place(Vector::new(-4650.0, 9200.0, -250.0))?;
+                            place(Vector::new(-3650.0, 9200.0, -250.0))?;
+                        },
+                        _ => ()
                     }
                     for Check { mut index, drop, .. } in checks {
                         let class = map
