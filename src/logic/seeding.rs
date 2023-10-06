@@ -6,7 +6,7 @@ fn accessible(locks: &[&[Lock]], locations: &[Location], obtainable: &[Drop]) ->
         return true;
     }
     // see if there's any requirements met and what they are
-    locks.iter().copied().any(|locks| {
+    locks.iter().any(|locks| {
         locks.iter().all(|lock| match lock {
             Lock::Location(loc) => locations.contains(loc),
             Lock::Movement(movement) => movement.iter().any(|ability| {
@@ -64,6 +64,19 @@ fn possible(checks: &[Check]) -> bool {
         if locations.len() == locations_len && obtainable.len() == obtainable_len {
             break false;
         }
+        let heliacals: Vec<_> = obtainable
+            .iter()
+            .enumerate()
+            .rev()
+            .filter_map(|(i, drop)| (drop == &Drop::Ability(Ability::HeliacalPower)).then_some(i))
+            .collect();
+        if heliacals.len() == 3 {
+            for i in heliacals {
+                obtainable.remove(i);
+            }
+            obtainable.push(Drop::Ability(Ability::SunGreaves))
+        }
+
         locations_len = locations.len();
         obtainable_len = obtainable.len();
     }
@@ -77,7 +90,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
         Drop::Health => app.health,
     };
     let (mut pool, unrandomised): (Vec<_>, Vec<_>) = CHECKS.into_iter().partition(in_pool);
-    if true {
+    if app.split {
         if let Some(i) = pool
             .iter()
             .position(|check| check.drop == Drop::Ability(Ability::SunGreaves))

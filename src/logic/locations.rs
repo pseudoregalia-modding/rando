@@ -55,10 +55,9 @@ impl Location {
                 Lock::Location(L::EmptyBailey),
                 Lock::Movement(&[
                     &[A::SunGreaves],
-                    &[A::HeliacalPower],
-                    &[A::ClingGem],
-                    &[A::Slide, A::Sunsetter],
-                    // to actually get into the tower you could abuse solar wind flips but that's advanced af
+                    &[A::HeliacalPower, A::Sunsetter],
+                    // this is possible with 2 precise successive solar wind flips and healing tech on pole
+                    // &[A::Slide, A::SolarWind],
                 ]),
             ]],
             L::Hole => &[&[
@@ -94,6 +93,8 @@ impl Location {
                     Lock::Movement(&[
                         &[A::ClingGem],
                         &[A::Slide, A::SolarWind, A::SunGreaves, A::HeliacalPower],
+                        // this is hella precise but possible
+                        // &[A::Slide, A::SolarWind, A::SunGreaves, A::Sunsetter],
                     ]),
                 ],
                 &[
@@ -122,7 +123,10 @@ impl Location {
             ],
             L::FinalBoss => &[&[
                 Lock::Location(L::TowerRuins),
-                Lock::Movement(&[&[A::SunGreaves, A::ClingGem]]),
+                Lock::Movement(&[
+                    &[A::SunGreaves, A::ClingGem],
+                    &[A::HeliacalPower, A::Sunsetter, A::ClingGem],
+                ]),
                 Lock::Ending,
             ]],
         }

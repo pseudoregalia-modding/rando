@@ -25,10 +25,10 @@ pub fn write(
                     )?;
                     match location {
                         "ZONE_Dungeon" => transplant(36, &mut map, &donor)?,
-                        "Zone_Library" if true => {
+                        "Zone_Library" if app.split => {
                             use unreal_asset::types::vector::Vector;
                             delete(267, &mut map);
-                            let mut place = |location: Vector<f64>|-> Result<(),Error>{
+                            let mut place = |location: Vector<f64>| -> Result<(),Error>{
                                 let insert = map.asset_data.exports.len();
                                 transplant(30, &mut map, &donor)?;
                                 set_location(insert, &mut map, location);

@@ -17,6 +17,8 @@ pub const CHECKS: [Check; 49] = [
                 // just enough space to do this
                 &[A::Slide, A::SolarWind],
                 &[A::ClingGem],
+                &[A::SunGreaves],
+                &[A::HeliacalPower],
             ])],
             // you can drop down from the entrance
             &[Lock::Location(Location::CastleSansa)],
@@ -249,7 +251,12 @@ pub const CHECKS: [Check; 49] = [
         location: L::Sunsetter,
         index: 392,
         drop: Drop::Ability(A::Sunsetter),
-        locks: &[],
+        locks: &[&[Lock::Movement(&[
+            &[A::Sunsetter],
+            &[A::HeliacalPower],
+            &[A::SunGreaves],
+            &[A::ClingGem],
+        ])]],
     },
     Check {
         description: "in an alcove next to the locked door",
@@ -289,6 +296,7 @@ pub const CHECKS: [Check; 49] = [
         locks: &[&[Lock::Movement(&[
             &[A::AscendantLight, A::ClingGem, A::Sunsetter],
             &[A::AscendantLight, A::ClingGem, A::SunGreaves],
+            &[A::AscendantLight, A::Sunsetter, A::SunGreaves],
             &[
                 A::Slide,
                 A::SolarWind,
@@ -315,6 +323,7 @@ pub const CHECKS: [Check; 49] = [
             &[A::Sunsetter],
             &[A::SunGreaves],
             &[A::ClingGem],
+            &[A::Slide, A::SolarWind],
         ])]],
     },
     Check {
@@ -322,7 +331,12 @@ pub const CHECKS: [Check; 49] = [
         location: L::EmptyBailey,
         index: 104,
         drop: Drop::Ability(A::SolarWind),
-        locks: &[&[Lock::Movement(&[&[A::Slide]])]],
+        locks: &[&[Lock::Movement(&[
+            // need some way to cross the gap afterwards
+            &[A::Slide, A::SolarWind],
+            &[A::Slide, A::HeliacalPower],
+            &[A::Slide, A::SunGreaves],
+        ])]],
     },
     Check {
         description: "in the tower in the middle",
@@ -372,13 +386,15 @@ pub const CHECKS: [Check; 49] = [
         location: L::MainUnderbelly,
         index: 834,
         drop: Drop::Ability(A::AscendantLight),
-        // you can go through the dark area
-        locks: &[&[Lock::Movement(&[
-            &[A::AscendantLight],
-            &[A::SunGreaves],
-            &[A::ClingGem],
-            &[A::Slide, A::SolarWind, A::HeliacalPower],
-        ])]],
+        // you can go through the dark area and there's a passage which you can do with nothing
+        locks: &[
+            // &[Lock::Movement(&[
+            // &[A::AscendantLight],
+            // &[A::SunGreaves],
+            // &[A::ClingGem],
+            // &[A::Slide, A::SolarWind, A::HeliacalPower],
+            // ])]
+        ],
     },
     Check {
         description: "in an alcove behind some pillars",
@@ -428,18 +444,25 @@ pub const CHECKS: [Check; 49] = [
     },
     // Tower Ruins
     Check {
-        description: "inside the tower",
+        description: "where cling gem normally is",
         location: L::TowerRuins,
         index: 89,
         drop: Drop::Ability(A::ClingGem),
-        locks: &[&[Lock::Movement(&[&[A::SunGreaves]])]],
+        locks: &[&[Lock::Movement(&[
+            &[A::ClingGem],
+            &[A::SunGreaves],
+            &[A::HeliacalPower, A::Sunsetter],
+        ])]],
     },
     Check {
         description: "atop the tower",
         location: L::TowerRuins,
         index: 56,
         drop: Drop::BigKey,
-        locks: &[&[Lock::Movement(&[&[A::SunGreaves, A::ClingGem]])]],
+        locks: &[&[Lock::Movement(&[
+            &[A::SunGreaves, A::ClingGem],
+            &[A::HeliacalPower, A::Sunsetter, A::ClingGem],
+        ])]],
     },
     Check {
         description: "on a beam in the corner",
