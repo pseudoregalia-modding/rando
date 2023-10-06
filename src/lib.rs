@@ -15,6 +15,7 @@ pub struct Rando {
     small_keys: bool,
     big_keys: bool,
     health: bool,
+    split: bool,
 }
 
 impl Rando {
@@ -63,6 +64,7 @@ impl Rando {
             small_keys: get_bool("small keys"),
             big_keys: get_bool("big keys"),
             health: get_bool("health"),
+            split: get_bool("split"),
         }
     }
     fn pak(&self) -> Result<std::io::BufReader<std::fs::File>, std::io::Error> {
@@ -125,11 +127,19 @@ impl eframe::App for Rando {
                     }
                 }
             });
-            ui.columns(2, |ui| {
-                ui[0].checkbox(&mut self.abilities, "Abilities");
+            ui.columns(3, |ui| {
+                if ui[0].checkbox(&mut self.abilities, "Abilities").changed() && !self.abilities {
+                    self.split = false
+                }
                 ui[0].checkbox(&mut self.health, "Health");
                 ui[1].checkbox(&mut self.small_keys, "Small keys");
                 ui[1].checkbox(&mut self.big_keys, "Big keys");
+                ui[2].add_enabled(
+                    self.abilities,
+                    egui::Checkbox::new(&mut self.split, "Split greaves"),
+                );
+                ui[2].set_enabled(false);
+                ui[2].checkbox(&mut false, "Goatlings")
             });
             ui.horizontal(|ui| {
                 ui.spacing_mut().item_spacing.x = ui.fonts(|fonts| {
@@ -191,5 +201,6 @@ impl eframe::App for Rando {
         storage.set_string("small keys", self.small_keys.to_string());
         storage.set_string("big keys", self.big_keys.to_string());
         storage.set_string("health", self.health.to_string());
+        storage.set_string("split", self.split.to_string());
     }
 }
