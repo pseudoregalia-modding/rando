@@ -5,19 +5,19 @@ fn accessible(locks: &[&[Lock]], locations: &[Location], obtainable: &[Drop]) ->
     if locks.is_empty() {
         return true;
     }
-    // see if there's any requirements met and what they are
     locks.iter().any(|locks| {
         locks.iter().all(|lock| match lock {
             Lock::Location(loc) => locations.contains(loc),
             Lock::Movement(movement) => movement.iter().any(|ability| {
                 ability.iter().all(|ability| {
-                    obtainable
-                        .iter()
-                        .any(|drop| drop == &Drop::Ability(*ability))
+                    obtainable.iter().any(|drop| match drop {
+                        Drop::Ability(a) => a == ability,
+                        _ => false,
+                    })
                 })
             }),
             // need to decrement small keys :p
-            Lock::SmallKey => obtainable.iter().any(|drop| matches!(drop, Drop::SmallKey)),
+            Lock::SmallKey => obtainable.contains(&Drop::SmallKey),
             Lock::Ending => {
                 obtainable
                     .iter()
@@ -25,15 +25,15 @@ fn accessible(locks: &[&[Lock]], locations: &[Location], obtainable: &[Drop]) ->
                         true => acc + 1,
                         false => acc,
                     })
-                    >= 5
+                    == 5
             }
         })
     })
 }
 
 fn possible(checks: &[Check]) -> bool {
-    let mut locations: Vec<Location> = Vec::with_capacity(Location::COUNT);
     let mut checks = checks.to_vec();
+    let mut locations: Vec<Location> = Vec::with_capacity(Location::COUNT);
     let mut locations_len = 0;
     let mut obtainable = Vec::with_capacity(checks.len());
     let mut obtainable_len = 0;
@@ -148,9 +148,8 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
         return Err("you haven't picked enough checks for anything to be random - include more checks in the pool".to_string());
     }
 
-    let mut overworld = std::collections::BTreeMap::<_, Vec<_>>::new();
     let mut rng = rand::thread_rng();
-    loop {
+    let overworld: std::collections::BTreeMap<_, _> = loop {
         let mut checks = pool.clone();
         let mut drops: Vec<Drop> = checks.iter().map(|check| check.drop).collect();
         use rand::seq::SliceRandom;
@@ -160,6 +159,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
         }
         checks.extend_from_slice(&unrandomised);
         if possible(&checks) {
+            let mut overworld = std::collections::BTreeMap::<_, Vec<_>>::new();
             for check in checks {
                 match overworld.get_mut(check.location.file()) {
                     Some(checks) => checks.push(check),
@@ -168,13 +168,12 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
                     }
                 }
             }
-            break;
+            break overworld;
         }
     }
-    overworld = overworld
-        .into_iter()
-        .map(|(key, value)| (key, value.into_iter().filter(in_pool).collect()))
-        .collect();
+    .into_iter()
+    .map(|(key, value)| (key, value.into_iter().filter(in_pool).collect()))
+    .collect();
     let mut log = std::io::BufWriter::new(
         std::fs::File::create("spoiler_log.txt").map_err(|e| e.to_string())?,
     );

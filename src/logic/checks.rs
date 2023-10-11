@@ -344,8 +344,10 @@ pub const CHECKS: [Check; 49] = [
         index: 66,
         drop: Drop::Health,
         locks: &[&[Lock::Movement(&[
-            &[A::Sunsetter, A::Slide],
+            &[A::Sunsetter, A::HeliacalPower],
             &[A::SunGreaves],
+            // you can jump down from cheese bell
+            &[A::Slide, A::SolarWind, A::ClingGem],
         ])]],
     },
     Check {
@@ -404,7 +406,7 @@ pub const CHECKS: [Check; 49] = [
         locks: &[],
     },
     Check {
-        description: "on a missable ledge in the centre of underbelly",
+        description: "on a missable ledge in the centre",
         location: L::MainUnderbelly,
         index: 447,
         drop: Drop::SmallKey,
@@ -505,7 +507,10 @@ pub const CHECKS: [Check; 49] = [
         location: L::MainTheatre,
         index: 1079,
         drop: Drop::Ability(A::SoulCutter),
-        locks: &[&[Lock::Movement(&[&[A::Strikebreak]])]],
+        locks: &[&[Lock::Movement(&[
+            &[A::Strikebreak, A::SoulCutter, A::ClingGem],
+            &[A::Strikebreak, A::SoulCutter, A::SunGreaves],
+        ])]],
     },
     Check {
         description: "in the back on a pillar",
