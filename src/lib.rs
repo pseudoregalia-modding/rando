@@ -175,11 +175,16 @@ impl eframe::App for Rando {
                 if ui.button("launch pseudoregalia").clicked() {
                     notify!(
                         self,
-                        std::process::Command::new(
-                            self.pak
-                                .join("../../Binaries/Win64/pseudoregalia-Win64-Shipping.exe")
-                        )
-                        .spawn(),
+                        match self.pak_str.contains("steamapps") {
+                            true => std::process::Command::new("explorer")
+                                .arg("steam://rungameid/2365810")
+                                .spawn(),
+                            false => std::process::Command::new(
+                                self.pak
+                                    .join("../../Binaries/Win64/pseudoregalia-Win64-Shipping.exe")
+                            )
+                            .spawn(),
+                        },
                         "game found and launched successfully"
                     )
                 }
