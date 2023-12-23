@@ -6,7 +6,7 @@ fn main() -> Result<(), eframe::Error> {
     eframe::run_native(
         "",
         eframe::NativeOptions {
-            initial_window_size: Some(eframe::epaint::Vec2::new(410.0, 270.0)),
+            initial_window_size: Some(eframe::epaint::Vec2::new(420.0, 270.0)),
             resizable: false,
             icon_data: Some(eframe::IconData {
                 rgba: include_bytes!("assets/sybil.rgba").to_vec(),

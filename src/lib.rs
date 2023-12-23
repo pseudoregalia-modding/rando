@@ -16,6 +16,7 @@ pub struct Rando {
     big_keys: bool,
     health: bool,
     split: bool,
+    progressive: bool,
 }
 
 impl Rando {
@@ -65,6 +66,7 @@ impl Rando {
             big_keys: get_bool("big keys"),
             health: get_bool("health"),
             split: get_bool("split"),
+            progressive: get_bool("progressive"),
         }
     }
     fn pak(&self) -> Result<std::io::BufReader<std::fs::File>, std::io::Error> {
@@ -129,7 +131,8 @@ impl eframe::App for Rando {
             });
             ui.columns(3, |ui| {
                 if ui[0].checkbox(&mut self.abilities, "Abilities").changed() && !self.abilities {
-                    self.split = false
+                    self.split = false;
+                    self.progressive = false;
                 }
                 ui[0].checkbox(&mut self.health, "Health");
                 ui[1].checkbox(&mut self.small_keys, "Small keys");
@@ -138,8 +141,10 @@ impl eframe::App for Rando {
                     self.abilities,
                     egui::Checkbox::new(&mut self.split, "Split greaves"),
                 );
-                ui[2].set_enabled(false);
-                ui[2].checkbox(&mut false, "Goatlings")
+                ui[2].add_enabled(
+                    self.abilities,
+                    egui::Checkbox::new(&mut self.progressive, "Progressive items"),
+                );
             });
             ui.horizontal(|ui| {
                 ui.spacing_mut().item_spacing.x = ui.fonts(|fonts| {
@@ -202,5 +207,6 @@ impl eframe::App for Rando {
         storage.set_string("big keys", self.big_keys.to_string());
         storage.set_string("health", self.health.to_string());
         storage.set_string("split", self.split.to_string());
+        storage.set_string("progressive", self.progressive.to_string());
     }
 }

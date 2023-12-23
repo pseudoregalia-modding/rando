@@ -7,7 +7,7 @@ authors = ["spuds"]
 edition = "2021"
 
 [dependencies]
-eframe = { version = "0.22", default-features = false, features = ["glow", "persistence"] }
+eframe = { version = "0.23", default-features = false, features = ["glow", "persistence"] }
 unreal_asset = { git = "https://github.com/astrotechies/unrealmodding", rev = "b64d3f4" }
 repak = { git = "https://github.com/bananaturtlesandwich/repak", rev = "8798e57", default-features = false, features = ["oodle"] }
 strum = { version = "0.25", features = ["derive"] }

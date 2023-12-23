@@ -1,20 +1,43 @@
 use super::*;
 use strum::{EnumCount, IntoEnumIterator};
 
-fn accessible(locks: &[&[Lock]], locations: &[Location], obtainable: &[Drop]) -> bool {
+fn accessible(
+    locks: &[&[Lock]],
+    locations: &[Location],
+    obtainable: &[Drop],
+    app: &crate::Rando,
+) -> bool {
     if locks.is_empty() {
         return true;
     }
     locks.iter().any(|locks| {
         locks.iter().all(|lock| match lock {
             Lock::Location(loc) => locations.contains(loc),
-            Lock::Movement(movement) => movement.iter().any(|ability| {
-                ability.iter().all(|ability| {
+            Lock::Movement(movement) => movement.iter().any(|ability| match app.progressive {
+                true if !ability.contains(&Ability::SolarWind) => ability.iter().all(|ability| {
+                    obtainable.iter().any(|drop| match drop {
+                        Drop::Ability(Ability::Slide) => {
+                            ability == &Ability::Slide || ability == &Ability::SolarWind
+                        }
+                        Drop::Ability(a) => a == ability,
+                        _ => false,
+                    })
+                }),
+                true if !ability.contains(&Ability::SoulCutter) => ability.iter().all(|ability| {
+                    obtainable.iter().any(|drop| match drop {
+                        Drop::Ability(Ability::Strikebreak) => {
+                            ability == &Ability::Strikebreak || ability == &Ability::SoulCutter
+                        }
+                        Drop::Ability(a) => a == ability,
+                        _ => false,
+                    })
+                }),
+                _ => ability.iter().all(|ability| {
                     obtainable.iter().any(|drop| match drop {
                         Drop::Ability(a) => a == ability,
                         _ => false,
                     })
-                })
+                }),
             }),
             // need to decrement small keys :p
             Lock::SmallKey => obtainable.contains(&Drop::SmallKey),
@@ -31,7 +54,7 @@ fn accessible(locks: &[&[Lock]], locations: &[Location], obtainable: &[Drop]) ->
     })
 }
 
-fn possible(checks: &[Check]) -> bool {
+fn possible(checks: &[Check], app: &crate::Rando) -> bool {
     let mut checks = checks.to_vec();
     let mut locations: Vec<Location> = Vec::with_capacity(Location::COUNT);
     let mut locations_len = 0;
@@ -39,7 +62,7 @@ fn possible(checks: &[Check]) -> bool {
     let mut obtainable_len = 0;
     loop {
         for loc in Location::iter() {
-            if !locations.contains(&loc) && accessible(loc.locks(), &locations, &obtainable) {
+            if !locations.contains(&loc) && accessible(loc.locks(), &locations, &obtainable, app) {
                 locations.push(loc)
             }
         }
@@ -49,7 +72,7 @@ fn possible(checks: &[Check]) -> bool {
             .rev()
             .filter_map(|(i, check)| {
                 (locations.contains(&check.location)
-                    && accessible(check.locks, &locations, &obtainable))
+                    && accessible(check.locks, &locations, &obtainable, app))
                 .then_some(i)
             })
             .collect();
@@ -158,7 +181,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
             check.drop = drop;
         }
         checks.extend_from_slice(&unrandomised);
-        if possible(&checks) {
+        if possible(&checks, app) {
             let mut overworld = std::collections::BTreeMap::<_, Vec<_>>::new();
             for check in checks {
                 match overworld.get_mut(check.location.file()) {
