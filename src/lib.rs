@@ -49,9 +49,14 @@ impl Rando {
 
         let pak = match ctx.storage.and_then(|storage| storage.get_string("pak")) {
             Some(path) => path.into(),
-            None => loop {
-                if let Some(pak) = ask_game_path() {
-                    break pak;
+            None => match ask_game_path() {
+                Some(pak) => pak,
+                None => {
+                    rfd::MessageDialog::new()
+                        .set_title("owo")
+                        .set_description("no valid game path provided")
+                        .show();
+                    std::process::exit(0);
                 }
             },
         };
@@ -78,10 +83,9 @@ fn ask_game_path() -> Option<std::path::PathBuf> {
     let path = rfd::FileDialog::new()
         .set_title("Select where you have pseudoregalia installed (e.g C:/Program Files (x86)/Steam/steamapps/common/pseudoregalia)")
         .pick_folder()?;
-    (path.ends_with("Pseudoregalia")
-        && !path.ends_with("pseudoregalia/pseudoregalia")
-        && path.join("pseudoregalia/Content/Paks").exists())
-    .then(|| path.join("pseudoregalia\\Content\\Paks"))
+    path.join("pseudoregalia/Content/Paks")
+        .exists()
+        .then(|| path.join("pseudoregalia\\Content\\Paks"))
 }
 
 fn get_pak_str(pak: &std::path::Path) -> String {

@@ -2,7 +2,7 @@
 name = "pseudoregalia-rando"
 description = "a gamemode for pseudoregalia which shuffles pickups"
 repository = "https://github.com/pseudoregalia-modding/pseudoregalia-rando"
-version = "1.3.0"
+version = "1.3.1"
 authors = ["spuds"]
 edition = "2021"
 
