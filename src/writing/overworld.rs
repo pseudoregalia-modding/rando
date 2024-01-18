@@ -70,7 +70,10 @@ pub fn write(
                                     | Ability::SoulCutter
                                     | Ability::Indignation
                                     | Ability::SolarWind
-                                    | Ability::Strikebreak => 5,
+                                    | Ability::Strikebreak => match app.progressive {
+                                        true => 46,
+                                        false => 5,
+                                    },
                                     Ability::HeliacalPower
                                     | Ability::AerialFinesse
                                     | Ability::Pilgrimage
