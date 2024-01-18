@@ -135,6 +135,39 @@ pub fn write(
                                 big_keys.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
                             },
                             Drop::Health if class != "BP_HealthPiece_C" => replace(11)?,
+                            Drop::Goatling(dialogue) => {
+                                if class != "BP_NPC" {
+                                    replace(36)?;
+                                }
+                                let dialogue = dialogue.into_iter().enumerate().map(|(i, line)| Property::TextProperty(str_property::TextProperty {
+                                    name: FName::new_dummy(i.to_string(), 0),
+                                    property_guid: Some(Default::default()),
+                                    culture_invariant_string: Some(line.to_string()),
+                                    namespace: Some(String::new()),
+                                    table_id: None,
+                                    flags: 0,
+                                    history_type: str_property::TextHistoryType::None,
+                                    value: None,
+                                    ancestry: Ancestry { ancestry: vec![] },
+                                    duplication_index: 0,
+                                })).collect();
+                                let mut names = map.get_name_map();
+                                let Some(norm) = map.asset_data.exports[index].get_normal_export_mut() else {continue};
+                                match norm.properties.iter_mut().find_map(|prop|  unreal_asset::cast!(Property, ArrayProperty, prop)){
+                                    Some(text) => text.value = dialogue,
+                                    None => {
+                                        let name = names.get_mut().add_fname("textWindows");
+                                        let array_type = Some(names.get_mut().add_fname("Text"));
+                                        norm.properties.push(Property::ArrayProperty(array_property::ArrayProperty {
+                                            name,
+                                            property_guid: Some(Default::default()),
+                                            array_type,
+                                            value: dialogue,
+                                            ..Default::default()
+                                        }))
+                                    },
+                                }
+                            }
                             _ => ()
                         }
                     }

@@ -17,6 +17,7 @@ pub struct Rando {
     health: bool,
     split: bool,
     progressive: bool,
+    goatlings: bool,
 }
 
 impl Rando {
@@ -72,6 +73,7 @@ impl Rando {
             health: get_bool("health"),
             split: get_bool("split"),
             progressive: get_bool("progressive"),
+            goatlings: get_bool("goatlings"),
         }
     }
     fn pak(&self) -> Result<std::io::BufReader<std::fs::File>, std::io::Error> {
@@ -139,6 +141,7 @@ impl eframe::App for Rando {
                     self.progressive = false;
                 }
                 ui[0].checkbox(&mut self.health, "Health");
+                ui[0].checkbox(&mut self.goatlings, "Goatlings");
                 ui[1].checkbox(&mut self.small_keys, "Small keys");
                 ui[1].checkbox(&mut self.big_keys, "Big keys");
                 ui[2].add_enabled(
@@ -217,5 +220,6 @@ impl eframe::App for Rando {
         storage.set_string("health", self.health.to_string());
         storage.set_string("split", self.split.to_string());
         storage.set_string("progressive", self.progressive.to_string());
+        storage.set_string("goatlings", self.goatlings.to_string());
     }
 }

@@ -111,6 +111,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
         Drop::SmallKey => app.small_keys,
         Drop::BigKey => app.big_keys,
         Drop::Health => app.health,
+        Drop::Goatling(_) => app.goatlings,
     };
     let (mut pool, unrandomised): (Vec<_>, Vec<_>) = CHECKS.into_iter().partition(in_pool);
     if app.split {
