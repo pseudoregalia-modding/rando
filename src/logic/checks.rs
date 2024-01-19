@@ -3,7 +3,7 @@ use super::*;
 use Ability as A;
 use Location as L;
 
-pub const CHECKS: [Check; 49] = [
+pub const CHECKS: [Check; 61] = [
     // not listing dream breaker since there's nothing it could be replaced by
     Check {
         description: "where the first health piece is",
@@ -72,6 +72,17 @@ pub const CHECKS: [Check; 49] = [
         locks: &[],
     },
     Check {
+        description: "the goatling who wants to lick the checkpoint",
+        location: L::CastleSansa,
+        index: 631,
+        drop: Drop::Goatling(&[
+            "These [#7c79e8](crystals) are pretty nice, right?",
+            "They make me feel safe...",
+            "I think i'm gonna lick it. I bet it's full of [#8ada1c, buoy, italics](minerals).",
+        ]),
+        locks: &[],
+    },
+    Check {
         description: "where indignation normally is",
         location: L::CastleSansa,
         index: 787,
@@ -130,6 +141,19 @@ pub const CHECKS: [Check; 49] = [
         ])]],
     },
     Check {
+        description: "the goatling about to jump into the haze",
+        location: L::CastleSansa,
+        index: 633,
+        drop: Drop::Goatling(&[
+            "Oh, thanks for breaking that wall down.",
+            "Thought I was gonna have to jump into the haze..."
+        ]),
+        locks: &[&[Lock::Movement(&[
+            &[A::ClingGem],
+            &[A::Slide, A::SolarWind, A::SunGreaves, A::HeliacalPower],
+        ])]],
+    },
+    Check {
         description: "cool moon room",
         location: L::CastleSansa,
         index: 790,
@@ -158,6 +182,22 @@ pub const CHECKS: [Check; 49] = [
         ])]],
     },
     Check {
+        description: "the goatling that calls you bubble girl",
+        location: L::CastleSansa,
+        index: 630,
+        drop: Drop::Goatling(&[
+            "I was supposed to go help in the [#cf2525](theatre), but I can't really get through here.",
+            "I just don't really wanna touch the [#cf2525](bubbles)...",
+            "What? I dont have a problem. You go touch 'em then, bubble girl."
+        ]),
+        locks: &[&[Lock::Movement(&[
+            &[A::SunGreaves],
+            &[A::HeliacalPower],
+            &[A::ClingGem],
+            &[A::Slide, A::SunGreaves]
+        ])]],
+    },
+    Check {
         description: "on the ledge above the bailey entrance",
         location: L::CastleSansa,
         index: 496,
@@ -168,6 +208,17 @@ pub const CHECKS: [Check; 49] = [
             &[A::Slide, A::SolarWind, A::HeliacalPower],
             &[A::Slide, A::SolarWind, A::SunGreaves],
         ])]],
+    },
+    Check {
+        description: "the goatling in the pavilion",
+        location: L::CastleSansa,
+        index: 632,
+        drop: Drop::Goatling(&[
+            "The princess used to love having afternoon tea here.",
+            "But the handmaiden has run out of her special ingredient.",
+            "I guess the princess doesn't really want anybody else's tea...",
+        ]),
+        locks: &[],
     },
     Check {
         description: "next to a bouncer in the massive room",
@@ -233,6 +284,24 @@ pub const CHECKS: [Check; 49] = [
         locks: &[&[Lock::Movement(&[&[A::SunGreaves], &[A::ClingGem]])]],
     },
     // Sansa Keep
+    Check {
+        description: "the goatling sad about the lack of furniture",
+        location: L::SansaKeep,
+        index: 323,
+        drop: Drop::Goatling(&[
+            "They took away all my furniture."
+        ]),
+        locks: &[],
+    },
+    Check {
+        description: "the goatling collapsing out of reality",
+        location: L::SansaKeep,
+        index: 324,
+        drop: Drop::Goatling(&[
+            "[6rr](.....c.....y..u...i....y.......ce....)"
+        ]),
+        locks: &[],
+    },
     Check {
         description: "where strikebreak normally is",
         location: L::SansaKeep,
@@ -307,6 +376,13 @@ pub const CHECKS: [Check; 49] = [
         ])]],
     },
     // Empty Bailey
+    Check {
+        description: "the goatling who's hiding",
+        location: L::EmptyBailey,
+        index: 88,
+        drop: Drop::Goatling(&["...i'm not here."]),
+        locks: &[&[Lock::Movement(&[&[A::Slide]])]],
+    },
     Check {
         description: "in the building you slide into",
         location: L::EmptyBailey,
@@ -466,6 +542,7 @@ pub const CHECKS: [Check; 49] = [
             &[A::HeliacalPower, A::Sunsetter, A::ClingGem],
         ])]],
     },
+    // Twilight Theatre
     Check {
         description: "on a beam in the corner",
         location: L::PillarRoom,
@@ -478,11 +555,67 @@ pub const CHECKS: [Check; 49] = [
         ])]],
     },
     Check {
+        description: "the goatling who can eat 20 beans at least",
+        location: L::TheatreEntrance,
+        index: 937,
+        drop: Drop::Goatling(&[
+            "where have [#cf2525](you been)?",
+            "three bean casserole? not enough for 1 man. i can eat like, [#cf2525](20 beans), at least.",
+            "so get to it. [up, 10rr](please?)"
+        ]),
+        locks: &[],
+    },
+    Check {
+        description: "the goatling who thought the theatre was safe",
+        location: L::TheatreEntrance,
+        index: 939,
+        drop: Drop::Goatling(&[
+            "I heard that the theatre was still in good condition...",
+            "But it seems even this place has been affected."
+        ]),
+        locks: &[],
+    },
+    Check {
+        description: "the goatling who really wanted to see the show",
+        location: L::TheatreEntrance,
+        index: 944,
+        drop: Drop::Goatling(&[
+            "Ah nuts....I really wanted to see the show today."
+        ]),
+        locks: &[],
+    },
+    Check {
+        description: "the goatling who really wanted to see the show",
+        location: L::TheatreEntrance,
+        index: 945,
+        drop: Drop::Goatling(&[
+            "Sorry miss, can't let you in.",
+            "Theatre's closed until all the haze is gone."
+        ]),
+        locks: &[],
+    },
+    Check {
         description: "hiding amid the boxes",
         location: L::MainTheatre,
         index: 843,
         drop: Drop::Health,
         locks: &[],
+    },
+    Check {
+        description: "the goatling that will kill again",
+        location: L::MainTheatre,
+        index: 936,
+        drop: Drop::Goatling(&[
+            "please leave me alone?",
+            "i will [#cf2525](kill again)"
+        ]),
+        locks: &[&[
+            Lock::Movement(&[
+                &[A::Slide, A::SolarWind, A::HeliacalPower],
+                &[A::SunGreaves],
+                &[A::ClingGem]
+            ])
+        ]],
     },
     Check {
         description: "behind three maximum security cages",

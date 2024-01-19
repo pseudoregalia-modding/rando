@@ -44,11 +44,14 @@ pub fn write(
                             .get_import(map.asset_data.exports[index].get_base_export().class_index)
                             .map(|import| import.object_name.get_owned_content())
                             .unwrap_or_default();
-                        let mut replace = |actor: usize| -> Result<(), Error> {
+                        let mut replace = |actor: usize, goatling: bool| -> Result<(), Error> {
                             delete(index, &mut map);
                             let insert = map.asset_data.exports.len();
                             transplant(actor, &mut map, &donor)?;
-                            let loc = get_location(index, &map);
+                            let mut loc = get_location(index, &map);
+                            if goatling {
+                                loc.z += 100.0
+                            }
                             set_location(
                                 insert,
                                 &mut map,
@@ -81,7 +84,7 @@ pub fn write(
                                     | Ability::MartialProwess
                                     | Ability::ClearMind
                                     | Ability::Professional => 30,
-                                })?;
+                                }, false)?;
                                 let ability_name = map.add_fname(ability.as_ref());
                                 let mut names = map.get_name_map();
                                 let Some(norm) = map.asset_data.exports[index].get_normal_export_mut() else {continue};
@@ -101,14 +104,14 @@ pub fn write(
                                 }
                             }
                             Drop::SmallKey => {
-                                replace(24)?;
+                                replace(24, false)?;
                                 let Some(norm) = map.asset_data.exports[index].get_normal_export_mut() else {continue};
                                 if let Some(i) = norm.properties.iter_mut().position(|prop| matches!(prop, Property::IntProperty(..))){
                                     norm.properties.remove(i);
                                 }
                             },
                             Drop::BigKey => {
-                                replace(18)?;
+                                replace(18, false)?;
                                 let mut names = map.get_name_map();
                                 let Some(norm) = map.asset_data.exports[index].get_normal_export_mut() else {continue};
                                 match norm.properties.iter_mut().find_map(|prop| unreal_asset::cast!(Property, IntProperty, prop)){
@@ -122,12 +125,12 @@ pub fn write(
                                 }
                                 big_keys.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
                             },
-                            Drop::Health if class != "BP_HealthPiece_C" => replace(11)?,
+                            Drop::Health if class != "BP_HealthPiece_C" => replace(11, false)?,
                             Drop::Goatling(dialogue) => {
                                 if class != "BP_NPC" {
-                                    replace(36)?;
+                                    replace(36, true)?;
                                 }
-                                let dialogue = dialogue.into_iter().enumerate().map(|(i, line)| Property::TextProperty(str_property::TextProperty {
+                                let dialogue = dialogue.iter().enumerate().map(|(i, line)| Property::TextProperty(str_property::TextProperty {
                                     name: FName::new_dummy(i.to_string(), 0),
                                     property_guid: Some(Default::default()),
                                     culture_invariant_string: Some(line.to_string()),

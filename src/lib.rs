@@ -144,6 +144,7 @@ impl eframe::App for Rando {
                 ui[0].checkbox(&mut self.goatlings, "Goatlings");
                 ui[1].checkbox(&mut self.small_keys, "Small keys");
                 ui[1].checkbox(&mut self.big_keys, "Big keys");
+                ui[1].add_enabled(false, egui::Checkbox::new(&mut false, "Pages?"));
                 ui[2].add_enabled(
                     self.abilities,
                     egui::Checkbox::new(&mut self.split, "Split greaves"),
@@ -152,6 +153,7 @@ impl eframe::App for Rando {
                     self.abilities,
                     egui::Checkbox::new(&mut self.progressive, "Progressive items"),
                 );
+                ui[2].add_enabled(false, egui::Checkbox::new(&mut false, "Split cling?"));
             });
             ui.horizontal(|ui| {
                 ui.spacing_mut().item_spacing.x = ui.fonts(|fonts| {

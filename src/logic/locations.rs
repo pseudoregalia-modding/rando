@@ -14,6 +14,7 @@ pub enum Location {
     Hole,
     MainUnderbelly,
     PillarRoom,
+    TheatreEntrance,
     MainTheatre,
     FinalBoss,
 }
@@ -86,8 +87,8 @@ impl Location {
                 ],
                 &[Lock::Location(L::EmptyBailey)],
             ],
-            L::MainTheatre => &[
-                // this is via the softlock entrance
+            L::TheatreEntrance => &[
+                &[Lock::Location(L::MainTheatre)],
                 &[
                     Lock::Location(L::CastleSansa),
                     Lock::Movement(&[
@@ -95,6 +96,16 @@ impl Location {
                         &[A::Slide, A::SolarWind, A::SunGreaves, A::HeliacalPower],
                         // this is hella precise but possible
                         // &[A::Slide, A::SolarWind, A::SunGreaves, A::Sunsetter],
+                    ]),
+                ],
+            ],
+            L::MainTheatre => &[
+                &[
+                    Lock::Location(L::TheatreEntrance),
+                    Lock::Movement(&[
+                        &[A::ClingGem],
+                        &[A::SunGreaves],
+                        &[A::Sunsetter, A::HeliacalPower],
                     ]),
                 ],
                 &[
@@ -140,7 +151,7 @@ impl Location {
             L::EmptyBailey => "ZONE_Exterior",
             L::TowerRuins => "Zone_Tower",
             L::Hole | L::MainUnderbelly => "Zone_Caves",
-            L::PillarRoom | L::MainTheatre => "Zone_Theatre",
+            L::PillarRoom | L::TheatreEntrance | L::MainTheatre => "Zone_Theatre",
             L::FinalBoss => "Zone_PrincessChambers",
         }
     }
@@ -153,7 +164,7 @@ impl Location {
             L::EmptyBailey => "Empty Bailey",
             L::TowerRuins => "Tower Ruins",
             L::Hole | L::MainUnderbelly => "Underbelly",
-            L::PillarRoom | L::MainTheatre => "Twilight Theatre",
+            L::PillarRoom | L::TheatreEntrance | L::MainTheatre => "Twilight Theatre",
             L::FinalBoss => "Princess",
         }
     }
