@@ -99,7 +99,7 @@ pub const CHECKS: [Check; 49] = [
         locks: &[&[Lock::SmallKey]],
     },
     Check {
-        description: "tucked deep in the bouncer room",
+        description: "tucked deep in a corner in the bouncer room",
         location: L::CastleSansa,
         index: 495,
         drop: Drop::Health,
