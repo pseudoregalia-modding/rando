@@ -13,31 +13,34 @@ fn accessible(
     locks.iter().any(|locks| {
         locks.iter().all(|lock| match lock {
             Lock::Location(loc) => locations.contains(loc),
-            Lock::Movement(movement) => movement.iter().any(|ability| match app.progressive {
-                true if !ability.contains(&Ability::SolarWind) => ability.iter().all(|ability| {
-                    obtainable.iter().any(|drop| match drop {
-                        Drop::Ability(Ability::Slide) => {
-                            ability == &Ability::Slide || ability == &Ability::SolarWind
-                        }
+            Lock::Movement(movement) => movement.iter().any(|ability| {
+                ability.iter().all(|ability| match ability {
+                    Ability::Slide if app.progressive => obtainable.iter().any(|drop| {
+                        matches!(
+                            drop,
+                            Drop::Ability(Ability::Slide) | Drop::Ability(Ability::SolarWind)
+                        )
+                    }),
+                    Ability::SolarWind if app.progressive => {
+                        obtainable.contains(&Drop::Ability(Ability::Slide))
+                            && obtainable.contains(&Drop::Ability(Ability::SolarWind))
+                    }
+                    Ability::Strikebreak if app.progressive => obtainable.iter().any(|drop| {
+                        matches!(
+                            drop,
+                            Drop::Ability(Ability::Strikebreak)
+                                | Drop::Ability(Ability::SoulCutter)
+                        )
+                    }),
+                    Ability::SoulCutter if app.progressive => {
+                        obtainable.contains(&Drop::Ability(Ability::Strikebreak))
+                            && obtainable.contains(&Drop::Ability(Ability::SoulCutter))
+                    }
+                    ability => obtainable.iter().any(|drop| match drop {
                         Drop::Ability(a) => a == ability,
                         _ => false,
-                    })
-                }),
-                true if !ability.contains(&Ability::SoulCutter) => ability.iter().all(|ability| {
-                    obtainable.iter().any(|drop| match drop {
-                        Drop::Ability(Ability::Strikebreak) => {
-                            ability == &Ability::Strikebreak || ability == &Ability::SoulCutter
-                        }
-                        Drop::Ability(a) => a == ability,
-                        _ => false,
-                    })
-                }),
-                _ => ability.iter().all(|ability| {
-                    obtainable.iter().any(|drop| match drop {
-                        Drop::Ability(a) => a == ability,
-                        _ => false,
-                    })
-                }),
+                    }),
+                })
             }),
             // need to decrement small keys :p
             Lock::SmallKey => obtainable.contains(&Drop::SmallKey),
