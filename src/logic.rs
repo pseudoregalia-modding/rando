@@ -14,6 +14,7 @@ pub enum Drop {
     BigKey,
     Health,
     Goatling(&'static [&'static str]),
+    Note,
 }
 
 impl std::fmt::Debug for Drop {
@@ -24,6 +25,7 @@ impl std::fmt::Debug for Drop {
             Drop::BigKey => f.write_str("Big Key"),
             Drop::Health => f.write_str("Health"),
             Drop::Goatling(_) => f.write_str("Goatling"),
+            Drop::Note => f.write_str("Note"),
         }
     }
 }

@@ -18,6 +18,7 @@ pub struct Rando {
     split: bool,
     progressive: bool,
     goatlings: bool,
+    notes: bool,
 }
 
 impl Rando {
@@ -74,6 +75,7 @@ impl Rando {
             split: get_bool("split"),
             progressive: get_bool("progressive"),
             goatlings: get_bool("goatlings"),
+            notes: get_bool("notes"),
         }
     }
     fn pak(&self) -> Result<std::io::BufReader<std::fs::File>, std::io::Error> {
@@ -144,7 +146,7 @@ impl eframe::App for Rando {
                 ui[0].checkbox(&mut self.goatlings, "Goatlings");
                 ui[1].checkbox(&mut self.small_keys, "Small keys");
                 ui[1].checkbox(&mut self.big_keys, "Big keys");
-                ui[1].add_enabled(false, egui::Checkbox::new(&mut false, "Pages?"));
+                ui[1].checkbox(&mut self.notes, "Notes");
                 ui[2].add_enabled(
                     self.abilities,
                     egui::Checkbox::new(&mut self.split, "Split greaves"),
@@ -223,5 +225,6 @@ impl eframe::App for Rando {
         storage.set_string("split", self.split.to_string());
         storage.set_string("progressive", self.progressive.to_string());
         storage.set_string("goatlings", self.goatlings.to_string());
+        storage.set_string("notes", self.notes.to_string());
     }
 }

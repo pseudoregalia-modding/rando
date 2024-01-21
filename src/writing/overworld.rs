@@ -159,6 +159,7 @@ pub fn write(
                                     },
                                 }
                             }
+                            Drop::Note if class != "BP_Note" => replace(52, false)?,
                             _ => ()
                         }
                     }
