@@ -3,7 +3,7 @@ use super::*;
 use Ability as A;
 use Location as L;
 
-pub const CHECKS: [Check; 61] = [
+pub const CHECKS: [Check; 65] = [
     // not listing dream breaker since there's nothing it could be replaced by
     Check {
         description: "where the first health piece is",
@@ -258,6 +258,17 @@ pub const CHECKS: [Check; 61] = [
         ])]],
     },
     Check {
+        description: "the note next to the egg nest",
+        location: L::MainLibrary,
+        index: 240,
+        drop: Drop::Note,
+        locks: &[&[Lock::Movement(&[
+            &[A::SunGreaves],
+            &[A::ClingGem],
+            &[A::Slide, A::SolarWind],
+        ])]],
+    },
+    Check {
         description: "in the buttress room",
         location: L::MainLibrary,
         index: 213,
@@ -492,6 +503,17 @@ pub const CHECKS: [Check; 61] = [
         ])]],
     },
     Check {
+        description: "the note on a high ledge in the big room",
+        location: L::MainUnderbelly,
+        index: 702,
+        drop: Drop::Note,
+        locks: &[&[Lock::Movement(&[
+            &[A::Slide, A::SolarWind, A::HeliacalPower, A::Sunsetter],
+            &[A::ClingGem, A::HeliacalPower, A::Sunsetter],
+            &[A::SunGreaves, A::HeliacalPower, A::Sunsetter]
+        ])]],
+    },
+    Check {
         description: "black hole parkour behind strikebreak wall",
         location: L::MainUnderbelly,
         index: 835,
@@ -512,6 +534,29 @@ pub const CHECKS: [Check; 61] = [
             Lock::SmallKey,
             Lock::Movement(&[&[A::Slide, A::SunGreaves], &[A::Slide, A::Sunsetter]]),
         ]],
+    },
+    Check {
+        description: "the note behind the locked door",
+        location: L::MainUnderbelly,
+        index: 703,
+        drop: Drop::Note,
+        locks: &[&[
+            Lock::SmallKey,
+            Lock::Movement(&[&[A::Slide, A::SunGreaves], &[A::Slide, A::Sunsetter]]),
+        ]],
+    },
+    Check {
+        description: "the note near the empty bailey entrance",
+        location: L::MainUnderbelly,
+        index: 704,
+        drop: Drop::Note,
+        locks: &[&[Lock::Movement(&[
+            &[A::SunGreaves],
+            &[A::HeliacalPower, A::Sunsetter],
+            &[A::ClingGem],
+            &[A::AscendantLight],
+            &[A::Slide, A::SolarWind]
+        ])]],
     },
     Check {
         description: "on top of the big building",
