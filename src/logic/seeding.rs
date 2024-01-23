@@ -6,6 +6,7 @@ fn accessible(
     locations: &[Location],
     obtainable: &[Drop],
     app: &crate::Rando,
+    ctx: Option<(usize, &Drop)>,
 ) -> bool {
     if locks.is_empty() {
         return true;
@@ -14,38 +15,71 @@ fn accessible(
         locks.iter().all(|lock| match lock {
             Lock::Location(loc) => locations.contains(loc),
             Lock::Movement(movement) => movement.iter().any(|ability| {
-                ability.iter().all(|ability| match ability {
-                    Ability::Slide if app.progressive => obtainable.iter().any(|drop| {
-                        matches!(
-                            drop,
-                            Drop::Ability(Ability::Slide) | Drop::Ability(Ability::SolarWind)
-                        )
-                    }),
-                    Ability::SolarWind if app.progressive => {
-                        obtainable.contains(&Drop::Ability(Ability::Slide))
-                            && obtainable.contains(&Drop::Ability(Ability::SolarWind))
+                ability.iter().all(|ability| {
+                    // in the cases where requirements are after obtaining
+                    let case = match ctx {
+                        Some((356, Drop::Ability(Ability::Slide))) => {
+                            [Drop::Ability(Ability::Slide)].as_slice()
+                        }
+                        Some((267, Drop::Ability(Ability::SunGreaves))) => {
+                            [Drop::Ability(Ability::SunGreaves)].as_slice()
+                        }
+                        Some((393, Drop::Ability(Ability::Strikebreak))) => {
+                            [Drop::Ability(Ability::Strikebreak)].as_slice()
+                        }
+                        Some((392, Drop::Ability(Ability::Sunsetter))) => {
+                            [Drop::Ability(Ability::Sunsetter)].as_slice()
+                        }
+                        Some((104, Drop::Ability(Ability::SolarWind))) => {
+                            [Drop::Ability(Ability::SolarWind)].as_slice()
+                        }
+                        Some((1079, Drop::Ability(Ability::SoulCutter))) => {
+                            [Drop::Ability(Ability::SoulCutter)].as_slice()
+                        }
+                        _ => [].as_slice(),
+                    };
+                    match ability {
+                        Ability::Slide if app.progressive => {
+                            obtainable.iter().chain(case).any(|drop| {
+                                matches!(
+                                    drop,
+                                    Drop::Ability(Ability::Slide)
+                                        | Drop::Ability(Ability::SolarWind)
+                                )
+                            })
+                        }
+                        Ability::SolarWind if app.progressive => {
+                            obtainable.contains(&Drop::Ability(Ability::Slide))
+                                && obtainable.contains(&Drop::Ability(Ability::SolarWind))
+                        }
+                        Ability::Strikebreak if app.progressive => {
+                            obtainable.iter().chain(case).any(|drop| {
+                                matches!(
+                                    drop,
+                                    Drop::Ability(Ability::Strikebreak)
+                                        | Drop::Ability(Ability::SoulCutter)
+                                )
+                            })
+                        }
+                        Ability::SoulCutter if app.progressive => {
+                            obtainable.contains(&Drop::Ability(Ability::Strikebreak))
+                                && obtainable.contains(&Drop::Ability(Ability::SoulCutter))
+                        }
+                        Ability::ClingGem if app.split_cling => {
+                            obtainable
+                                .iter()
+                                .chain(case)
+                                .fold(0, |acc, drop| match drop {
+                                    Drop::Ability(Ability::ClingGem) => acc + 1,
+                                    _ => acc,
+                                })
+                                == 3
+                        }
+                        ability => obtainable.iter().chain(case).any(|drop| match drop {
+                            Drop::Ability(a) => a == ability,
+                            _ => false,
+                        }),
                     }
-                    Ability::Strikebreak if app.progressive => obtainable.iter().any(|drop| {
-                        matches!(
-                            drop,
-                            Drop::Ability(Ability::Strikebreak)
-                                | Drop::Ability(Ability::SoulCutter)
-                        )
-                    }),
-                    Ability::SoulCutter if app.progressive => {
-                        obtainable.contains(&Drop::Ability(Ability::Strikebreak))
-                            && obtainable.contains(&Drop::Ability(Ability::SoulCutter))
-                    }
-                    Ability::ClingGem if app.split_cling => {
-                        obtainable.iter().fold(0, |acc, drop| match drop {
-                            Drop::Ability(Ability::ClingGem) => acc + 1,
-                            _ => acc,
-                        }) == 3
-                    }
-                    ability => obtainable.iter().any(|drop| match drop {
-                        Drop::Ability(a) => a == ability,
-                        _ => false,
-                    }),
                 })
             }),
             // need to decrement small keys :p
@@ -71,7 +105,9 @@ fn possible(checks: &[Check], app: &crate::Rando) -> bool {
     let mut obtainable_len = 0;
     loop {
         for loc in Location::iter() {
-            if !locations.contains(&loc) && accessible(loc.locks(), &locations, &obtainable, app) {
+            if !locations.contains(&loc)
+                && accessible(loc.locks(), &locations, &obtainable, app, None)
+            {
                 locations.push(loc)
             }
         }
@@ -81,7 +117,13 @@ fn possible(checks: &[Check], app: &crate::Rando) -> bool {
             .rev()
             .filter_map(|(i, check)| {
                 (locations.contains(&check.location)
-                    && accessible(check.locks, &locations, &obtainable, app))
+                    && accessible(
+                        check.locks,
+                        &locations,
+                        &obtainable,
+                        app,
+                        Some((check.index, &check.drop)),
+                    ))
                 .then_some(i)
             })
             .collect();
