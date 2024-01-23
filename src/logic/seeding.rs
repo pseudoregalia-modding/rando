@@ -110,6 +110,7 @@ fn possible(checks: &[Check], app: &crate::Rando) -> bool {
 
 pub fn randomise(app: &crate::Rando) -> Result<(), String> {
     let in_pool = |check: &Check| match &check.drop {
+        Drop::Ability(Ability::ClingGem) => !app.vanilla_cling,
         Drop::Ability(_) => app.abilities,
         Drop::SmallKey => app.small_keys,
         Drop::BigKey => app.big_keys,
@@ -118,7 +119,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
         Drop::Note => app.notes,
     };
     let (mut pool, unrandomised): (Vec<_>, Vec<_>) = CHECKS.into_iter().partition(in_pool);
-    if app.split {
+    if app.split_greaves {
         if let Some(i) = pool
             .iter()
             .position(|check| check.drop == Drop::Ability(Ability::SunGreaves))
@@ -169,9 +170,36 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
         ]);
     }
     if pool.len() <= 1
-        || (!app.abilities && app.small_keys && !app.big_keys && !app.health)
-        || (!app.abilities && !app.small_keys && app.big_keys && !app.health)
-        || (!app.abilities && !app.small_keys && !app.big_keys && app.health)
+        || (!app.abilities
+            && app.small_keys
+            && !app.big_keys
+            && !app.health
+            && !app.goatlings
+            && !app.notes)
+        || (!app.abilities
+            && !app.small_keys
+            && app.big_keys
+            && !app.health
+            && !app.goatlings
+            && !app.notes)
+        || (!app.abilities
+            && !app.small_keys
+            && !app.big_keys
+            && app.health
+            && !app.goatlings
+            && !app.notes)
+        || (!app.abilities
+            && !app.small_keys
+            && !app.big_keys
+            && !app.health
+            && app.goatlings
+            && !app.notes)
+        || (!app.abilities
+            && !app.small_keys
+            && !app.big_keys
+            && !app.health
+            && !app.goatlings
+            && app.notes)
     {
         return Err("you haven't picked enough checks for anything to be random - include more checks in the pool".to_string());
     }
@@ -183,7 +211,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
         use rand::seq::SliceRandom;
         drops.shuffle(&mut rng);
         for (check, drop) in checks.iter_mut().zip(drops.into_iter()) {
-            check.drop = drop;
+            check.drop = drop
         }
         checks.extend_from_slice(&unrandomised);
         if possible(&checks, app) {

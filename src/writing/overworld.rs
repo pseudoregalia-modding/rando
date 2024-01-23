@@ -24,7 +24,7 @@ pub fn write(
                     )?;
                     match location {
                         "ZONE_Dungeon" => transplant(36, &mut map, &donor)?,
-                        "Zone_Library" if app.split => {
+                        "Zone_Library" if app.split_greaves => {
                             use unreal_asset::types::vector::Vector;
                             delete(267, &mut map);
                             let mut place = |location: Vector<f64>| -> Result<(),Error>{

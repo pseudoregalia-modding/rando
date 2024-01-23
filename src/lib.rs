@@ -15,10 +15,11 @@ pub struct Rando {
     small_keys: bool,
     big_keys: bool,
     health: bool,
-    split: bool,
+    split_greaves: bool,
     progressive: bool,
     goatlings: bool,
     notes: bool,
+    vanilla_cling: bool,
 }
 
 impl Rando {
@@ -72,10 +73,11 @@ impl Rando {
             small_keys: get_bool("small keys"),
             big_keys: get_bool("big keys"),
             health: get_bool("health"),
-            split: get_bool("split"),
+            split_greaves: get_bool("split greaves"),
             progressive: get_bool("progressive"),
             goatlings: get_bool("goatlings"),
             notes: get_bool("notes"),
+            vanilla_cling: get_bool("vanilla cling"),
         }
     }
     fn pak(&self) -> Result<std::io::BufReader<std::fs::File>, std::io::Error> {
@@ -139,21 +141,28 @@ impl eframe::App for Rando {
             });
             ui.columns(3, |ui| {
                 if ui[0].checkbox(&mut self.abilities, "Abilities").changed() && !self.abilities {
-                    self.split = false;
+                    self.split_greaves = false;
                     self.progressive = false;
+                    self.vanilla_cling = false;
                 }
                 ui[0].checkbox(&mut self.health, "Health");
                 ui[0].checkbox(&mut self.goatlings, "Goatlings");
+                ui[0].add_enabled(false, egui::Checkbox::new(&mut false, "Spawn?"));
                 ui[1].checkbox(&mut self.small_keys, "Small keys");
                 ui[1].checkbox(&mut self.big_keys, "Big keys");
                 ui[1].checkbox(&mut self.notes, "Notes");
+                ui[1].add_enabled(false, egui::Checkbox::new(&mut false, "Levers?"));
                 ui[2].add_enabled(
                     self.abilities,
-                    egui::Checkbox::new(&mut self.split, "Split greaves"),
+                    egui::Checkbox::new(&mut self.split_greaves, "Split greaves"),
                 );
                 ui[2].add_enabled(
                     self.abilities,
                     egui::Checkbox::new(&mut self.progressive, "Progressive items"),
+                );
+                ui[2].add_enabled(
+                    self.abilities,
+                    egui::Checkbox::new(&mut self.vanilla_cling, "Vanilla cling"),
                 );
                 ui[2].add_enabled(false, egui::Checkbox::new(&mut false, "Split cling?"));
             });
@@ -222,9 +231,10 @@ impl eframe::App for Rando {
         storage.set_string("small keys", self.small_keys.to_string());
         storage.set_string("big keys", self.big_keys.to_string());
         storage.set_string("health", self.health.to_string());
-        storage.set_string("split", self.split.to_string());
+        storage.set_string("split greaves", self.split_greaves.to_string());
         storage.set_string("progressive", self.progressive.to_string());
         storage.set_string("goatlings", self.goatlings.to_string());
         storage.set_string("notes", self.notes.to_string());
+        storage.set_string("vanilla cling", self.vanilla_cling.to_string());
     }
 }
