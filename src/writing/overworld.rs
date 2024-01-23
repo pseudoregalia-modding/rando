@@ -37,6 +37,19 @@ pub fn write(
                             place(Vector::new(-4650.0, 9200.0, -250.0))?;
                             place(Vector::new(-3650.0, 9200.0, -250.0))?;
                         },
+                        "Zone_Tower" if app.split_cling => {
+                            use unreal_asset::types::vector::Vector;
+                            delete(89, &mut map);
+                            let mut place = |location: Vector<f64>| -> Result<(),Error>{
+                                let insert = map.asset_data.exports.len();
+                                transplant(59, &mut map, &donor)?;
+                                set_location(insert, &mut map, location);
+                                Ok(())
+                            };
+                            place(Vector::new(13350.0, 5250.0, 4150.0))?;
+                            place(Vector::new(13850.0, 5250.0, 4150.0))?;
+                            place(Vector::new(12850.0, 5250.0, 4150.0))?;
+                        }
                         _ => ()
                     }
                     for Check { mut index, drop, .. } in checks {

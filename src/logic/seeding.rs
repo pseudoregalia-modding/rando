@@ -36,6 +36,12 @@ fn accessible(
                         obtainable.contains(&Drop::Ability(Ability::Strikebreak))
                             && obtainable.contains(&Drop::Ability(Ability::SoulCutter))
                     }
+                    Ability::ClingGem if app.split_cling => {
+                        obtainable.iter().fold(0, |acc, drop| match drop {
+                            Drop::Ability(Ability::ClingGem) => acc + 1,
+                            _ => acc,
+                        }) == 3
+                    }
                     ability => obtainable.iter().any(|drop| match drop {
                         Drop::Ability(a) => a == ability,
                         _ => false,
@@ -165,6 +171,50 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
                     &[A::SunGreaves, A::HeliacalPower],
                     &[A::ClingGem],
                     &[A::Slide, A::SolarWind],
+                ])]],
+            },
+        ]);
+    }
+    if app.split_cling {
+        if let Some(i) = pool
+            .iter()
+            .position(|check| check.drop == Drop::Ability(Ability::ClingGem))
+        {
+            pool.remove(i);
+        }
+        use Ability as A;
+        pool.extend([
+            Check {
+                description: "where cling gem normally is",
+                location: Location::TowerRuins,
+                index: 89,
+                drop: Drop::Ability(A::ClingGem),
+                locks: &[&[Lock::Movement(&[
+                    &[A::ClingGem],
+                    &[A::SunGreaves],
+                    &[A::HeliacalPower, A::Sunsetter],
+                ])]],
+            },
+            Check {
+                description: "where cling gem normally is",
+                location: Location::TowerRuins,
+                index: 95,
+                drop: Drop::Ability(A::ClingGem),
+                locks: &[&[Lock::Movement(&[
+                    &[A::ClingGem],
+                    &[A::SunGreaves],
+                    &[A::HeliacalPower, A::Sunsetter],
+                ])]],
+            },
+            Check {
+                description: "where cling gem normally is",
+                location: Location::TowerRuins,
+                index: 101,
+                drop: Drop::Ability(A::ClingGem),
+                locks: &[&[Lock::Movement(&[
+                    &[A::ClingGem],
+                    &[A::SunGreaves],
+                    &[A::HeliacalPower, A::Sunsetter],
                 ])]],
             },
         ]);

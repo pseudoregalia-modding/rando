@@ -72,6 +72,16 @@ pub fn write(
             include_bytes!("assets/Progressive.uexp"),
         )?;
     }
+    if app.split_cling {
+        mod_pak.write_file(
+            "pseudoregalia/Content/Blueprints/SplitCling.uasset",
+            include_bytes!("assets/SplitCling.uasset"),
+        )?;
+        mod_pak.write_file(
+            "pseudoregalia/Content/Blueprints/SplitCling.uexp",
+            include_bytes!("assets/SplitCling.uexp"),
+        )?;
+    }
     mod_pak.write_index()?;
     Ok(())
 }
