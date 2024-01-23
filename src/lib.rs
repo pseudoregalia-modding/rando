@@ -20,6 +20,7 @@ pub struct Rando {
     goatlings: bool,
     notes: bool,
     vanilla_cling: bool,
+    split_cling: bool,
 }
 
 impl Rando {
@@ -78,6 +79,7 @@ impl Rando {
             goatlings: get_bool("goatlings"),
             notes: get_bool("notes"),
             vanilla_cling: get_bool("vanilla cling"),
+            split_cling: get_bool("split cling"),
         }
     }
     fn pak(&self) -> Result<std::io::BufReader<std::fs::File>, std::io::Error> {
@@ -164,7 +166,10 @@ impl eframe::App for Rando {
                     self.abilities,
                     egui::Checkbox::new(&mut self.vanilla_cling, "Vanilla cling"),
                 );
-                ui[2].add_enabled(false, egui::Checkbox::new(&mut false, "Split cling?"));
+                ui[2].add_enabled(
+                    self.abilities,
+                    egui::Checkbox::new(&mut self.split_cling, "Split cling?"),
+                );
             });
             ui.horizontal(|ui| {
                 ui.spacing_mut().item_spacing.x = ui.fonts(|fonts| {
@@ -236,5 +241,6 @@ impl eframe::App for Rando {
         storage.set_string("goatlings", self.goatlings.to_string());
         storage.set_string("notes", self.notes.to_string());
         storage.set_string("vanilla cling", self.vanilla_cling.to_string());
+        storage.set_string("split cling", self.split_cling.to_string());
     }
 }

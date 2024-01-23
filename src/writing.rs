@@ -64,12 +64,12 @@ pub fn write(
     overworld::write(checks, app, &pak, &mut mod_pak)?;
     if app.progressive {
         mod_pak.write_file(
-            "pseudoregalia/Content/Blueprints/Upgrade.uasset",
-            include_bytes!("assets/Upgrade.uasset"),
+            "pseudoregalia/Content/Blueprints/Progressive.uasset",
+            include_bytes!("assets/Progressive.uasset"),
         )?;
         mod_pak.write_file(
-            "pseudoregalia/Content/Blueprints/Upgrade.uexp",
-            include_bytes!("assets/Upgrade.uexp"),
+            "pseudoregalia/Content/Blueprints/Progressive.uexp",
+            include_bytes!("assets/Progressive.uexp"),
         )?;
     }
     mod_pak.write_index()?;
