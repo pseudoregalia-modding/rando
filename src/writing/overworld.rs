@@ -177,6 +177,9 @@ pub fn write(
                             _ => ()
                         }
                     }
+                    if app.split_cling {
+                        transplant(65, &mut map, &donor)?;
+                    }
                     map.rebuild_name_map();
                     let mut asset = std::io::Cursor::new(vec![]);
                     let mut bulk = std::io::Cursor::new(vec![]);

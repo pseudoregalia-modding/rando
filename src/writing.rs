@@ -81,6 +81,22 @@ pub fn write(
             "pseudoregalia/Content/Blueprints/SplitCling.uexp",
             include_bytes!("assets/SplitCling.uexp"),
         )?;
+        mod_pak.write_file(
+            "pseudoregalia/Content/Blueprints/WallRunClingLimit.uasset",
+            include_bytes!("assets/WallRunClingLimit.uasset"),
+        )?;
+        mod_pak.write_file(
+            "pseudoregalia/Content/Blueprints/WallRunClingLimit.uexp",
+            include_bytes!("assets/WallRunClingLimit.uexp"),
+        )?;
+        mod_pak.write_file(
+            "pseudoregalia/Content/Blueprints/LimitSetter.uasset",
+            include_bytes!("assets/LimitSetter.uasset"),
+        )?;
+        mod_pak.write_file(
+            "pseudoregalia/Content/Blueprints/LimitSetter.uexp",
+            include_bytes!("assets/LimitSetter.uexp"),
+        )?;
     }
     mod_pak.write_index()?;
     Ok(())

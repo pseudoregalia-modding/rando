@@ -217,13 +217,25 @@ impl eframe::App for Rando {
                     .button(egui::RichText::new("generate and install seed").size(33.0))
                     .clicked()
                 {
-                    std::fs::remove_dir_all(self.pak.join("rando_p")).unwrap_or_default();
                     notify!(
                         self,
                         logic::randomise(self),
                         "seed has been generated, written and installed"
                     );
-                    std::fs::remove_dir_all(self.pak.join("rando_p")).unwrap_or_default();
+                    match std::env::var_os("USERPROFILE")
+                        .map(std::path::PathBuf::from)
+                        .map(|path| path.join("AppData/Local/pseudoregalia/Saved/SaveGames"))
+                        .filter(|path| path.exists())
+                        .or_else(|| rfd::FileDialog::new().set_title("save folder couldn't be found - please select the location if you have created saves").pick_folder()){
+                            Some(saves) => if let Ok(dir) = saves.read_dir() {
+                                for cling in dir.filter_map(Result::ok).filter_map(|file| (file.file_name().to_str().is_some_and(|name| name.starts_with("Cling Gem File"))).then(|| file.path())) {
+                                    if let Err(e) = std::fs::remove_file(cling) {
+                                        self.notifs.open_dialog(Some("owo"), Some(e), Some(egui_modal::Icon::Error))
+                                    }
+                                }
+                            },
+                            None => self.notifs.open_dialog(Some("owo"), Some("no valid save folder could be found"), Some(egui_modal::Icon::Error)),
+                        }
                 }
             });
             self.notifs.show_dialog();
