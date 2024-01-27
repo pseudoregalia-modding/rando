@@ -15,6 +15,7 @@ pub enum Drop {
     Health,
     Goatling(&'static [&'static str]),
     Note,
+    Chair,
 }
 
 impl std::fmt::Debug for Drop {
@@ -26,6 +27,7 @@ impl std::fmt::Debug for Drop {
             Drop::Health => f.write_str("Health"),
             Drop::Goatling(_) => f.write_str("Goatling"),
             Drop::Note => f.write_str("Note"),
+            Drop::Chair => f.write_str("Chair"),
         }
     }
 }

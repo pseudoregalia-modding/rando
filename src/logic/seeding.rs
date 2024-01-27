@@ -158,13 +158,13 @@ fn possible(checks: &[Check], app: &crate::Rando) -> bool {
 
 pub fn randomise(app: &crate::Rando) -> Result<(), String> {
     let in_pool = |check: &Check| match &check.drop {
-        Drop::Ability(Ability::ClingGem) => !app.vanilla_cling,
         Drop::Ability(_) => app.abilities,
         Drop::SmallKey => app.small_keys,
         Drop::BigKey => app.big_keys,
         Drop::Health => app.health,
         Drop::Goatling(_) => app.goatlings,
         Drop::Note => app.notes,
+        Drop::Chair => app.chairs,
     };
     let (mut pool, unrandomised): (Vec<_>, Vec<_>) = CHECKS.into_iter().partition(in_pool);
     if app.split_greaves {
@@ -267,31 +267,43 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
             && !app.big_keys
             && !app.health
             && !app.goatlings
-            && !app.notes)
+            && !app.notes
+            && !app.chairs)
         || (!app.abilities
             && !app.small_keys
             && app.big_keys
             && !app.health
             && !app.goatlings
-            && !app.notes)
+            && !app.notes
+            && !app.chairs)
         || (!app.abilities
             && !app.small_keys
             && !app.big_keys
             && app.health
             && !app.goatlings
-            && !app.notes)
+            && !app.notes
+            && !app.chairs)
         || (!app.abilities
             && !app.small_keys
             && !app.big_keys
             && !app.health
             && app.goatlings
-            && !app.notes)
+            && !app.notes
+            && !app.chairs)
         || (!app.abilities
             && !app.small_keys
             && !app.big_keys
             && !app.health
             && !app.goatlings
-            && app.notes)
+            && app.notes
+            && !app.chairs)
+        || (!app.abilities
+            && !app.small_keys
+            && !app.big_keys
+            && !app.health
+            && !app.goatlings
+            && !app.notes
+            && app.chairs)
     {
         return Err("you haven't picked enough checks for anything to be random - include more checks in the pool".to_string());
     }

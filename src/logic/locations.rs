@@ -15,6 +15,7 @@ pub enum Location {
     MainUnderbelly,
     PillarRoom,
     TheatreEntrance,
+    OtherTheatrePath,
     MainTheatre,
     FinalBoss,
 }
@@ -65,6 +66,21 @@ impl Location {
                 Lock::Location(L::SansaKeep),
                 Lock::Movement(&[&[A::HeliacalPower], &[A::SunGreaves], &[A::Sunsetter]]),
             ]],
+            L::OtherTheatrePath => &[
+                &[
+                    Lock::Location(L::SansaKeep),
+                    Lock::Movement(&[&[A::AscendantLight], &[A::HeliacalPower], &[A::ClingGem]]),
+                ],
+                &[
+                    Lock::Location(L::Prison),
+                    Lock::Movement(&[
+                        &[A::AscendantLight],
+                        &[A::Sunsetter, A::HeliacalPower],
+                        &[A::SunGreaves],
+                        &[A::ClingGem],
+                    ]),
+                ],
+            ],
             L::MainUnderbelly => &[
                 &[Lock::Location(L::Prison)],
                 // just so I don't need to rewrite conditions
@@ -116,15 +132,7 @@ impl Location {
                     ]),
                 ],
                 &[
-                    Lock::Location(L::SansaKeep),
-                    Lock::Movement(&[
-                        &[A::ClingGem, A::SunGreaves],
-                        &[A::ClingGem, A::HeliacalPower],
-                        &[A::Slide, A::SolarWind, A::ClingGem],
-                    ]),
-                ],
-                &[
-                    Lock::Location(L::Prison),
+                    Lock::Location(L::OtherTheatrePath),
                     Lock::Movement(&[
                         &[A::ClingGem, A::SunGreaves],
                         &[A::ClingGem, A::HeliacalPower],
@@ -151,7 +159,9 @@ impl Location {
             L::EmptyBailey => "ZONE_Exterior",
             L::TowerRuins => "Zone_Tower",
             L::Hole | L::MainUnderbelly => "Zone_Caves",
-            L::PillarRoom | L::TheatreEntrance | L::MainTheatre => "Zone_Theatre",
+            L::PillarRoom | L::TheatreEntrance | L::OtherTheatrePath | L::MainTheatre => {
+                "Zone_Theatre"
+            }
             L::FinalBoss => "Zone_PrincessChambers",
         }
     }
@@ -164,7 +174,9 @@ impl Location {
             L::EmptyBailey => "Empty Bailey",
             L::TowerRuins => "Tower Ruins",
             L::Hole | L::MainUnderbelly => "Underbelly",
-            L::PillarRoom | L::TheatreEntrance | L::MainTheatre => "Twilight Theatre",
+            L::PillarRoom | L::TheatreEntrance | L::OtherTheatrePath | L::MainTheatre => {
+                "Twilight Theatre"
+            }
             L::FinalBoss => "Princess",
         }
     }

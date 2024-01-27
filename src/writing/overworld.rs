@@ -174,6 +174,7 @@ pub fn write(
                                 }
                             }
                             Drop::Note if class != "BP_Note" => replace(52, false)?,
+                            Drop::Chair if class != "BP_RestChair" => replace(67, false)?,
                             _ => ()
                         }
                     }

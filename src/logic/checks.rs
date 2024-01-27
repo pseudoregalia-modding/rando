@@ -3,7 +3,7 @@ use super::*;
 use Ability as A;
 use Location as L;
 
-pub const CHECKS: [Check; 65] = [
+pub const CHECKS: [Check; 80] = [
     // not listing dream breaker since there's nothing it could be replaced by
     Check {
         description: "where the first health piece is",
@@ -80,6 +80,27 @@ pub const CHECKS: [Check; 65] = [
             "They make me feel safe...",
             "I think i'm gonna lick it. I bet it's full of [#8ada1c, buoy, italics](minerals).",
         ]),
+        locks: &[],
+    },
+    Check {
+        description: "a chair next to the goatling who wants to lick the checkpoint",
+        location: L::CastleSansa,
+        index: 634,
+        drop: Drop::Chair,
+        locks: &[],
+    },
+    Check {
+        description: "a chair next to the goatling who wants to lick the checkpoint",
+        location: L::CastleSansa,
+        index: 635,
+        drop: Drop::Chair,
+        locks: &[],
+    },
+    Check {
+        description: "a chair next to the goatling who wants to lick the checkpoint",
+        location: L::CastleSansa,
+        index: 636,
+        drop: Drop::Chair,
         locks: &[],
     },
     Check {
@@ -210,7 +231,7 @@ pub const CHECKS: [Check; 65] = [
         ])]],
     },
     Check {
-        description: "the goatling in the pavilion",
+        description: "the goatling in the gazebo",
         location: L::CastleSansa,
         index: 632,
         drop: Drop::Goatling(&[
@@ -218,6 +239,13 @@ pub const CHECKS: [Check; 65] = [
             "But the handmaiden has run out of her special ingredient.",
             "I guess the princess doesn't really want anybody else's tea...",
         ]),
+        locks: &[],
+    },
+    Check {
+        description: "the chair in the gazebo",
+        location: L::CastleSansa,
+        index: 637,
+        drop: Drop::Chair,
         locks: &[],
     },
     Check {
@@ -245,6 +273,13 @@ pub const CHECKS: [Check; 65] = [
     },
     // Listless Library
     Check {
+        description: "the chair at the entrance",
+        location: L::MainLibrary,
+        index: 241,
+        drop: Drop::Chair,
+        locks: &[],
+    },
+    Check {
         description: "where sun greaves normally are",
         location: L::MainLibrary,
         index: 267,
@@ -258,10 +293,34 @@ pub const CHECKS: [Check; 65] = [
         ])]],
     },
     Check {
+        description: "the chair after the normal sun greaves location",
+        location: L::MainLibrary,
+        index: 243,
+        drop: Drop::Chair,
+        locks: &[&[Lock::Movement(&[
+            &[A::Slide, A::SunGreaves],
+            &[A::Slide, A::HeliacalPower],
+            &[A::SunGreaves, A::HeliacalPower],
+            &[A::ClingGem],
+            &[A::Slide, A::SolarWind],
+        ])]],
+    },
+    Check {
         description: "the note next to the egg nest",
         location: L::MainLibrary,
         index: 240,
         drop: Drop::Note,
+        locks: &[&[Lock::Movement(&[
+            &[A::SunGreaves],
+            &[A::ClingGem],
+            &[A::Slide, A::SolarWind],
+        ])]],
+    },
+    Check {
+        description: "the chair next to the egg nest",
+        location: L::MainLibrary,
+        index: 242,
+        drop: Drop::Chair,
         locks: &[&[Lock::Movement(&[
             &[A::SunGreaves],
             &[A::ClingGem],
@@ -311,6 +370,13 @@ pub const CHECKS: [Check; 65] = [
         drop: Drop::Goatling(&[
             "[6rr](.....c.....y..u...i....y.......ce....)"
         ]),
+        locks: &[],
+    },
+    Check {
+        description: "the chair collapsing out of reality",
+        location: L::SansaKeep,
+        index: 325,
+        drop: Drop::Chair,
         locks: &[],
     },
     Check {
@@ -373,6 +439,24 @@ pub const CHECKS: [Check; 65] = [
         location: L::SansaKeep,
         index: 227,
         drop: Drop::BigKey,
+        locks: &[&[Lock::Movement(&[
+            &[A::AscendantLight, A::ClingGem, A::Sunsetter],
+            &[A::AscendantLight, A::ClingGem, A::SunGreaves],
+            &[A::AscendantLight, A::Sunsetter, A::SunGreaves],
+            &[
+                A::Slide,
+                A::SolarWind,
+                A::Sunsetter,
+                A::ClingGem,
+                A::SunGreaves,
+            ],
+        ])]],
+    },
+    Check {
+        description: "the chair in the middle of the parkour",
+        location: L::SansaKeep,
+        index: 326,
+        drop: Drop::Chair,
         locks: &[&[Lock::Movement(&[
             &[A::AscendantLight, A::ClingGem, A::Sunsetter],
             &[A::AscendantLight, A::ClingGem, A::SunGreaves],
@@ -600,6 +684,34 @@ pub const CHECKS: [Check; 65] = [
         ])]],
     },
     Check {
+        description: "a chair around the table",
+        location: L::OtherTheatrePath,
+        index: 949,
+        drop: Drop::Chair,
+        locks: &[],
+    },
+    Check {
+        description: "a chair around the table",
+        location: L::OtherTheatrePath,
+        index: 950,
+        drop: Drop::Chair,
+        locks: &[],
+    },
+    Check {
+        description: "a chair around the table",
+        location: L::OtherTheatrePath,
+        index: 946,
+        drop: Drop::Chair,
+        locks: &[],
+    },
+    Check {
+        description: "the chair next to the books",
+        location: L::OtherTheatrePath,
+        index: 951,
+        drop: Drop::Chair,
+        locks: &[],
+    },
+    Check {
         description: "the goatling who can eat 20 beans at least",
         location: L::TheatreEntrance,
         index: 937,
@@ -661,6 +773,23 @@ pub const CHECKS: [Check; 65] = [
                 &[A::ClingGem]
             ])
         ]],
+    },
+    Check {
+        description: "the chair near the courtyard",
+        location: L::MainTheatre,
+        index: 947,
+        drop: Drop::Chair,
+        locks: &[],
+    },
+    Check {
+        description: "the chair in the soul cutter zone",
+        location: L::MainTheatre,
+        index: 948,
+        drop: Drop::Chair,
+        locks: &[&[Lock::Movement(&[
+            &[A::Strikebreak, A::SoulCutter, A::SunGreaves],
+            &[A::Strikebreak, A::SoulCutter, A::ClingGem],
+        ])]],
     },
     Check {
         description: "behind three maximum security cages",

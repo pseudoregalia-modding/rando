@@ -19,7 +19,7 @@ pub struct Rando {
     progressive: bool,
     goatlings: bool,
     notes: bool,
-    vanilla_cling: bool,
+    chairs: bool,
     split_cling: bool,
 }
 
@@ -78,7 +78,7 @@ impl Rando {
             progressive: get_bool("progressive"),
             goatlings: get_bool("goatlings"),
             notes: get_bool("notes"),
-            vanilla_cling: get_bool("vanilla cling"),
+            chairs: get_bool("chairs"),
             split_cling: get_bool("split cling"),
         }
     }
@@ -144,8 +144,8 @@ impl eframe::App for Rando {
             ui.columns(3, |ui| {
                 if ui[0].checkbox(&mut self.abilities, "Abilities").changed() && !self.abilities {
                     self.split_greaves = false;
+                    self.split_cling = false;
                     self.progressive = false;
-                    self.vanilla_cling = false;
                 }
                 ui[0].checkbox(&mut self.health, "Health");
                 ui[0].checkbox(&mut self.goatlings, "Goatlings");
@@ -160,15 +160,12 @@ impl eframe::App for Rando {
                 );
                 ui[2].add_enabled(
                     self.abilities,
+                    egui::Checkbox::new(&mut self.split_cling, "Split cling"),
+                );
+                ui[2].checkbox(&mut self.chairs, "Chairs");
+                ui[2].add_enabled(
+                    self.abilities,
                     egui::Checkbox::new(&mut self.progressive, "Progressive items"),
-                );
-                ui[2].add_enabled(
-                    self.abilities,
-                    egui::Checkbox::new(&mut self.vanilla_cling, "Vanilla cling"),
-                );
-                ui[2].add_enabled(
-                    self.abilities,
-                    egui::Checkbox::new(&mut self.split_cling, "Split cling?"),
                 );
             });
             ui.horizontal(|ui| {
@@ -252,7 +249,7 @@ impl eframe::App for Rando {
         storage.set_string("progressive", self.progressive.to_string());
         storage.set_string("goatlings", self.goatlings.to_string());
         storage.set_string("notes", self.notes.to_string());
-        storage.set_string("vanilla cling", self.vanilla_cling.to_string());
+        storage.set_string("chairs", self.chairs.to_string());
         storage.set_string("split cling", self.split_cling.to_string());
     }
 }
