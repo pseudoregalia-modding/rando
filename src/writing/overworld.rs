@@ -46,9 +46,9 @@ pub fn write(
                                 set_location(insert, &mut map, location);
                                 Ok(())
                             };
+                            place(Vector::new(13350.0, 5750.0, 4150.0))?;
                             place(Vector::new(13350.0, 5250.0, 4150.0))?;
-                            place(Vector::new(13850.0, 5250.0, 4150.0))?;
-                            place(Vector::new(12850.0, 5250.0, 4150.0))?;
+                            place(Vector::new(13350.0, 4750.0, 4150.0))?;
                         }
                         _ => ()
                     }

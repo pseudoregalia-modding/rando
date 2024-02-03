@@ -229,7 +229,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
             Check {
                 description: "where cling gem normally is",
                 location: Location::TowerRuins,
-                index: 89,
+                index: 671,
                 drop: Drop::Ability(A::ClingGem),
                 locks: &[&[Lock::Movement(&[
                     &[A::ClingGem],
@@ -240,7 +240,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
             Check {
                 description: "where cling gem normally is",
                 location: Location::TowerRuins,
-                index: 95,
+                index: 677,
                 drop: Drop::Ability(A::ClingGem),
                 locks: &[&[Lock::Movement(&[
                     &[A::ClingGem],
@@ -251,7 +251,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
             Check {
                 description: "where cling gem normally is",
                 location: Location::TowerRuins,
-                index: 101,
+                index: 683,
                 drop: Drop::Ability(A::ClingGem),
                 locks: &[&[Lock::Movement(&[
                     &[A::ClingGem],
