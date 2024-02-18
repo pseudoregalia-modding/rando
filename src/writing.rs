@@ -53,14 +53,36 @@ pub fn write(
 ) -> Result<(), Error> {
     let mut sync = app.pak()?;
     let pak = repak::PakBuilder::new()
-        .oodle(|| OodleLZ_Decompress)
+        .oodle(|| {
+            Ok(|comp_buf, raw_buf| unsafe {
+                OodleLZ_Decompress(
+                    comp_buf.as_ptr(),
+                    comp_buf.len(),
+                    raw_buf.as_mut_ptr(),
+                    raw_buf.len(),
+                    1,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    std::ptr::null_mut(),
+                    0,
+                    3,
+                )
+            })
+        })
         .reader_with_version(&mut sync, repak::Version::V11)?;
-    let mut mod_pak = repak::PakBuilder::new().writer(
-        std::io::BufWriter::new(std::fs::File::create(app.pak.join("rando_p.pak"))?),
-        repak::Version::V9,
-        "../../../".to_string(),
-        None,
-    );
+    let mut mod_pak = repak::PakBuilder::new()
+        // for some reason it's not loading properly with compression
+        // .compression([repak::Compression::Zlib])
+        .writer(
+            std::io::BufWriter::new(std::fs::File::create(app.pak.join("rando_p.pak"))?),
+            repak::Version::V9,
+            "../../../".to_string(),
+            None,
+        );
     overworld::write(checks, app, &pak, &mut mod_pak)?;
     if app.progressive {
         mod_pak.write_file(
@@ -105,7 +127,7 @@ pub fn write(
 #[link(name = "oo2core_win64", kind = "static")]
 extern "C" {
     fn OodleLZ_Decompress(
-        compBuf: *mut u8,
+        compBuf: *const u8,
         compBufSize: usize,
         rawBuf: *mut u8,
         rawLen: usize,
