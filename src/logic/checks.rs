@@ -429,7 +429,9 @@ pub const CHECKS: [Check; 81] = [
         location: L::SansaKeep,
         index: 226,
         drop: Drop::SmallKey,
-        locks: &[],
+        locks: &[
+            &[Lock::Movement(&[&[A::DreamBreaker]])],
+        ],
     },
     Check {
         description: "tucked near the theatre entrance",
@@ -561,6 +563,7 @@ pub const CHECKS: [Check; 81] = [
         index: 446,
         drop: Drop::BigKey,
         locks: &[&[Lock::Movement(&[
+            A::DreamBreaker,
             &[A::Sunsetter, A::SoulCutter, A::AscendantLight, A::DreamBreaker],
             &[A::Sunsetter, A::SunGreaves, A::Slide, A::SolarWind],
             &[A::Sunsetter, A::SoulCutter, A::ClingGem],
