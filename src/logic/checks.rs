@@ -3,8 +3,15 @@ use super::*;
 use Ability as A;
 use Location as L;
 
-pub const CHECKS: [Check; 80] = [
-    // not listing dream breaker since there's nothing it could be replaced by
+pub const CHECKS: [Check; 81] = [
+    // dream breaker is randomised with random start
+    Check {
+        description: "where dream breaker normally is",
+        location: L::Prison,
+        index: 355,
+        drop: Drop::Ability(A::DreamBreaker),
+        locks: &[],
+    },
     Check {
         description: "where the first health piece is",
         location: L::Prison,

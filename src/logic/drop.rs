@@ -1,5 +1,7 @@
 #[derive(PartialEq, Clone, Copy, Debug, strum::AsRefStr)]
 pub enum Ability {
+    #[strum(serialize = "attack")]
+    DreamBreaker,
     #[strum(serialize = "airKick")]
     SunGreaves,
     #[strum(serialize = "slide")]
@@ -49,6 +51,7 @@ impl Ability {
         let mut add = |name| names.add_fname(name);
         let mut insert = 0;
         let icon = match self {
+            A::DreamBreaker => "icon_attack",
             A::SunGreaves => "icon_greaves",
             A::Slide => "icon_slide",
             A::Sunsetter => "icon_plunge",
@@ -131,6 +134,7 @@ impl Ability {
                     text(
                         display_name,
                         Some(match self {
+                            A::DreamBreaker => "Dream Breaker",
                             A::SunGreaves => "Sun Greaves",
                             A::Slide => "Slide",
                             A::Sunsetter => "Sunsetter",
@@ -150,6 +154,7 @@ impl Ability {
                             A::Professional => "Professionalism",
                         }),
                         Some(match self {
+                            A::DreamBreaker => "CCB981A54F25BC695627E1BCC90A104A",
                            A::SunGreaves => "F5EBEAAF4DE4C2FDBB8ECE8C3F09044F",
                            A::Slide => "93169A98407AD262918B48B6FCEEBBB8",
                            A::Sunsetter => "7713B83844855522BE804393CBF59B35",
@@ -178,7 +183,8 @@ impl Ability {
                     name: tier,
                     property_guid: guid,
                     value: match self {
-                        A::SunGreaves
+                        A::DreamBreaker
+                        | A::SunGreaves
                         | A::Slide
                         | A::Sunsetter
                         | A::ClingGem
@@ -201,6 +207,7 @@ impl Ability {
                 Property::TextProperty(text(
                     instructions,
                     Some(match self {
+                        A::DreamBreaker => "Press X Button/Left Click",
                         A::SunGreaves => "Press A Button/Space bar while in the air.",
                         A::Slide => "Press Left Trigger/Q Key on the ground to Slide.",
                         A::Sunsetter => "Press LT/Q key while in the air to Plunge downwards, which can then chain into a High Jump.",
@@ -220,6 +227,7 @@ impl Ability {
                         A::Professional => "Gained a new outfit!",
                     }),
                     Some(match self {
+                        A::DreamBreaker => "ED81FDC74C228DD2A8D27B8D1C6E8539",
                         A::SunGreaves => "BE6A54A04043100F0B3A9FAF700AC4AB",
                         A::Slide => "308F9AEC4FCF7A9A78840BAA38F5CB3D",
                         A::Sunsetter => "5B587B464EA3C43149F28D9F2B03C6AC",
@@ -242,6 +250,11 @@ impl Ability {
                 Property::TextProperty(text(
                     description,
                     match self {
+                        A::DreamBreaker => Some(r#"
+Attack freely while moving to vanquish foes.. Hiting enemies will build up magical power.
+
+To use it, hold B Button/F Key to heal.
+                        "#),
                         A::SunGreaves => Some(r#"
 After a short delay, do an air kick. Hitting walls and objects with it will cause you to jump away. Can be done up to 3 times until reset.
 
@@ -290,6 +303,7 @@ A more powerful attack that locks you in place. Can be used to destroy heavy bar
                         A::Professional => None
                     },
                     match self {
+                        A::DreamBreaker => Some("57BBC1C1418BCC8D7E67C784F5C803F5"),
                         A::SunGreaves => Some("9EF681CE4028EDD178E0AC874046D521"),
                         A::Slide => Some("FD693F06487DFFD545C65EBCF8F30D35"),
                         A::Sunsetter => Some("58AA68FC48C82F69376623868F960C0F"),
@@ -314,6 +328,16 @@ A more powerful attack that locks you in place. Can be used to destroy heavy bar
                     property_guid: guid,
                     array_type,
                     value: match self {
+                        A::DreamBreaker => vec![
+                            Property::TextProperty(text(
+                                FName::Dummy { value: 0.to_string(), number: 0 },
+                                Some(r#"
+Sybil will automatically hit whoever is closest, though you can also Lock-On with RB/Right Click.
+
+Your weapon can be dropped, or thrown with LB/tab. If you ever lose it, you can recall it at a save point by holding down the heal button.                                "#),
+                                Some("018BC821440C5DC63F35AEB8B29D0A30")
+                            )),
+                        ],
                         A::SunGreaves => vec![
                             Property::TextProperty(text(
                                 FName::Dummy { value: 0.to_string(), number: 0 },
