@@ -31,11 +31,15 @@ impl Location {
         match self {
             // Prison / Dilapidated Dungeon
             L::Prison => &[
-                &[&[Lock::Location(L::PrisonHole), Lock::Movement(&[
+                &[Lock::Location(L::PrisonHole), Lock::Movement(&[
                     &[A::DreamBreaker, A::AscendantLight] // Climb the poles and break the wall in Prison
-                ])]] // Enter from Underbelly
+                ])],// Enter from Underbelly
+                &[Lock::Location(L::CastleSansa)],
             ],
-            L::StrongEyes => &[&[Lock::Location(L::Prison), Lock::Movement(&[&[A::Slide]])]],
+            L::StrongEyes => &[
+                &[Lock::Location(L::Prison), Lock::Movement(&[&[A::Slide]])],
+                &[Lock::Location(L::CastleSansa), Lock::SmallKey],
+            ],
             // Castle Sansa
             L::CastleSansa => &[
                 &[Lock::Location(L::StrongEyes), Lock::SmallKey],
