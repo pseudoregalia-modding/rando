@@ -40,11 +40,11 @@ impl Location {
             ],
             L::StrongEyes => &[
                 &[Lock::Location(L::Prison), Lock::Movement(&[&[A::Slide]])],
-                &[Lock::Location(L::CastleSansaMain), Lock::SmallKey],
+                &[Lock::Location(L::CastleSansaMain), Lock::SmallKey, Lock::Movement(&[&[A::DreamBreaker]])],
             ],
             // Castle Sansa
             L::CastleSansaMain => &[
-                &[Lock::Location(L::StrongEyes), Lock::SmallKey],
+                &[Lock::Location(L::StrongEyes), Lock::SmallKey, Lock::Movement(&[&[A::DreamBreaker]])],
                 &[Lock::Location(L::EmptyBailey)],
                 &[Lock::Location(L::CastleSansaTheatreEntrance), Lock::Movement(&[
                     &[A::ClingGem],
@@ -67,7 +67,7 @@ impl Location {
             L::MainLibrary => &[&[Lock::Location(L::CastleSansaMain), Lock::Movement(&[
                 &[A::DreamBreaker],
             ])]],
-            L::Restricted => &[&[Lock::Location(L::MainLibrary), Lock::SmallKey]],
+            L::Restricted => &[&[Lock::Location(L::MainLibrary), Lock::SmallKey, Lock::Movement(&[&[A::DreamBreaker]]), Lock::Movement(&[&[A::DreamBreaker]])]],
             // Sansa Keep
             L::SansaKeep => &[
                 &[Lock::Location(L::CastleSansaMain)],
@@ -84,12 +84,11 @@ impl Location {
                 ])],
             ],
             L::Sunsetter => &[
-                &[Lock::Location(L::SansaKeep), Lock::SmallKey],
+                &[Lock::Location(L::SansaKeep), Lock::SmallKey, Lock::Movement(&[&[A::DreamBreaker]])],
                 &[
                     Lock::Location(L::SansaKeep),
                     Lock::Movement(&[&[A::SunGreaves], &[A::ClingGem]]),
                 ],
-                Lock::Movement(&[&[A::DreamBreaker], &[A::Sunsetter]]) // Destroy wall
             ],
             // Bailey
             L::EmptyBailey => &[
