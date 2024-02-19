@@ -192,12 +192,12 @@ impl Location {
             L::OtherTheatrePath => &[
                 &[
                     Lock::Location(L::SansaKeep),
-                    Lock::Movement(&[&[A::AscendantLight], &[A::HeliacalPower], &[A::ClingGem]]),
+                    Lock::Movement(&[&[A::AscendantLight, A::DreamBreaker], &[A::HeliacalPower], &[A::ClingGem]]),
                 ],
                 &[
                     Lock::Location(L::Prison),
                     Lock::Movement(&[
-                        &[A::AscendantLight],
+                        &[A::AscendantLight, A::DreamBreaker],
                         &[A::Sunsetter, A::HeliacalPower],
                         &[A::SunGreaves],
                         &[A::ClingGem],

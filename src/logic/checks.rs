@@ -20,7 +20,7 @@ pub const CHECKS: [Check; 81] = [
         locks: &[
             &[Lock::Movement(&[
                 &[A::Sunsetter],
-                &[A::AscendantLight],
+                &[A::AscendantLight, A::DreamBreaker],
                 // just enough space to do this
                 &[A::Slide, A::SolarWind],
                 &[A::ClingGem],
@@ -49,9 +49,8 @@ pub const CHECKS: [Check; 81] = [
         index: 357,
         drop: Drop::Ability(A::GoodGraces),
         locks: &[&[Lock::Movement(&[
-            A::DreamBreaker,
             &[A::ClingGem],
-            &[A::AscendantLight, A::SunGreaves],
+            &[A::AscendantLight, A::DreamBreaker, A::SunGreaves],
         ])]],
     },
     Check {
@@ -154,7 +153,7 @@ pub const CHECKS: [Check; 81] = [
         index: 494,
         drop: Drop::Health,
         locks: &[&[Lock::Movement(&[
-            &[A::AscendantLight],
+            &[A::AscendantLight, A::DreamBreaker],
             &[A::SunGreaves],
             &[A::ClingGem],
         ])]],
@@ -262,10 +261,10 @@ pub const CHECKS: [Check; 81] = [
         index: 788,
         drop: Drop::Ability(A::Pilgrimage),
         locks: &[&[Lock::Movement(&[
-            &[A::AscendantLight, A::Sunsetter],
-            &[A::AscendantLight, A::SunGreaves],
-            &[A::AscendantLight, A::SunGreaves],
-            &[A::AscendantLight, A::Slide, A::SolarWind],
+            &[A::AscendantLight, A::DreamBreaker, A::Sunsetter],
+            &[A::AscendantLight, A::DreamBreaker, A::SunGreaves],
+            &[A::AscendantLight, A::DreamBreaker, A::SunGreaves],
+            &[A::AscendantLight, A::DreamBreaker, A::Slide, A::SolarWind],
             &[A::SunGreaves, A::HeliacalPower],
             &[A::ClingGem, A::HeliacalPower],
             &[A::ClingGem, A::Sunsetter],
@@ -451,9 +450,9 @@ pub const CHECKS: [Check; 81] = [
         drop: Drop::BigKey,
         locks: &[&[Lock::Movement(&[
             A::DreamBreaker,
-            &[A::AscendantLight, A::ClingGem, A::Sunsetter],
-            &[A::AscendantLight, A::ClingGem, A::SunGreaves],
-            &[A::AscendantLight, A::Sunsetter, A::SunGreaves],
+            &[A::AscendantLight, A::DreamBreaker, A::ClingGem, A::Sunsetter],
+            &[A::AscendantLight, A::DreamBreaker, A::ClingGem, A::SunGreaves],
+            &[A::AscendantLight, A::DreamBreaker, A::Sunsetter, A::SunGreaves],
             &[
                 A::Slide,
                 A::SolarWind,
@@ -470,9 +469,9 @@ pub const CHECKS: [Check; 81] = [
         drop: Drop::Chair,
         locks: &[&[Lock::Movement(&[
             A::DreamBreaker,
-            &[A::AscendantLight, A::ClingGem, A::Sunsetter],
-            &[A::AscendantLight, A::ClingGem, A::SunGreaves],
-            &[A::AscendantLight, A::Sunsetter, A::SunGreaves],
+            &[A::AscendantLight, A::DreamBreaker, A::ClingGem, A::Sunsetter],
+            &[A::AscendantLight, A::DreamBreaker, A::ClingGem, A::SunGreaves],
+            &[A::AscendantLight, A::DreamBreaker, A::Sunsetter, A::SunGreaves],
             &[
                 A::Slide,
                 A::SolarWind,
@@ -562,7 +561,7 @@ pub const CHECKS: [Check; 81] = [
         index: 446,
         drop: Drop::BigKey,
         locks: &[&[Lock::Movement(&[
-            &[A::Sunsetter, A::SoulCutter, A::AscendantLight],
+            &[A::Sunsetter, A::SoulCutter, A::AscendantLight, A::DreamBreaker],
             &[A::Sunsetter, A::SunGreaves, A::Slide, A::SolarWind],
             &[A::Sunsetter, A::SoulCutter, A::ClingGem],
         ])]],
@@ -576,7 +575,7 @@ pub const CHECKS: [Check; 81] = [
         locks: &[
             &[Lock::Movement(&[A::DreamBreaker])],
             // &[Lock::Movement(&[
-            // &[A::AscendantLight],
+            // &[A::AscendantLight, A::DreamBreaker],
             // &[A::SunGreaves],
             // &[A::ClingGem],
             // &[A::Slide, A::SolarWind, A::HeliacalPower],
@@ -619,10 +618,10 @@ pub const CHECKS: [Check; 81] = [
         index: 835,
         drop: Drop::Ability(A::MartialProwess),
         locks: &[&[Lock::Movement(&[
-            &[A::Strikebreak, A::AscendantLight, A::HeliacalPower],
-            &[A::Strikebreak, A::AscendantLight, A::SunGreaves],
-            &[A::Strikebreak, A::AscendantLight, A::Sunsetter],
-            &[A::Strikebreak, A::AscendantLight, A::Slide, A::SolarWind],
+            &[A::Strikebreak, A::AscendantLight, A::DreamBreaker, A::HeliacalPower],
+            &[A::Strikebreak, A::AscendantLight, A::DreamBreaker, A::SunGreaves],
+            &[A::Strikebreak, A::AscendantLight, A::DreamBreaker, A::Sunsetter],
+            &[A::Strikebreak, A::AscendantLight, A::DreamBreaker, A::Slide, A::SolarWind],
         ])]],
     },
     Check {
@@ -654,7 +653,7 @@ pub const CHECKS: [Check; 81] = [
             &[A::SunGreaves],
             &[A::HeliacalPower, A::Sunsetter],
             &[A::ClingGem],
-            &[A::AscendantLight],
+            &[A::AscendantLight, A::DreamBreaker],
             &[A::Slide, A::SolarWind]
         ])]],
     },
