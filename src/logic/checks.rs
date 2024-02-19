@@ -7,14 +7,14 @@ pub const CHECKS: [Check; 81] = [
     // dream breaker is randomised with random start
     Check {
         description: "where dream breaker normally is",
-        location: L::Prison,
+        location: L::VDreamBreaker,
         index: 355,
         drop: Drop::Ability(A::DreamBreaker),
         locks: &[],
     },
     Check {
         description: "where the first health piece is",
-        location: L::Prison,
+        location: L::EarlyPrison,
         index: 214,
         drop: Drop::Health,
         locks: &[
@@ -33,7 +33,7 @@ pub const CHECKS: [Check; 81] = [
     },
     Check {
         description: "where slide normally is",
-        location: L::Prison,
+        location: L::LatePrison,
         index: 356,
         drop: Drop::Ability(A::Slide),
         locks: &[&[Lock::Movement(&[
@@ -45,7 +45,7 @@ pub const CHECKS: [Check; 81] = [
     },
     Check {
         description: "black hole parkour off the beaten path",
-        location: L::Prison,
+        location: L::LatePrison,
         index: 357,
         drop: Drop::Ability(A::GoodGraces),
         locks: &[&[Lock::Movement(&[
