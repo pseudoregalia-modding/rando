@@ -121,7 +121,7 @@ impl Location {
                         A::Slide
                     ], // Slide + the Nested OR. Goes through the Helical power route.
                 ])]
-                &[Lock::Location(L::SansaHole), Lock::Movement(&[&[A::Sunsetter]])], // from Sansa hole (above going to Major Key)
+                &[Lock::Location(L::SansaHole), Lock::Movement(&[&[A::Sunsetter, A::Slide]])], // from Sansa hole (above going to Major Key)
             ],
             //Theatre
             L::OtherTheatrePath => &[
