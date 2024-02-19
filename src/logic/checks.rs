@@ -795,7 +795,11 @@ pub const CHECKS: [Check; 81] = [
         location: L::MainTheatre,
         index: 947,
         drop: Drop::Chair,
-        locks: &[],
+        locks: &[
+            &[A::ClingGem],
+            &[A::Slide, A::SolarWind, A::HeliacalPower, A::SunGreaves],
+
+        ],
     },
     Check {
         description: "the chair in the soul cutter zone",
@@ -803,6 +807,7 @@ pub const CHECKS: [Check; 81] = [
         index: 948,
         drop: Drop::Chair,
         locks: &[&[Lock::Movement(&[
+            A::DreamBreaker,
             &[A::Strikebreak, A::SoulCutter, A::SunGreaves],
             &[A::Strikebreak, A::SoulCutter, A::ClingGem],
         ])]],
@@ -814,6 +819,7 @@ pub const CHECKS: [Check; 81] = [
         drop: Drop::BigKey,
         // there's one gap in the open green room with enemies which is too big
         locks: &[&[Lock::Movement(&[
+            A::DreamBreaker,
             &[
                 A::Strikebreak,
                 A::SoulCutter,
@@ -831,6 +837,7 @@ pub const CHECKS: [Check; 81] = [
         index: 1079,
         drop: Drop::Ability(A::SoulCutter),
         locks: &[&[Lock::Movement(&[
+            A::DreamBreaker,
             &[A::Strikebreak, A::SoulCutter, A::ClingGem],
             &[A::Strikebreak, A::SoulCutter, A::SunGreaves],
         ])]],
