@@ -98,7 +98,13 @@ impl Location {
                 ],
                 &[
                     Lock::Location(L::MainUnderbelly), // From main to hole.
-                ]
+                ],
+                &[
+                    Lock::Location(L::SansaHole),
+                    Lock::Movement(&[
+                        &[A::Sunsetter],
+                    ])
+                ],
             ],
             L::SansaHole => &[
                 &[
@@ -110,7 +116,13 @@ impl Location {
                     Lock::Movement(&[
                         &[A::Sunsetter],
                     ])
-                ]
+                ],
+                &[
+                    Lock::Location(L::BaileyHole),
+                    Lock::Movement(&[
+                        &[A::Sunsetter],
+                    ])
+                ],
             ],
             L::MainUnderbelly => &[ // Main underbelly is now the main platform and any check possible from it. Helical power check will be combined with this.
                 &[Lock::Location(L::PrisonHole)],
