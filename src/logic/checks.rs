@@ -20,7 +20,7 @@ pub const CHECKS: [Check; 81] = [
         locks: &[
             &[Lock::Movement(&[
                 &[A::Sunsetter],
-                &[A::AscendantLight],
+                &[A::AscendantLight, A::DreamBreaker],
                 // just enough space to do this
                 &[A::Slide, A::SolarWind],
                 &[A::ClingGem],
@@ -28,7 +28,7 @@ pub const CHECKS: [Check; 81] = [
                 &[A::HeliacalPower],
             ])],
             // you can drop down from the entrance
-            &[Lock::Location(Location::CastleSansa)],
+            &[Lock::Location(Location::CastleSansaMain)],
         ],
     },
     Check {
@@ -50,7 +50,7 @@ pub const CHECKS: [Check; 81] = [
         drop: Drop::Ability(A::GoodGraces),
         locks: &[&[Lock::Movement(&[
             &[A::ClingGem],
-            &[A::AscendantLight, A::SunGreaves],
+            &[A::AscendantLight, A::DreamBreaker, A::SunGreaves],
         ])]],
     },
     Check {
@@ -76,11 +76,11 @@ pub const CHECKS: [Check; 81] = [
         location: L::StrongEyes,
         index: 185,
         drop: Drop::SmallKey,
-        locks: &[],
+        locks: &[A::DreamBreaker],
     },
     Check {
         description: "the goatling who wants to lick the checkpoint",
-        location: L::CastleSansa,
+        location: L::CastleSansaMain,
         index: 631,
         drop: Drop::Goatling(&[
             "These [#7c79e8](crystals) are pretty nice, right?",
@@ -91,35 +91,35 @@ pub const CHECKS: [Check; 81] = [
     },
     Check {
         description: "a chair next to the goatling who wants to lick the checkpoint",
-        location: L::CastleSansa,
+        location: L::CastleSansaMain,
         index: 634,
         drop: Drop::Chair,
         locks: &[],
     },
     Check {
         description: "a chair next to the goatling who wants to lick the checkpoint",
-        location: L::CastleSansa,
+        location: L::CastleSansaMain,
         index: 635,
         drop: Drop::Chair,
         locks: &[],
     },
     Check {
         description: "a chair next to the goatling who wants to lick the checkpoint",
-        location: L::CastleSansa,
+        location: L::CastleSansaMain,
         index: 636,
         drop: Drop::Chair,
         locks: &[],
     },
     Check {
         description: "where indignation normally is",
-        location: L::CastleSansa,
+        location: L::CastleSansaMain,
         index: 787,
         drop: Drop::Ability(A::Indignation),
         locks: &[],
     },
     Check {
         description: "chillin' on a ledge by the window",
-        location: L::CastleSansa,
+        location: L::CastleSansaMain,
         index: 444,
         drop: Drop::SmallKey,
         locks: &[&[Lock::Movement(&[
@@ -132,14 +132,14 @@ pub const CHECKS: [Check; 81] = [
     },
     Check {
         description: "where the professional normally is",
-        location: L::CastleSansa,
+        location: L::CastleSansaMain,
         index: 791,
         drop: Drop::Ability(A::Professional),
-        locks: &[&[Lock::SmallKey]],
+        locks: &[&[Lock::SmallKey, Lock::Movement(&[&[A::DreamBreaker]])]],
     },
     Check {
         description: "tucked deep in a corner in the bouncer room",
-        location: L::CastleSansa,
+        location: L::CastleSansaMain,
         index: 495,
         drop: Drop::Health,
         locks: &[&[Lock::Movement(&[
@@ -149,18 +149,18 @@ pub const CHECKS: [Check; 81] = [
     },
     Check {
         description: "the extremely slappable wheel guy room",
-        location: L::CastleSansa,
+        location: L::CastleSansaMain,
         index: 494,
         drop: Drop::Health,
         locks: &[&[Lock::Movement(&[
-            &[A::AscendantLight],
+            &[A::AscendantLight, A::DreamBreaker],
             &[A::SunGreaves],
             &[A::ClingGem],
         ])]],
     },
     Check {
         description: "the old softlock room",
-        location: L::CastleSansa,
+        location: L::CastleSansaMain,
         index: 498,
         drop: Drop::Health,
         locks: &[&[Lock::Movement(&[
@@ -170,7 +170,7 @@ pub const CHECKS: [Check; 81] = [
     },
     Check {
         description: "the goatling about to jump into the haze",
-        location: L::CastleSansa,
+        location: L::CastleSansaMain,
         index: 633,
         drop: Drop::Goatling(&[
             "Oh, thanks for breaking that wall down.",
@@ -183,7 +183,7 @@ pub const CHECKS: [Check; 81] = [
     },
     Check {
         description: "cool moon room",
-        location: L::CastleSansa,
+        location: L::CastleSansaTheatreEntrance,
         index: 790,
         drop: Drop::Ability(A::ClearMind),
         locks: &[&[Lock::Movement(&[
@@ -193,14 +193,14 @@ pub const CHECKS: [Check; 81] = [
     },
     Check {
         description: "through the wallkick tunnel",
-        location: L::CastleSansa,
+        location: L::CastleSansaMain,
         index: 443,
         drop: Drop::SmallKey,
         locks: &[&[Lock::Movement(&[&[A::SunGreaves], &[A::ClingGem]])]],
     },
     Check {
         description: "in the pit next to the dungeon entrance",
-        location: L::CastleSansa,
+        location: L::CastleSansaMain,
         index: 497,
         drop: Drop::Health,
         locks: &[&[Lock::Movement(&[
@@ -211,7 +211,7 @@ pub const CHECKS: [Check; 81] = [
     },
     Check {
         description: "the goatling that calls you bubble girl",
-        location: L::CastleSansa,
+        location: L::CastleSansaMain,
         index: 630,
         drop: Drop::Goatling(&[
             "I was supposed to go help in the [#cf2525](theatre), but I can't really get through here.",
@@ -227,7 +227,7 @@ pub const CHECKS: [Check; 81] = [
     },
     Check {
         description: "on the ledge above the bailey entrance",
-        location: L::CastleSansa,
+        location: L::CastleSansaMain,
         index: 496,
         drop: Drop::Health,
         locks: &[&[Lock::Movement(&[
@@ -239,7 +239,7 @@ pub const CHECKS: [Check; 81] = [
     },
     Check {
         description: "the goatling in the gazebo",
-        location: L::CastleSansa,
+        location: L::CastleSansaMain,
         index: 632,
         drop: Drop::Goatling(&[
             "The princess used to love having afternoon tea here.",
@@ -250,21 +250,21 @@ pub const CHECKS: [Check; 81] = [
     },
     Check {
         description: "the chair in the gazebo",
-        location: L::CastleSansa,
+        location: L::CastleSansaMain,
         index: 637,
         drop: Drop::Chair,
         locks: &[],
     },
     Check {
         description: "next to a bouncer in the massive room",
-        location: L::CastleSansa,
+        location: L::CastleSansaMain,
         index: 788,
         drop: Drop::Ability(A::Pilgrimage),
         locks: &[&[Lock::Movement(&[
-            &[A::AscendantLight, A::Sunsetter],
-            &[A::AscendantLight, A::SunGreaves],
-            &[A::AscendantLight, A::SunGreaves],
-            &[A::AscendantLight, A::Slide, A::SolarWind],
+            &[A::AscendantLight, A::DreamBreaker, A::Sunsetter],
+            &[A::AscendantLight, A::DreamBreaker, A::SunGreaves],
+            &[A::AscendantLight, A::DreamBreaker, A::SunGreaves],
+            &[A::AscendantLight, A::DreamBreaker, A::Slide, A::SolarWind],
             &[A::SunGreaves, A::HeliacalPower],
             &[A::ClingGem, A::HeliacalPower],
             &[A::ClingGem, A::Sunsetter],
@@ -273,7 +273,7 @@ pub const CHECKS: [Check; 81] = [
     },
     Check {
         description: "in the room with two other ones to each side",
-        location: L::CastleSansa,
+        location: L::CastleSansaMain,
         index: 789,
         drop: Drop::Ability(A::GoodGraces),
         locks: &[&[Lock::Movement(&[&[A::ClingGem], &[A::SunGreaves]])]],
@@ -392,6 +392,7 @@ pub const CHECKS: [Check; 81] = [
         index: 393,
         drop: Drop::Ability(A::Strikebreak),
         locks: &[&[Lock::Movement(&[
+            A::DreamBreaker,
             &[A::Strikebreak, A::Slide, A::SolarWind],
             &[A::Strikebreak, A::SunGreaves],
             &[A::Strikebreak, A::ClingGem],
@@ -405,6 +406,7 @@ pub const CHECKS: [Check; 81] = [
         index: 392,
         drop: Drop::Ability(A::Sunsetter),
         locks: &[&[Lock::Movement(&[
+            A::DreamBreaker,
             &[A::Sunsetter],
             &[A::HeliacalPower],
             &[A::SunGreaves],
@@ -447,9 +449,10 @@ pub const CHECKS: [Check; 81] = [
         index: 227,
         drop: Drop::BigKey,
         locks: &[&[Lock::Movement(&[
-            &[A::AscendantLight, A::ClingGem, A::Sunsetter],
-            &[A::AscendantLight, A::ClingGem, A::SunGreaves],
-            &[A::AscendantLight, A::Sunsetter, A::SunGreaves],
+            A::DreamBreaker,
+            &[A::AscendantLight, A::DreamBreaker, A::ClingGem, A::Sunsetter],
+            &[A::AscendantLight, A::DreamBreaker, A::ClingGem, A::SunGreaves],
+            &[A::AscendantLight, A::DreamBreaker, A::Sunsetter, A::SunGreaves],
             &[
                 A::Slide,
                 A::SolarWind,
@@ -465,9 +468,10 @@ pub const CHECKS: [Check; 81] = [
         index: 326,
         drop: Drop::Chair,
         locks: &[&[Lock::Movement(&[
-            &[A::AscendantLight, A::ClingGem, A::Sunsetter],
-            &[A::AscendantLight, A::ClingGem, A::SunGreaves],
-            &[A::AscendantLight, A::Sunsetter, A::SunGreaves],
+            A::DreamBreaker,
+            &[A::AscendantLight, A::DreamBreaker, A::ClingGem, A::Sunsetter],
+            &[A::AscendantLight, A::DreamBreaker, A::ClingGem, A::SunGreaves],
+            &[A::AscendantLight, A::DreamBreaker, A::Sunsetter, A::SunGreaves],
             &[
                 A::Slide,
                 A::SolarWind,
@@ -510,6 +514,7 @@ pub const CHECKS: [Check; 81] = [
         index: 104,
         drop: Drop::Ability(A::SolarWind),
         locks: &[&[Lock::Movement(&[
+            A::DreamBreaker,
             // need some way to cross the gap afterwards
             &[A::Slide, A::SolarWind],
             &[A::Slide, A::HeliacalPower],
@@ -542,7 +547,7 @@ pub const CHECKS: [Check; 81] = [
     // Underbelly
     Check {
         description: "near the entrance from sansa keep",
-        location: L::Hole,
+        location: L::SansaHole,
         index: 515,
         drop: Drop::Health,
         locks: &[&[Lock::Movement(&[
@@ -552,24 +557,25 @@ pub const CHECKS: [Check; 81] = [
     },
     Check {
         description: "the soul cutter lever room",
-        location: L::Hole,
+        location: L::SansaHole,
         index: 446,
         drop: Drop::BigKey,
         locks: &[&[Lock::Movement(&[
-            &[A::Sunsetter, A::SoulCutter, A::AscendantLight],
+            &[A::Sunsetter, A::SoulCutter, A::AscendantLight, A::DreamBreaker],
             &[A::Sunsetter, A::SunGreaves, A::Slide, A::SolarWind],
             &[A::Sunsetter, A::SoulCutter, A::ClingGem],
         ])]],
     },
     Check {
         description: "where ascendant light normally is",
-        location: L::MainUnderbelly,
+        location: L::PrisonHole,
         index: 834,
         drop: Drop::Ability(A::AscendantLight),
         // you can go through the dark area and there's a passage which you can do with nothing
         locks: &[
+            &[Lock::Movement(&[A::DreamBreaker])],
             // &[Lock::Movement(&[
-            // &[A::AscendantLight],
+            // &[A::AscendantLight, A::DreamBreaker],
             // &[A::SunGreaves],
             // &[A::ClingGem],
             // &[A::Slide, A::SolarWind, A::HeliacalPower],
@@ -578,10 +584,12 @@ pub const CHECKS: [Check; 81] = [
     },
     Check {
         description: "in an alcove behind some pillars",
-        location: L::MainUnderbelly,
+        location: L::PrisonHole,
         index: 517,
         drop: Drop::Health,
-        locks: &[],
+        locks: &[
+            &[Lock::Movement(&[A::DreamBreaker])],
+        ],
     },
     Check {
         description: "on a missable ledge in the centre",
@@ -610,10 +618,10 @@ pub const CHECKS: [Check; 81] = [
         index: 835,
         drop: Drop::Ability(A::MartialProwess),
         locks: &[&[Lock::Movement(&[
-            &[A::Strikebreak, A::AscendantLight, A::HeliacalPower],
-            &[A::Strikebreak, A::AscendantLight, A::SunGreaves],
-            &[A::Strikebreak, A::AscendantLight, A::Sunsetter],
-            &[A::Strikebreak, A::AscendantLight, A::Slide, A::SolarWind],
+            &[A::Strikebreak, A::AscendantLight, A::DreamBreaker, A::HeliacalPower],
+            &[A::Strikebreak, A::AscendantLight, A::DreamBreaker, A::SunGreaves],
+            &[A::Strikebreak, A::AscendantLight, A::DreamBreaker, A::Sunsetter],
+            &[A::Strikebreak, A::AscendantLight, A::DreamBreaker, A::Slide, A::SolarWind],
         ])]],
     },
     Check {
@@ -623,7 +631,7 @@ pub const CHECKS: [Check; 81] = [
         drop: Drop::Ability(A::HeliacalPower),
         locks: &[&[
             Lock::SmallKey,
-            Lock::Movement(&[&[A::Slide, A::SunGreaves], &[A::Slide, A::Sunsetter]]),
+            Lock::Movement(&[A::DreamBreaker,&[A::Slide, A::SunGreaves], &[A::Slide, A::Sunsetter]]),
         ]],
     },
     Check {
@@ -633,25 +641,25 @@ pub const CHECKS: [Check; 81] = [
         drop: Drop::Note,
         locks: &[&[
             Lock::SmallKey,
-            Lock::Movement(&[&[A::Slide, A::SunGreaves], &[A::Slide, A::Sunsetter]]),
+            Lock::Movement(&[A::DreamBreaker,&[A::Slide, A::SunGreaves], &[A::Slide, A::Sunsetter]]),
         ]],
     },
     Check {
         description: "the note near the empty bailey entrance",
-        location: L::MainUnderbelly,
+        location: L::BaileyHole,
         index: 704,
         drop: Drop::Note,
         locks: &[&[Lock::Movement(&[
             &[A::SunGreaves],
             &[A::HeliacalPower, A::Sunsetter],
             &[A::ClingGem],
-            &[A::AscendantLight],
+            &[A::AscendantLight, A::DreamBreaker],
             &[A::Slide, A::SolarWind]
         ])]],
     },
     Check {
         description: "on top of the big building",
-        location: L::MainUnderbelly,
+        location: L::BaileyHole,
         index: 516,
         drop: Drop::Health,
         locks: &[&[Lock::Movement(&[&[A::SunGreaves], &[A::Sunsetter]])]],
@@ -659,7 +667,7 @@ pub const CHECKS: [Check; 81] = [
     // Tower Ruins
     Check {
         description: "where cling gem normally is",
-        location: L::TowerRuins,
+        location: L::TowerRuinsKeep,
         index: 89,
         drop: Drop::Ability(A::ClingGem),
         locks: &[&[Lock::Movement(&[
@@ -670,7 +678,7 @@ pub const CHECKS: [Check; 81] = [
     },
     Check {
         description: "atop the tower",
-        location: L::TowerRuins,
+        location: L::TowerRuinsKeep,
         index: 56,
         drop: Drop::BigKey,
         locks: &[&[Lock::Movement(&[
@@ -688,6 +696,7 @@ pub const CHECKS: [Check; 81] = [
             &[A::ClingGem, A::SunGreaves],
             &[A::Slide, A::SolarWind, A::ClingGem],
             &[A::Slide, A::SolarWind, A::SunGreaves],
+            &[A::Sunsetter, A::SunGreaves],
         ])]],
     },
     Check {
@@ -840,7 +849,7 @@ pub const CHECKS: [Check; 81] = [
         drop: Drop::Ability(A::Empathy),
         locks: &[&[
             Lock::SmallKey,
-            Lock::Movement(&[&[A::SunGreaves], &[A::ClingGem]]),
+            Lock::Movement(&[A::DreamBreaker, &[A::SunGreaves], &[A::ClingGem]]),
         ]],
     },
 ];

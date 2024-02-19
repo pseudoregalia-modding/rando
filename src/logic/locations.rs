@@ -4,13 +4,15 @@ use super::*;
 pub enum Location {
     Prison,
     StrongEyes,
-    CastleSansa,
+    CastleSansaMain,
+    CastleSansaTheatreEntrance,
     MainLibrary,
     Restricted,
     SansaKeep,
     Sunsetter,
     EmptyBailey,
-    TowerRuins,
+    TowerRuinsEntrance,
+    TowerRuinsKeep,
     SansaHole,
     BaileyHole,
     PrisonHole,
@@ -34,30 +36,55 @@ impl Location {
                 &[Lock::Location(L::PrisonHole), Lock::Movement(&[
                     &[A::DreamBreaker, A::AscendantLight] // Climb the poles and break the wall in Prison
                 ])],// Enter from Underbelly
-                &[Lock::Location(L::CastleSansa)],
+                &[Lock::Location(L::CastleSansaMain)],
             ],
             L::StrongEyes => &[
                 &[Lock::Location(L::Prison), Lock::Movement(&[&[A::Slide]])],
-                &[Lock::Location(L::CastleSansa), Lock::SmallKey],
+                &[Lock::Location(L::CastleSansaMain), Lock::SmallKey, Lock::Movement(&[&[A::DreamBreaker]])],
             ],
             // Castle Sansa
-            L::CastleSansa => &[
-                &[Lock::Location(L::StrongEyes), Lock::SmallKey],
+            L::CastleSansaMain => &[
+                &[Lock::Location(L::StrongEyes), Lock::SmallKey, Lock::Movement(&[&[A::DreamBreaker]])],
                 &[Lock::Location(L::EmptyBailey)],
+                &[Lock::Location(L::CastleSansaTheatreEntrance), Lock::Movement(&[
+                    &[A::ClingGem],
+                    &[A::Slide, &[ &[A::HeliacalPower], &[A::SunGreaves]]],
+                    &[A::Slide, A::SolarWind],
+                ])],
+                &[LockLocation(L::MainLibrary), Lock::Movement(&[
+                    &[A::DreamBreaker],
+                ])]
+            ],
+            L::CastleSansaTheatreEntrance => &[
+                &[Lock::Location(L::TheatreEntrance)],
+                &[Lock::Location(L::CastleSansaMain), Lock::Movement(&[
+                    &[
+                        &[A::Sunsetter, &[ &[A::Helical], &[A::SunGreaves] ], A::ClingGem]
+                    ]
+                ])]
             ],
             // Library
-            L::MainLibrary => &[&[Lock::Location(L::CastleSansa)]],
-            L::Restricted => &[&[Lock::Location(L::MainLibrary), Lock::SmallKey]],
+            L::MainLibrary => &[&[Lock::Location(L::CastleSansaMain), Lock::Movement(&[
+                &[A::DreamBreaker],
+            ])]],
+            L::Restricted => &[&[Lock::Location(L::MainLibrary), Lock::SmallKey, Lock::Movement(&[&[A::DreamBreaker]]), Lock::Movement(&[&[A::DreamBreaker]])]],
             // Sansa Keep
             L::SansaKeep => &[
-                &[Lock::Location(L::CastleSansa)],
+                &[Lock::Location(L::CastleSansaMain)],
                 &[
                     Lock::Location(L::MainTheatre),
                     Lock::Movement(&[&[A::ClingGem]]),
                 ],
+                &[Lock::Location(L::SansaHole), Lock::Movement(&[
+                    &[A::Sunsetter],
+                    &[A::HeliacalPower],
+                    &[A::SunGreaves],
+                    &[A::Slide, A::SolarWind],
+                    
+                ])],
             ],
             L::Sunsetter => &[
-                &[Lock::Location(L::SansaKeep), Lock::SmallKey],
+                &[Lock::Location(L::SansaKeep), Lock::SmallKey, Lock::Movement(&[&[A::DreamBreaker]])],
                 &[
                     Lock::Location(L::SansaKeep),
                     Lock::Movement(&[&[A::SunGreaves], &[A::ClingGem]]),
@@ -65,19 +92,41 @@ impl Location {
             ],
             // Bailey
             L::EmptyBailey => &[
-                &[Lock::Location(L::CastleSansa)],
-                &[Lock::Location(L::MainUnderbelly)],
+                &[Lock::Location(L::CastleSansaMain)],
+                &[Lock::Location(L::BaileyHole)],
+                &[Lock::Location(L::PillarRoom)], // Enter from Theatre's Floor is lava/pillar room.
+                &[Lock::Location(L::TowerRuinsEntrance), Lock::Movement(&[
+                    &[A::SunGreaves],
+                    &[A::Sunsetter],
+                    &[A::ClingGem, &[ &[ A::HeliacalPower], &[A::SunGreaves]]],
+                    &[A::Slide, A::SolarWind],
+                ])],
             ],
             // Tower
-            L::TowerRuins => &[&[
-                Lock::Location(L::EmptyBailey),
-                Lock::Movement(&[
+            L::TowerRuinsEntrance => &[
+                &[
+                    Lock::Location(L::EmptyBailey),
+                    Lock::Movement(&[
+                        &[A::SunGreaves],
+                        &[A::Sunsetter],
+                        &[A::ClingGem, &[ &[ A::HeliacalPower], &[A::SunGreaves]]],
+                        &[A::Slide, A::SolarWind],
+                    ]),
+                ],
+                &[Lock::Location(L::TowerRuinsKeep)],
+            ],
+            L::TowerRuinsKeep => &[
+                &[Lock::Location(L::TowerRuinsEntrance), Lock::Movement(&[
+                    &[A::Sunsetter, A::ClingGem],
+                    &[A::ClingGem, A::HeliacalPower],
                     &[A::SunGreaves],
-                    &[A::HeliacalPower, A::Sunsetter],
-                    // this is possible with 2 precise successive solar wind flips and healing tech on pole
-                    // &[A::Slide, A::SolarWind],
-                ]),
-            ]],
+                    // Test the below to make sure not miss remembering.
+                    // &[A::Slide, A::SolarWind, A::HeliacalPower],
+                ])],
+                &[
+                    Lock::Location(L::FinalBoss)
+                ]
+            ],
             // Underbelly
             L::PrisonHole => &[
                 &[
@@ -97,7 +146,7 @@ impl Location {
             ],
             L::BaileyHole => &[
                 &[
-                    Lock::Location(L::TowerRuins),
+                    Lock::Location(L::TowerRuinsEntrance),
                     Lock::Movement(&[&[A::Sunsetter]]), // From Bailey into underbelly.
                 ],
                 &[
@@ -143,12 +192,12 @@ impl Location {
             L::OtherTheatrePath => &[
                 &[
                     Lock::Location(L::SansaKeep),
-                    Lock::Movement(&[&[A::AscendantLight], &[A::HeliacalPower], &[A::ClingGem]]),
+                    Lock::Movement(&[&[A::AscendantLight, A::DreamBreaker], &[A::HeliacalPower], &[A::ClingGem]]),
                 ],
                 &[
                     Lock::Location(L::Prison),
                     Lock::Movement(&[
-                        &[A::AscendantLight],
+                        &[A::AscendantLight, A::DreamBreaker],
                         &[A::Sunsetter, A::HeliacalPower],
                         &[A::SunGreaves],
                         &[A::ClingGem],
@@ -158,7 +207,7 @@ impl Location {
             L::PillarRoom => &[
                 // this is via the entrance above the normal entrance but needs some moar to get in maybe make separate
                 &[
-                    Lock::Location(L::CastleSansa),
+                    Lock::Location(L::CastleSansaMain),
                     Lock::Movement(&[
                         &[A::SunGreaves],
                         &[A::HeliacalPower],
@@ -171,7 +220,7 @@ impl Location {
             L::TheatreEntrance => &[
                 &[Lock::Location(L::MainTheatre)],
                 &[
-                    Lock::Location(L::CastleSansa),
+                    Lock::Location(L::CastleSansaMain),
                     Lock::Movement(&[
                         &[A::ClingGem],
                         &[A::Slide, A::SolarWind, A::SunGreaves, A::HeliacalPower],
@@ -207,7 +256,7 @@ impl Location {
             ],
             // Final Boss
             L::FinalBoss => &[&[
-                Lock::Location(L::TowerRuins),
+                Lock::Location(L::TowerRuinsEntrance),
                 Lock::Movement(&[
                     &[A::SunGreaves, A::ClingGem],
                     &[A::HeliacalPower, A::Sunsetter, A::ClingGem],
@@ -219,11 +268,11 @@ impl Location {
     pub const fn file(&self) -> &'static str {
         match self {
             L::Prison | L::StrongEyes => "ZONE_Dungeon",
-            L::CastleSansa => "ZONE_LowerCastle",
+            L::CastleSansaMain | L::CastleSansaTheatreEntrance => "ZONE_LowerCastle",
             L::MainLibrary | L::Restricted => "Zone_Library",
             L::SansaKeep | L::Sunsetter => "Zone_Upper",
             L::EmptyBailey => "ZONE_Exterior",
-            L::TowerRuins => "Zone_Tower",
+            L::TowerRuinsEntrance | L::TowerRuinsKeep  => "Zone_Tower",
             L::SansaHole |L::PrisonHole| L::BaileyHole| L::MainUnderbelly => "Zone_Caves",
             L::PillarRoom | L::TheatreEntrance | L::OtherTheatrePath | L::MainTheatre => {
                 "Zone_Theatre"
@@ -234,11 +283,11 @@ impl Location {
     pub const fn name(&self) -> &'static str {
         match self {
             L::Prison | L::StrongEyes => "Dilapidated Dungeon",
-            L::CastleSansa => "Castle Sansa",
+            L::CastleSansaMain | L::CastleSansaTheatreEntrance => "Castle Sansa",
             L::MainLibrary | L::Restricted => "Listless Library",
             L::SansaKeep | L::Sunsetter => "Sansa Keep",
             L::EmptyBailey => "Empty Bailey",
-            L::TowerRuins => "Tower Ruins",
+            L::TowerRuinsEntrance | L::TowerRuinsKeep => "Tower Ruins",
             L::SansaHole | L::PrisonHole |L::BaileyHole| L::MainUnderbelly => "Underbelly",
             L::PillarRoom | L::TheatreEntrance | L::OtherTheatrePath | L::MainTheatre => {
                 "Twilight Theatre"
