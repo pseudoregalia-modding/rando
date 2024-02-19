@@ -2,7 +2,9 @@ use super::*;
 
 #[derive(Debug, Clone, Copy, PartialEq, strum::EnumIter, strum::EnumCount)]
 pub enum Location {
-    Prison,
+    VDreamBreaker,
+    EarlyPrison,
+    LatePrison,
     StrongEyes,
     CastleSansaMain,
     CastleSansaTheatreEntrance,
@@ -32,14 +34,24 @@ impl Location {
     pub const fn locks(&self) -> &[&[Lock]] {
         match self {
             // Prison / Dilapidated Dungeon
-            L::Prison => &[
+            L::LatePrison => &[
                 &[Lock::Location(L::PrisonHole), Lock::Movement(&[
-                    &[A::DreamBreaker, A::AscendantLight] // Climb the poles and break the wall in Prison
+                    &[A::DreamBreaker, A::AscendantLight] // Climb the poles and break the wall in LatePrison
                 ])],// Enter from Underbelly
                 &[Lock::Location(L::CastleSansaMain)],
+                &[Lock::Location(L::EarlyPrison), Lock::Movement(&[&[A::DreamBreaker]])],
+            ],
+            L::EarlyPrison => &[
+                &[Lock::Location(L::StrongEyes), Lock::SmallKey, Lock::Movement(&[&[A::DreamBreaker]])],
+                &[Lock::Location(L::CastleSansaMain)],
+                &[Lock::Location(L::VDreamBreaker), Lock::Movement(&[&[A::DreamBreaker]])],
+                &[Lock::Location(L::LatePrison), Lock::Movement(&[&[A::DreamBreaker]])]
+            ],
+            L::VDreamBreaker => &[
+                &[Lock::Location(L::EarlyPrison)]
             ],
             L::StrongEyes => &[
-                &[Lock::Location(L::Prison), Lock::Movement(&[&[A::Slide]])],
+                &[Lock::Location(L::LatePrison), Lock::Movement(&[&[A::Slide]])],
                 &[Lock::Location(L::CastleSansaMain), Lock::SmallKey, Lock::Movement(&[&[A::DreamBreaker]])],
             ],
             // Castle Sansa
@@ -130,8 +142,8 @@ impl Location {
             // Underbelly
             L::PrisonHole => &[
                 &[
-                    Lock::Location(L::Prison),
-                    Lock::Movement(&[&[A::DreamBreaker], &[A::Sunsetter] ])// Dream breaker or Sunsetter to enter.
+                    Lock::Location(L::LatePrison),
+                    Lock::Movement(&[&[A::DreamBreaker] ])
                 ],
                 &[
                     Lock::Location(L::MainUnderbelly), // From main to the hole (right below the gear mobs.)
@@ -195,7 +207,7 @@ impl Location {
                     Lock::Movement(&[&[A::AscendantLight, A::DreamBreaker], &[A::HeliacalPower], &[A::ClingGem]]),
                 ],
                 &[
-                    Lock::Location(L::Prison),
+                    Lock::Location(L::LatePrison),
                     Lock::Movement(&[
                         &[A::AscendantLight, A::DreamBreaker],
                         &[A::Sunsetter, A::HeliacalPower],
@@ -267,7 +279,7 @@ impl Location {
     }
     pub const fn file(&self) -> &'static str {
         match self {
-            L::Prison | L::StrongEyes => "ZONE_Dungeon",
+            L::LatePrison | L::VDreamBreaker | L::EarlyPrison| L::VDreamBreaker | L::StrongEyes => "ZONE_Dungeon",
             L::CastleSansaMain | L::CastleSansaTheatreEntrance => "ZONE_LowerCastle",
             L::MainLibrary | L::Restricted => "Zone_Library",
             L::SansaKeep | L::Sunsetter => "Zone_Upper",
@@ -282,7 +294,7 @@ impl Location {
     }
     pub const fn name(&self) -> &'static str {
         match self {
-            L::Prison | L::StrongEyes => "Dilapidated Dungeon",
+            L::LatePrison | L::VDreamBreaker | L::EarlyPrison| L::VDreamBreaker | L::StrongEyes=> "Dilapidated Dungeon",
             L::CastleSansaMain | L::CastleSansaTheatreEntrance => "Castle Sansa",
             L::MainLibrary | L::Restricted => "Listless Library",
             L::SansaKeep | L::Sunsetter => "Sansa Keep",
