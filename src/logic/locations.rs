@@ -80,17 +80,38 @@ impl Location {
                     Lock::Location(L::Prison),
                     Lock::Movement(&[&[A::DreamBreaker], &[A::Sunsetter] ])// Dream breaker or Sunsetter to enter.
                 ],
+                &[
+                    Lock::Location(L::MainUnderbelly), // From main to the hole (right below the gear mobs.)
+                    Lock::Movement(&[
+                        &[
+                            &[A::SunGreaves],
+                            &[A::Sunsetter],
+                            &[A::Slide, A::SolarWind],
+                        ]
+                    ])
+                ]
             ],
             L::BaileyHole => &[
                 &[
                     Lock::Location(L::TowerRuins),
                     Lock::Movement(&[&[A::Sunsetter]]), // From Bailey into underbelly.
                 ],
+                &[
+                    Lock::Location(L::MainUnderbelly), // From main to hole.
+                ]
             ],
-            L::SansaHole => &[&[
-                Lock::Location(L::SansaKeep), // From Sansa keep into underbelly
-                Lock::Movement(&[&[A::HeliacalPower], &[A::SunGreaves], &[A::Sunsetter]]),
-            ]],
+            L::SansaHole => &[
+                &[
+                    Lock::Location(L::SansaKeep), // From Sansa keep into underbelly
+                    Lock::Movement(&[&[A::HeliacalPower], &[A::SunGreaves], &[A::Sunsetter]]),
+                ],
+                &[
+                    Lock::Location(L::MainUnderbelly), // From main underbelly to the hole.
+                    Lock::Movement(&[
+                        &[A::Sunsetter],
+                    ])
+                ]
+            ],
             L::MainUnderbelly => &[ // Main underbelly is now the main platform and any check possible from it. Helical power check will be combined with this.
                 &[Lock::Location(L::PrisonHole)],
                 &[Lock::Location(L::BaileyHole), Lock::Movement(&[
