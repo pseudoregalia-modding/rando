@@ -18,6 +18,9 @@ fn accessible(
                 ability.iter().all(|ability| {
                     // in the cases where requirements are after obtaining
                     let case = match ctx {
+                        Some((355, Drop::Ability(Ability::DreamBreaker))) => {
+                            [Drop::Ability(Ability::DreamBreaker)].as_slice()
+                        }
                         Some((356, Drop::Ability(Ability::Slide))) => {
                             [Drop::Ability(Ability::Slide)].as_slice()
                         }
@@ -49,21 +52,58 @@ fn accessible(
                             })
                         }
                         Ability::SolarWind if app.progressive => {
-                            obtainable.contains(&Drop::Ability(Ability::Slide))
-                                && obtainable.contains(&Drop::Ability(Ability::SolarWind))
+                            obtainable
+                                .iter()
+                                .chain(case)
+                                .filter(|drop| {
+                                    matches!(
+                                        drop,
+                                        Drop::Ability(Ability::Slide)
+                                            | Drop::Ability(Ability::SolarWind)
+                                    )
+                                })
+                                .count()
+                                == 2
                         }
-                        Ability::Strikebreak if app.progressive => {
+                        Ability::DreamBreaker if app.progressive => {
                             obtainable.iter().chain(case).any(|drop| {
                                 matches!(
                                     drop,
-                                    Drop::Ability(Ability::Strikebreak)
+                                    Drop::Ability(Ability::DreamBreaker)
+                                        | Drop::Ability(Ability::Strikebreak)
                                         | Drop::Ability(Ability::SoulCutter)
                                 )
                             })
                         }
+                        Ability::Strikebreak if app.progressive => {
+                            obtainable
+                                .iter()
+                                .chain(case)
+                                .filter(|drop| {
+                                    matches!(
+                                        drop,
+                                        Drop::Ability(Ability::DreamBreaker)
+                                            | Drop::Ability(Ability::Strikebreak)
+                                            | Drop::Ability(Ability::SoulCutter)
+                                    )
+                                })
+                                .count()
+                                == 2
+                        }
                         Ability::SoulCutter if app.progressive => {
-                            obtainable.contains(&Drop::Ability(Ability::Strikebreak))
-                                && obtainable.contains(&Drop::Ability(Ability::SoulCutter))
+                            obtainable
+                                .iter()
+                                .chain(case)
+                                .filter(|drop| {
+                                    matches!(
+                                        drop,
+                                        Drop::Ability(Ability::DreamBreaker)
+                                            | Drop::Ability(Ability::Strikebreak)
+                                            | Drop::Ability(Ability::SoulCutter)
+                                    )
+                                })
+                                .count()
+                                == 3
                         }
                         Ability::ClingGem if app.split_cling => {
                             obtainable
