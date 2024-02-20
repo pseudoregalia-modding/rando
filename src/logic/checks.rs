@@ -76,7 +76,7 @@ pub const CHECKS: [Check; 81] = [
         location: L::StrongEyes,
         index: 185,
         drop: Drop::SmallKey,
-        locks: &[A::DreamBreaker],
+        locks: &[&[Lock::Movement(&[&[A::DreamBreaker]])]],
     },
     Check {
         description: "the goatling who wants to lick the checkpoint",
@@ -392,12 +392,11 @@ pub const CHECKS: [Check; 81] = [
         index: 393,
         drop: Drop::Ability(A::Strikebreak),
         locks: &[&[Lock::Movement(&[
-            A::DreamBreaker,
-            &[A::Strikebreak, A::Slide, A::SolarWind],
-            &[A::Strikebreak, A::SunGreaves],
-            &[A::Strikebreak, A::ClingGem],
+            &[A::Strikebreak, A::Slide, A::SolarWind, A::DreamBreaker],
+            &[A::Strikebreak, A::SunGreaves, A::DreamBreaker],
+            &[A::Strikebreak, A::ClingGem, A::DreamBreaker],
             // this is if you come from a certain entrance which is free
-            &[A::Strikebreak, A::HeliacalPower],
+            &[A::Strikebreak, A::HeliacalPower, A::DreamBreaker],
         ])]],
     },
     Check {
@@ -406,11 +405,10 @@ pub const CHECKS: [Check; 81] = [
         index: 392,
         drop: Drop::Ability(A::Sunsetter),
         locks: &[&[Lock::Movement(&[
-            A::DreamBreaker,
-            &[A::Sunsetter],
-            &[A::HeliacalPower],
-            &[A::SunGreaves],
-            &[A::ClingGem],
+            &[A::Sunsetter, A::DreamBreaker],
+            &[A::HeliacalPower, A::DreamBreaker],
+            &[A::SunGreaves, A::DreamBreaker],
+            &[A::ClingGem, A::DreamBreaker],
         ])]],
     },
     Check {
@@ -451,11 +449,12 @@ pub const CHECKS: [Check; 81] = [
         index: 227,
         drop: Drop::BigKey,
         locks: &[&[Lock::Movement(&[
-            A::DreamBreaker,
+            
             &[A::AscendantLight, A::DreamBreaker, A::ClingGem, A::Sunsetter],
             &[A::AscendantLight, A::DreamBreaker, A::ClingGem, A::SunGreaves],
             &[A::AscendantLight, A::DreamBreaker, A::Sunsetter, A::SunGreaves],
             &[
+                A::DreamBreaker,
                 A::Slide,
                 A::SolarWind,
                 A::Sunsetter,
@@ -470,11 +469,12 @@ pub const CHECKS: [Check; 81] = [
         index: 326,
         drop: Drop::Chair,
         locks: &[&[Lock::Movement(&[
-            A::DreamBreaker,
+            
             &[A::AscendantLight, A::DreamBreaker, A::ClingGem, A::Sunsetter],
             &[A::AscendantLight, A::DreamBreaker, A::ClingGem, A::SunGreaves],
             &[A::AscendantLight, A::DreamBreaker, A::Sunsetter, A::SunGreaves],
             &[
+                A::DreamBreaker,
                 A::Slide,
                 A::SolarWind,
                 A::Sunsetter,
@@ -516,11 +516,10 @@ pub const CHECKS: [Check; 81] = [
         index: 104,
         drop: Drop::Ability(A::SolarWind),
         locks: &[&[Lock::Movement(&[
-            A::DreamBreaker,
             // need some way to cross the gap afterwards
-            &[A::Slide, A::SolarWind],
-            &[A::Slide, A::HeliacalPower],
-            &[A::Slide, A::SunGreaves],
+            &[A::Slide, A::SolarWind, A::DreamBreaker,],
+            &[A::Slide, A::HeliacalPower, A::DreamBreaker,],
+            &[A::Slide, A::SunGreaves, A::DreamBreaker,],
         ])]],
     },
     Check {
@@ -563,10 +562,10 @@ pub const CHECKS: [Check; 81] = [
         index: 446,
         drop: Drop::BigKey,
         locks: &[&[Lock::Movement(&[
-            A::DreamBreaker,
+            
             &[A::Sunsetter, A::SoulCutter, A::AscendantLight, A::DreamBreaker],
-            &[A::Sunsetter, A::SunGreaves, A::Slide, A::SolarWind],
-            &[A::Sunsetter, A::SoulCutter, A::ClingGem],
+            &[A::Sunsetter, A::SunGreaves, A::Slide, A::SolarWind, A::DreamBreaker,],
+            &[A::Sunsetter, A::SoulCutter, A::ClingGem, A::DreamBreaker,],
         ])]],
     },
     Check {
@@ -576,7 +575,7 @@ pub const CHECKS: [Check; 81] = [
         drop: Drop::Ability(A::AscendantLight),
         // you can go through the dark area and there's a passage which you can do with nothing
         locks: &[
-            &[Lock::Movement(&[A::DreamBreaker])],
+            &[Lock::Movement(&[&[A::DreamBreaker]])],
             // &[Lock::Movement(&[
             // &[A::AscendantLight, A::DreamBreaker],
             // &[A::SunGreaves],
@@ -591,7 +590,7 @@ pub const CHECKS: [Check; 81] = [
         index: 517,
         drop: Drop::Health,
         locks: &[
-            &[Lock::Movement(&[A::DreamBreaker])],
+            &[Lock::Movement(&[&[A::DreamBreaker]])],
         ],
     },
     Check {
@@ -634,7 +633,7 @@ pub const CHECKS: [Check; 81] = [
         drop: Drop::Ability(A::HeliacalPower),
         locks: &[&[
             Lock::SmallKey,
-            Lock::Movement(&[A::DreamBreaker,&[A::Slide, A::SunGreaves], &[A::Slide, A::Sunsetter]]),
+            Lock::Movement(&[&[A::Slide, A::SunGreaves, A::DreamBreaker], &[A::Slide, A::Sunsetter, A::DreamBreaker]]),
         ]],
     },
     Check {
@@ -644,7 +643,7 @@ pub const CHECKS: [Check; 81] = [
         drop: Drop::Note,
         locks: &[&[
             Lock::SmallKey,
-            Lock::Movement(&[A::DreamBreaker,&[A::Slide, A::SunGreaves], &[A::Slide, A::Sunsetter]]),
+            Lock::Movement(&[&[A::Slide, A::SunGreaves,A::DreamBreaker], &[A::Slide, A::Sunsetter, A::DreamBreaker]]),
         ]],
     },
     Check {
@@ -798,10 +797,10 @@ pub const CHECKS: [Check; 81] = [
         location: L::MainTheatre,
         index: 947,
         drop: Drop::Chair,
-        locks: &[
-            &[A::ClingGem],
-            &[A::Slide, A::SolarWind, A::HeliacalPower, A::SunGreaves],
-
+        locks: &[&[Lock::Movement(&[
+                &[A::ClingGem],
+                &[A::Slide, A::SolarWind, A::HeliacalPower, A::SunGreaves],
+            ])]
         ],
     },
     Check {
@@ -810,9 +809,9 @@ pub const CHECKS: [Check; 81] = [
         index: 948,
         drop: Drop::Chair,
         locks: &[&[Lock::Movement(&[
-            A::DreamBreaker,
-            &[A::Strikebreak, A::SoulCutter, A::SunGreaves],
-            &[A::Strikebreak, A::SoulCutter, A::ClingGem],
+            
+            &[A::Strikebreak, A::SoulCutter, A::SunGreaves, A::DreamBreaker,],
+            &[A::Strikebreak, A::SoulCutter, A::ClingGem, A::DreamBreaker,],
         ])]],
     },
     Check {
@@ -822,16 +821,16 @@ pub const CHECKS: [Check; 81] = [
         drop: Drop::BigKey,
         // there's one gap in the open green room with enemies which is too big
         locks: &[&[Lock::Movement(&[
-            A::DreamBreaker,
             &[
                 A::Strikebreak,
                 A::SoulCutter,
                 A::ClingGem,
                 A::Slide,
                 A::SolarWind,
+                A::DreamBreaker,
             ],
-            &[A::Strikebreak, A::SoulCutter, A::ClingGem, A::HeliacalPower],
-            &[A::Strikebreak, A::SoulCutter, A::ClingGem, A::SunGreaves],
+            &[A::DreamBreaker,A::Strikebreak, A::SoulCutter, A::ClingGem, A::HeliacalPower],
+            &[A::DreamBreaker,A::Strikebreak, A::SoulCutter, A::ClingGem, A::SunGreaves],
         ])]],
     },
     Check {
@@ -840,9 +839,8 @@ pub const CHECKS: [Check; 81] = [
         index: 1079,
         drop: Drop::Ability(A::SoulCutter),
         locks: &[&[Lock::Movement(&[
-            A::DreamBreaker,
-            &[A::Strikebreak, A::SoulCutter, A::ClingGem],
-            &[A::Strikebreak, A::SoulCutter, A::SunGreaves],
+            &[A::DreamBreaker,A::Strikebreak, A::SoulCutter, A::ClingGem],
+            &[A::DreamBreaker,A::Strikebreak, A::SoulCutter, A::SunGreaves],
         ])]],
     },
     Check {
@@ -859,7 +857,7 @@ pub const CHECKS: [Check; 81] = [
         drop: Drop::Ability(A::Empathy),
         locks: &[&[
             Lock::SmallKey,
-            Lock::Movement(&[A::DreamBreaker, &[A::SunGreaves], &[A::ClingGem]]),
+            Lock::Movement(&[&[A::DreamBreaker,A::SunGreaves], &[A::DreamBreaker,A::ClingGem]]),
         ]],
     },
 ];

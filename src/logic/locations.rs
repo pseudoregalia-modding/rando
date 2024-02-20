@@ -60,19 +60,19 @@ impl Location {
                 &[Lock::Location(L::EmptyBailey)],
                 &[Lock::Location(L::CastleSansaTheatreEntrance), Lock::Movement(&[
                     &[A::ClingGem],
-                    &[A::Slide, &[ &[A::HeliacalPower], &[A::SunGreaves]]],
+                    &[A::Slide, A::HeliacalPower],
+                    &[A::Slide, A::SunGreaves],
                     &[A::Slide, A::SolarWind],
                 ])],
-                &[LockLocation(L::MainLibrary), Lock::Movement(&[
+                &[Lock::Location(L::MainLibrary), Lock::Movement(&[
                     &[A::DreamBreaker],
                 ])]
             ],
             L::CastleSansaTheatreEntrance => &[
                 &[Lock::Location(L::TheatreEntrance)],
                 &[Lock::Location(L::CastleSansaMain), Lock::Movement(&[
-                    &[
-                        &[A::Sunsetter, &[ &[A::Helical], &[A::SunGreaves] ], A::ClingGem]
-                    ]
+                    &[A::Sunsetter, A::HeliacalPower, A::ClingGem],
+                    &[A::Sunsetter, A::SunGreaves, A::ClingGem],
                 ])]
             ],
             // Library
@@ -110,7 +110,7 @@ impl Location {
                 &[Lock::Location(L::TowerRuinsEntrance), Lock::Movement(&[
                     &[A::SunGreaves],
                     &[A::Sunsetter],
-                    &[A::ClingGem, &[ &[ A::HeliacalPower], &[A::SunGreaves]]],
+                    &[A::ClingGem, A::HeliacalPower],
                     &[A::Slide, A::SolarWind],
                 ])],
             ],
@@ -121,7 +121,7 @@ impl Location {
                     Lock::Movement(&[
                         &[A::SunGreaves],
                         &[A::Sunsetter],
-                        &[A::ClingGem, &[ &[ A::HeliacalPower], &[A::SunGreaves]]],
+                        &[A::ClingGem, A::HeliacalPower],
                         &[A::Slide, A::SolarWind],
                     ]),
                 ],
@@ -148,11 +148,9 @@ impl Location {
                 &[
                     Lock::Location(L::MainUnderbelly), // From main to the hole (right below the gear mobs.)
                     Lock::Movement(&[
-                        &[
-                            &[A::SunGreaves],
-                            &[A::Sunsetter],
-                            &[A::Slide, A::SolarWind],
-                        ]
+                        &[A::SunGreaves],
+                        &[A::Sunsetter],
+                        &[A::Slide, A::SolarWind],
                     ])
                 ]
             ],
@@ -193,11 +191,10 @@ impl Location {
                 &[Lock::Location(L::PrisonHole)],
                 &[Lock::Location(L::BaileyHole), Lock::Movement(&[
                     &[A::SunGreaves, A::HeliacalPower, A::Sunsetter], // Going from first bubble to the circular platform
-                    &[
-                        &[&[A::Sunsetter], &[A::HeliacalPower], &[A::SunGreaves]], // Sunsetter OR Helical OR Sungreaves
-                        A::Slide
-                    ], // Slide + the Nested OR. Goes through the Helical power route.
-                ])]
+                    &[A::Slide, A::SunGreaves,],
+                    &[A::Slide, A::Sunsetter,],
+                    &[A::Slide, A::HeliacalPower,],
+                ])],
                 &[Lock::Location(L::SansaHole), Lock::Movement(&[&[A::Sunsetter, A::Slide]])], // from Sansa hole (above going to Major Key)
             ],
             //Theatre
@@ -279,7 +276,7 @@ impl Location {
     }
     pub const fn file(&self) -> &'static str {
         match self {
-            L::LatePrison | L::VDreamBreaker | L::EarlyPrison| L::VDreamBreaker | L::StrongEyes => "ZONE_Dungeon",
+            L::LatePrison | L::VDreamBreaker | L::EarlyPrison| L::StrongEyes => "ZONE_Dungeon",
             L::CastleSansaMain | L::CastleSansaTheatreEntrance => "ZONE_LowerCastle",
             L::MainLibrary | L::Restricted => "Zone_Library",
             L::SansaKeep | L::Sunsetter => "Zone_Upper",
@@ -294,7 +291,7 @@ impl Location {
     }
     pub const fn name(&self) -> &'static str {
         match self {
-            L::LatePrison | L::VDreamBreaker | L::EarlyPrison| L::VDreamBreaker | L::StrongEyes=> "Dilapidated Dungeon",
+            L::LatePrison | L::VDreamBreaker | L::EarlyPrison| L::StrongEyes=> "Dilapidated Dungeon",
             L::CastleSansaMain | L::CastleSansaTheatreEntrance => "Castle Sansa",
             L::MainLibrary | L::Restricted => "Listless Library",
             L::SansaKeep | L::Sunsetter => "Sansa Keep",
