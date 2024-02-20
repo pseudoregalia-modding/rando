@@ -21,6 +21,7 @@ pub struct Rando {
     notes: bool,
     chairs: bool,
     split_cling: bool,
+    spawn: bool,
 }
 
 impl Rando {
@@ -80,6 +81,7 @@ impl Rando {
             notes: get_bool("notes"),
             chairs: get_bool("chairs"),
             split_cling: get_bool("split cling"),
+            spawn: get_bool("spawn"),
         }
     }
     fn pak(&self) -> Result<std::io::BufReader<std::fs::File>, std::io::Error> {
@@ -149,7 +151,7 @@ impl eframe::App for Rando {
                 }
                 ui[0].checkbox(&mut self.health, "Health");
                 ui[0].checkbox(&mut self.goatlings, "Goatlings");
-                ui[0].add_enabled(false, egui::Checkbox::new(&mut false, "Spawn?"));
+                ui[0].checkbox(&mut self.spawn, "Spawn");
                 ui[1].checkbox(&mut self.small_keys, "Small keys");
                 ui[1].checkbox(&mut self.big_keys, "Big keys");
                 ui[1].checkbox(&mut self.notes, "Notes");
@@ -251,5 +253,6 @@ impl eframe::App for Rando {
         storage.set_string("notes", self.notes.to_string());
         storage.set_string("chairs", self.chairs.to_string());
         storage.set_string("split cling", self.split_cling.to_string());
+        storage.set_string("spawn", self.spawn.to_string());
     }
 }

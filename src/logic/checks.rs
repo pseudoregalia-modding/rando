@@ -7,7 +7,7 @@ pub const CHECKS: [Check; 81] = [
     // dream breaker is randomised with random start
     Check {
         description: "where dream breaker normally is",
-        location: L::VDreamBreaker,
+        location: L::DreamBreaker,
         index: 355,
         drop: Drop::Ability(A::DreamBreaker),
         locks: &[],
