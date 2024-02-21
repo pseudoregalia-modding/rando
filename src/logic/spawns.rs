@@ -1,46 +1,61 @@
 use super::Location as L;
 
-pub const SPAWNS: [(&'static str, L); 34] = [
+const SPAWNS: [(&'static str, Location); 34] = [
+    //Prison starts
     ("gameStart", L::EarlyPrison),
     ("dungeonlowestSave", L::LatePrison),
     ("dungeonWestSave", L::LatePrison),
     ("dungeonSaveNearBoss", L::StrongEyes),
-    ("dungeonWest", L::PrisonHole),
-    ("dungeonNorth", L::OtherTheatrePath),
-    // not including other side since needs logic
-    ("dungeon1", L::CastleSansaMain),
-    ("lowerWestSave", L::CastleSansaMain),
-    ("lowerSouthHigh", L::CastleSansaMain),
+    ("dungeonWest", L::PEntryUnderBelly),
+    ("dungeonNorth", L::PEntryTheatre),
+    //Castle Starts
+    ("dungeon1", L::CsPrisonEntry),
+    ("lowerWestSave", L::CsMain),
+    ("lowerWest", L::CsTheatreEntryNearPrison),
+    ("lowerSouthHigh", L::CsKeepEntryMain),
     ("startGazebo", L::CastleSansaMain),
-    ("lowerNorth", L::CastleSansaMain),
-    ("exterior1", L::CastleSansaMain),
-    // same for loading zone in locked room
+    ("lowerNorth", L::CsKeepEntryRamp),
+    ("exterior1", L::CsBaileyEntry),
+    ("lowerMiddle", L::CsKeepClimbEntrance),
     ("lowerEastSave", L::CastleSansaMain),
-    // same for library entrance and easy theatre entrance
-    // need to make area with theatre entrance separate location
+    ("lower1", L::CsPrisonEntry),
+    ("lowerNorthWestTheatre", L::CsOldSoftlockRoom),
+    ("lowerEast", L::CsLibraryEntry),
+    ("lowerNorthNorthWest", L::CsTheatreEntrance),
+    // Library starts
     ("libraryWest", L::MainLibrary),
     ("librarySave", L::MainLibrary),
-    // same for save near sun greaves
-    ("upperSouth", L::SansaKeep),
-    // same for locked room transition, underbelly entrance and theatre entrance
+    ("saveLibraryWest", L::LibSaveNearGreaves),
+    // Sansa Keep Starts
+    ("upperSouth", L::SkCastleMainEntry),
     ("saveUpperMid", L::SansaKeep),
+    ("upperMiddle", L::SkCastleClimbEntry),
     ("upperNorthSave", L::SansaKeep),
-    ("upperNorth", L::SansaKeep),
-    ("lower1", L::EmptyBailey),
-    ("exteriorWest", L::EmptyBailey),
-    // same for tower entrance and underbelly entrance
+    ("upperNorth", L::SkCastleRampEntry),
+    ("upperNorthEast", L::SkUnderbellyEntry),
+    ("upperSouthWest", L::SkTheatreEntry),
+    // Empty Bailey Starts
+    ("lower1", L::EbEntryCastle),
+    ("exteriorWest", L::EbEntryTheatre),
     ("exteriorSouthSave", L::EmptyBailey),
+    ("exteriorSouthEast", L::EbEntryRuins),
+    ("exteriorEast", L::EbEntryUnderBelly),
+    // Underbelly starts
     ("cavesSouth", L::BaileyHole),
-    // same for keep entrance and save near heliacal power
     ("dungeonWest", L::PrisonHole),
-    ("cavesWestSave", L::MainUnderbelly),
-    ("postLightSave", L::MainUnderbelly),
-    ("cavesSouthSave", L::MainUnderbelly),
+    ("cavesWestSave", L::VAscendantLight), // Split AL due to DB reqs for levers / Doors/ mobs
+    ("postLightSave", L::VAscendantLight),// same as above.
+    ("cavesSouthSave", L::BaileyHole),
     ("cavesBigMiddleStart", L::MainUnderbelly),
-    ("theatreEast", L::MainTheatre),
-    ("upperSouthWest", L::MainTheatre),
-    ("theatreSouthEast", L::PillarRoom),
-    ("theatreNorthEastLower", L::MainTheatre),
-    ("theatreSaveMain", L::MainTheatre),
-    ("theatreSouthWest", L::PillarRoom),
+    ("cavesEast", L::SansaHole),
+    ("cavesWest", L::PrisonHole),
+    ("cavesBigSideStart", L::HpSave),
+    // Theatre saves
+    ("theatreEast", L::ThCastleEntryMain), // Main Entrance / up and over
+    ("theatreNorthEastUpper", L::ThKeepEntry), // From Keep
+    ("theatreSouthEast", L::ThCastleEntryPillar), // From Castle / pillar
+    ("theatreNorthEastLower", L::ThDungeonEntry), // From Dungeon
+    ("theatreSaveMain", L::MainTheatre), // Save Crystal
+    ("theatreSouthWest", L::ThBaileyEntry), // From Bailey
+    
 ];
