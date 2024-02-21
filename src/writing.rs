@@ -48,6 +48,7 @@ fn extract(
 }
 
 pub fn write(
+    (tag, spawn): (&'static str, Location),
     checks: std::collections::BTreeMap<&'static str, Vec<Check>>,
     app: &crate::Rando,
 ) -> Result<(), Error> {
@@ -84,6 +85,33 @@ pub fn write(
             None,
         );
     overworld::write(checks, app, &pak, &mut mod_pak)?;
+    if app.spawn {
+        let mut savegame = extract(app, &pak, "Blueprints/GameData/MVMain_Save.uasset")?;
+        if let Some(default) = savegame.asset_data.exports[1].get_normal_export_mut() {
+            for prop in default
+                .properties
+                .iter_mut()
+                .filter_map(|prop| unreal_asset::cast!(Property, StrProperty, prop))
+            {
+                prop.get_name().get_content(|name| match name {
+                    "lastSavePointName" => prop.value = Some(tag.into()),
+                    "lastSavedZoneSpawnIn" => prop.value = Some(spawn.file().into()),
+                    _ => (),
+                })
+            }
+        }
+        let mut asset = std::io::Cursor::new(vec![]);
+        let mut bulk = std::io::Cursor::new(vec![]);
+        savegame.write_data(&mut asset, Some(&mut bulk))?;
+        mod_pak.write_file(
+            "pseudoregalia/Content/Blueprints/GameData/MVMain_Save.uasset",
+            asset.into_inner(),
+        )?;
+        mod_pak.write_file(
+            "pseudoregalia/Content/Blueprints/GameData/MVMain_Save.uexp",
+            bulk.into_inner(),
+        )?;
+    }
     if app.progressive {
         mod_pak.write_file(
             "pseudoregalia/Content/Blueprints/Progressive.uasset",

@@ -137,10 +137,11 @@ fn accessible(
     })
 }
 
-fn possible(checks: &[Check], app: &crate::Rando) -> bool {
+fn possible(spawn: Location, checks: &[Check], app: &crate::Rando) -> bool {
     let mut checks = checks.to_vec();
     let mut locations: Vec<Location> = Vec::with_capacity(Location::COUNT);
-    let mut locations_len = 0;
+    locations.push(spawn);
+    let mut locations_len = 1;
     let mut obtainable = Vec::with_capacity(checks.len());
     let mut obtainable_len = 0;
     loop {
@@ -349,16 +350,21 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
     }
 
     let mut rng = rand::thread_rng();
+    let mut spawn;
     let overworld: std::collections::BTreeMap<_, _> = loop {
+        use rand::{seq::SliceRandom, Rng};
+        spawn = SPAWNS[match app.spawn {
+            true => rng.gen_range(0..SPAWNS.len()),
+            false => 0,
+        }];
         let mut checks = pool.clone();
         let mut drops: Vec<Drop> = checks.iter().map(|check| check.drop).collect();
-        use rand::seq::SliceRandom;
         drops.shuffle(&mut rng);
         for (check, drop) in checks.iter_mut().zip(drops.into_iter()) {
             check.drop = drop
         }
         checks.extend_from_slice(&unrandomised);
-        if possible(&checks, app) {
+        if possible(spawn.1, &checks, app) {
             let mut overworld = std::collections::BTreeMap::<_, Vec<_>>::new();
             for check in checks {
                 match overworld.get_mut(check.location.file()) {
@@ -382,5 +388,5 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
         log.write_fmt(format_args!("{:?}\n", val))
             .map_err(|e| e.to_string())?
     }
-    crate::writing::write(overworld, app).map_err(|e| e.to_string())
+    crate::writing::write(spawn, overworld, app).map_err(|e| e.to_string())
 }

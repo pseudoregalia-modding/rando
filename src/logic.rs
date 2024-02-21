@@ -6,6 +6,8 @@ mod seeding;
 pub use seeding::randomise;
 mod locations;
 pub use locations::Location;
+mod spawns;
+pub use spawns::SPAWNS;
 
 #[derive(Clone, Copy, PartialEq)]
 pub enum Drop {
