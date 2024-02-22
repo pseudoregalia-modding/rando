@@ -111,6 +111,38 @@ pub fn write(
             "pseudoregalia/Content/Blueprints/GameData/MVMain_Save.uexp",
             bulk.into_inner(),
         )?;
+        let mut preset = open_slice(
+            include_bytes!("assets/rando.uasset").as_slice(),
+            include_bytes!("assets/rando.uexp"),
+        )?;
+        if let Export::DataTableExport(table) = &mut preset.asset_data.exports[0] {
+            for prop in table.table.data[0]
+                .value
+                .iter_mut()
+                .filter_map(|prop| unreal_asset::cast!(Property, StrProperty, prop))
+            {
+                prop.get_name().get_content(|name| match name {
+                    "PlayerStartTag_5_7797C3C742DE3A0B8EEE189EDBEF3683" => {
+                        prop.value = Some(tag.into())
+                    }
+                    "LevelName_2_392769FD4066EFFA0CC1F99E8D749886" => {
+                        prop.value = Some(spawn.file().into())
+                    }
+                    _ => (),
+                })
+            }
+        }
+        asset = std::io::Cursor::new(vec![]);
+        bulk = std::io::Cursor::new(vec![]);
+        preset.write_data(&mut asset, Some(&mut bulk))?;
+        mod_pak.write_file(
+            "pseudoregalia/Content/Mods/PseudoMenuMod/GamePresets/rando.uasset",
+            asset.into_inner(),
+        )?;
+        mod_pak.write_file(
+            "pseudoregalia/Content/Mods/PseudoMenuMod/GamePresets/rando.uexp",
+            bulk.into_inner(),
+        )?;
     }
     if app.progressive {
         mod_pak.write_file(
