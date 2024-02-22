@@ -48,7 +48,6 @@ impl Rando {
             .unwrap()
             .insert(0, "alittlepot".to_string());
         ctx.egui_ctx.set_fonts(font);
-        ctx.egui_ctx.set_pixels_per_point(2.0);
 
         let notifs = egui_modal::Modal::new(&ctx.egui_ctx, "dialog");
 
@@ -108,14 +107,20 @@ fn get_pak_str(pak: &std::path::Path) -> String {
 macro_rules! notify {
     ($self:expr, $result: expr, $message: literal) => {
         match $result {
-            Ok(..) => $self.notifs.open_dialog(
-                Some("success"),
-                Some($message),
-                Some(egui_modal::Icon::Success),
-            ),
+            Ok(..) => $self
+                .notifs
+                .dialog()
+                .with_title("success")
+                .with_body($message)
+                .with_icon(egui_modal::Icon::Success)
+                .open(),
             Err(e) => $self
                 .notifs
-                .open_dialog(Some("owo"), Some(e), Some(egui_modal::Icon::Error)),
+                .dialog()
+                .with_title("owo")
+                .with_body(e)
+                .with_icon(egui_modal::Icon::Error)
+                .open(),
         }
     };
 }
@@ -135,11 +140,7 @@ impl eframe::App for Rando {
                         self.pak_str = get_pak_str(&pak);
                         self.pak = pak
                     } else {
-                        self.notifs.open_dialog(
-                            Some(":/"),
-                            Some("that isn't a valid pseudoregalia install location"),
-                            Some(egui_modal::Icon::Warning),
-                        )
+                        self.notifs.dialog().with_title(":/").with_body("that isn't a valid pseudoregalia install location").with_icon(egui_modal::Icon::Warning).open();
                     }
                 }
             });
@@ -229,11 +230,11 @@ impl eframe::App for Rando {
                             Some(saves) => if let Ok(dir) = saves.read_dir() {
                                 for cling in dir.filter_map(Result::ok).filter_map(|file| (file.file_name().to_str().is_some_and(|name| name.starts_with("Cling Gem File"))).then(|| file.path())) {
                                     if let Err(e) = std::fs::remove_file(cling) {
-                                        self.notifs.open_dialog(Some("owo"), Some(e), Some(egui_modal::Icon::Error))
+                                        self.notifs.dialog().with_title("owo").with_body(e).with_icon(egui_modal::Icon::Error).open()
                                     }
                                 }
                             },
-                            None => self.notifs.open_dialog(Some("owo"), Some("no valid save folder could be found"), Some(egui_modal::Icon::Error)),
+                            None => self.notifs.dialog().with_title("owo").with_body("no valid save folder could be found").with_icon(egui_modal::Icon::Error).open(),
                         }
                 }
             });
