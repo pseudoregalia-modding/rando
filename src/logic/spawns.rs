@@ -1,6 +1,6 @@
 use super::Location as L;
 
-pub const SPAWNS: [(&'static str, L); 34] = [
+pub const SPAWNS: [(&str, L); 34] = [
     ("gameStart", L::EarlyPrison),
     ("dungeonlowestSave", L::LatePrison),
     ("dungeonWestSave", L::LatePrison),
