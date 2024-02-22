@@ -148,7 +148,7 @@ impl Location {
                 &[Lock::Location(L::CsKeepClimbEntrance), Lock::SmallKey, Lock::Movement(&[&[A::DreamBreaker]])],
                 &[Lock::Location(L::CsPrisonEntry)],
                 &[Lock::Location(L::CsBaileyEntry)],
-                &[Lock::Location(L::CSOldSoftlockRoom), Lock::Movement(&[
+                &[Lock::Location(L::CsOldSoftlockRoom), Lock::Movement(&[
                     &[A::ClingGem],
                 ])],
                 &[Lock::Location(L::CsLibraryEntry), Lock::Movement(&[
@@ -158,7 +158,7 @@ impl Location {
             ],
             L::CsTheatreEntrance => &[
                 &[Lock::Location(L::ThCastleEntryMain)],
-                &[Lock::Location(L::CSOldSoftlockRoom), Lock::Movement(&[
+                &[Lock::Location(L::CsOldSoftlockRoom), Lock::Movement(&[
                     &[A::Sunsetter, A::HeliacalPower, A::ClingGem],
                     &[A::Sunsetter, A::SunGreaves, A::ClingGem],
                 ])]
@@ -173,7 +173,7 @@ impl Location {
                     //Entry from Reverse..
                     &[A::SunGreaves],
                     &[A::ClingGem, A::HeliacalPower],
-                    &[A::ClingGem, A::Sunsettern],
+                    &[A::ClingGem, A::Sunsetter],
                     &[A::Slide, A::SolarWind, A::HeliacalPower],
                 ])],
             ],
@@ -184,7 +184,7 @@ impl Location {
                 &[Lock::Location(L::LibSaveNearGreaves), Lock::Movement(&[
                     &[A::SunGreaves],
                     &[A::ClingGem, A::HeliacalPower],
-                    &[A::ClingGem, A::Sunsettern],
+                    &[A::ClingGem, A::Sunsetter],
                     &[A::Slide, A::SolarWind, A::HeliacalPower],
                     &[A::DreamBreaker, A::HeliacalPower],
                 ])],
@@ -363,8 +363,8 @@ impl Location {
                 &[
                     Lock::Location(L::HpSave),
                     Lock::Movement(&[
-                        A::Sunsetter,
-                        A::Slide,
+                        &[A::Sunsetter,
+                        A::Slide,],
                     ])
                 ],
             ],
@@ -522,13 +522,13 @@ impl Location {
     pub const fn file(&self) -> &'static str {
         match self {
             L::PEntryTheatre | L::PEntryCastle| L::PEntryUnderBelly | L::LatePrison | L::VDreamBreaker | L::EarlyPrison| L::StrongEyes => "ZONE_Dungeon",
-            L::CsBaileyEntry | L::CsPrisonEntry | L::CsLibraryEntry | L::CsTheatreEntryNearPrison | L::CsKeepEntryMain | L::CsKeepEntryRamp |L::CSOldSoftlockRoom | L::CsKeepClimbEntrance | L::CsMain | L::CsTheatreEntrance => "ZONE_LowerCastle",
+            L::CsBaileyEntry | L::CsPrisonEntry | L::CsLibraryEntry | L::CsTheatreEntryNearPrison | L::CsKeepEntryMain | L::CsKeepEntryRamp |L::CsOldSoftlockRoom | L::CsKeepClimbEntrance | L::CsMain | L::CsTheatreEntrance => "ZONE_LowerCastle",
             L::LibSaveNearGreaves | L::MainLibrary | L::Restricted => "Zone_Library",
             L::SkTheatreEntry | L::SkUnderbellyEntry | L::SkCastleClimbEntry | L::SkCastleMainEntry | L::SkCastleRampEntry| L::SansaKeep | L::Sunsetter => "Zone_Upper",
             L::EbEntryCastle | L::EbEntryRuins | L::EbEntryTheatre| L::EbEntryUnderBelly | L::EmptyBailey => "ZONE_Exterior",
             L::TowerRuinsEntrance | L::TowerRuinsKeep  => "Zone_Tower",
-            L::SansaHole |L::PrisonHole| L::BaileyHole| L::MainUnderbelly => "Zone_Caves",
-            L::ThBaileyEntry | L::ThCastleEntryMain | L::ThCastleEntryPillar | L::ThKeepEntry | L::PillarRoom | L::TheatreEntrance | L::OtherTheatrePath | L::MainTheatre => {
+            L::VAscendantLight | L::HpSave | L::SansaHole |L::PrisonHole| L::BaileyHole| L::MainUnderbelly => "Zone_Caves",
+            L::ThDungeonEntry | L::ThBaileyEntry | L::ThCastleEntryMain | L::ThCastleEntryPillar | L::ThKeepEntry | L::PillarRoom | L::TheatreEntrance | L::OtherTheatrePath | L::MainTheatre => {
                 "Zone_Theatre"
             }
             L::FinalBoss => "Zone_PrincessChambers",
@@ -537,13 +537,13 @@ impl Location {
     pub const fn name(&self) -> &'static str {
         match self {
             L::PEntryTheatre | L::PEntryCastle| L::PEntryUnderBelly | L::LatePrison | L::VDreamBreaker | L::EarlyPrison| L::StrongEyes=> "Dilapidated Dungeon",
-            L::CsBaileyEntry | L::CsPrisonEntry | L::CsLibraryEntry | L::CsTheatreEntryNearPrison | L::CsKeepEntryMain | L::CsKeepEntryRamp |L::CSOldSoftlockRoom | L::CsKeepClimbEntrance | L::CsMain | L::CsTheatreEntrance => "Castle Sansa",
+            L::CsBaileyEntry | L::CsPrisonEntry | L::CsLibraryEntry | L::CsTheatreEntryNearPrison | L::CsKeepEntryMain | L::CsKeepEntryRamp |L::CsOldSoftlockRoom | L::CsKeepClimbEntrance | L::CsMain | L::CsTheatreEntrance => "Castle Sansa",
             L::LibSaveNearGreaves | L::MainLibrary | L::Restricted => "Listless Library",
             L::SkTheatreEntry | L::SkUnderbellyEntry | L::SkCastleClimbEntry | L::SkCastleMainEntry | L::SkCastleRampEntry| L::SansaKeep | L::Sunsetter => "Sansa Keep",
             L::EbEntryCastle | L::EbEntryRuins | L::EbEntryTheatre| L::EbEntryUnderBelly | L::EmptyBailey => "Empty Bailey",
             L::TowerRuinsEntrance | L::TowerRuinsKeep => "Tower Ruins",
-            L::SansaHole | L::PrisonHole |L::BaileyHole| L::MainUnderbelly => "Underbelly",
-            L::ThBaileyEntry | L::ThCastleEntryMain | L::ThCastleEntryPillar | L::ThKeepEntry | L::PillarRoom | L::TheatreEntrance | L::OtherTheatrePath | L::MainTheatre => {
+            L::VAscendantLight | L::HpSave | L::SansaHole | L::PrisonHole |L::BaileyHole| L::MainUnderbelly => "Underbelly",
+            L::ThDungeonEntry | L::ThBaileyEntry | L::ThCastleEntryMain | L::ThCastleEntryPillar | L::ThKeepEntry | L::PillarRoom | L::TheatreEntrance | L::OtherTheatrePath | L::MainTheatre => {
                 "Twilight Theatre"
             }
             L::FinalBoss => "Princess",

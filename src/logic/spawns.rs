@@ -1,6 +1,7 @@
-use super::Location as L;
+use super::*;
+use Location as L;
 
-const SPAWNS: [(&'static str, Location); 34] = [
+pub const SPAWNS: [(&'static str, L); 49] = [
     //Prison starts
     ("gameStart", L::EarlyPrison),
     ("dungeonlowestSave", L::LatePrison),
@@ -13,11 +14,11 @@ const SPAWNS: [(&'static str, Location); 34] = [
     ("lowerWestSave", L::CsMain),
     ("lowerWest", L::CsTheatreEntryNearPrison),
     ("lowerSouthHigh", L::CsKeepEntryMain),
-    ("startGazebo", L::CastleSansaMain),
+    ("startGazebo", L::CsMain),
     ("lowerNorth", L::CsKeepEntryRamp),
     ("exterior1", L::CsBaileyEntry),
     ("lowerMiddle", L::CsKeepClimbEntrance),
-    ("lowerEastSave", L::CastleSansaMain),
+    ("lowerEastSave", L::CsMain),
     ("lower1", L::CsPrisonEntry),
     ("lowerNorthWestTheatre", L::CsOldSoftlockRoom),
     ("lowerEast", L::CsLibraryEntry),
