@@ -4,11 +4,12 @@ use Location as L;
 pub const SPAWNS: [(&'static str, L); 49] = [
     //Prison starts
     ("gameStart", L::EarlyPrison),
-    ("dungeonlowestSave", L::LatePrison),
+    //("dungeonlowestSave", L::LatePrison),
     ("dungeonWestSave", L::LatePrison),
     ("dungeonSaveNearBoss", L::StrongEyes),
     ("dungeonWest", L::PEntryUnderBelly),
     ("dungeonNorth", L::PEntryTheatre),
+    ("lower1", L::PEntryCastle),
     //Castle Starts
     ("dungeon1", L::CsPrisonEntry),
     ("lowerWestSave", L::CsMain),
@@ -19,7 +20,6 @@ pub const SPAWNS: [(&'static str, L); 49] = [
     ("exterior1", L::CsBaileyEntry),
     ("lowerMiddle", L::CsKeepClimbEntrance),
     ("lowerEastSave", L::CsMain),
-    ("lower1", L::CsPrisonEntry),
     ("lowerNorthWestTheatre", L::CsOldSoftlockRoom),
     ("lowerEast", L::CsLibraryEntry),
     ("lowerNorthNorthWest", L::CsTheatreEntrance),
@@ -44,8 +44,8 @@ pub const SPAWNS: [(&'static str, L); 49] = [
     // Underbelly starts
     ("cavesSouth", L::BaileyHole),
     ("dungeonWest", L::PrisonHole),
-    ("cavesWestSave", L::VAscendantLight), // Split AL due to DB reqs for levers / Doors/ mobs
-    ("postLightSave", L::VAscendantLight),// same as above.
+    ("cavesWestSave", L::VAscendantLight),
+    ("postLightSave", L::VAscendantLight),
     ("cavesSouthSave", L::BaileyHole),
     ("cavesBigMiddleStart", L::MainUnderbelly),
     ("cavesEast", L::SansaHole),
