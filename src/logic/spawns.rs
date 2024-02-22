@@ -1,7 +1,7 @@
 use super::*;
 use Location as L;
 
-pub const SPAWNS: [(&'static str, L); 49] = [
+pub const SPAWNS: [(&str, L); 48] = [
     //Prison starts
     ("gameStart", L::EarlyPrison),
     //("dungeonlowestSave", L::LatePrison),
@@ -56,7 +56,6 @@ pub const SPAWNS: [(&'static str, L); 49] = [
     ("theatreNorthEastUpper", L::ThKeepEntry), // From Keep
     ("theatreSouthEast", L::ThCastleEntryPillar), // From Castle / pillar
     ("theatreNorthEastLower", L::ThDungeonEntry), // From Dungeon
-    ("theatreSaveMain", L::MainTheatre), // Save Crystal
+    ("theatreSaveMain", L::MainTheatre),   // Save Crystal
     ("theatreSouthWest", L::ThBaileyEntry), // From Bailey
-    
 ];
