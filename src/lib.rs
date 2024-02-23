@@ -9,6 +9,8 @@ type Asset<T> = unreal_asset::Asset<std::io::Cursor<T>>;
 
 pub struct Rando {
     notifs: egui_modal::Modal,
+    credits: egui_modal::Modal,
+    faq: egui_modal::Modal,
     pak: std::path::PathBuf,
     pak_str: String,
     abilities: bool,
@@ -68,6 +70,8 @@ impl Rando {
 
         Self {
             notifs,
+            credits: egui_modal::Modal::new(&ctx.egui_ctx, "credits"),
+            faq: egui_modal::Modal::new(&ctx.egui_ctx, "faq"),
             pak,
             pak_str,
             abilities: get_bool("abilities"),
@@ -98,7 +102,13 @@ fn ask_game_path() -> Option<std::path::PathBuf> {
 }
 
 fn get_pak_str(pak: &std::path::Path) -> String {
-    let mut pak_str: String = pak.to_str().unwrap_or_default().chars().rev().collect();
+    let mut pak_str: String = pak
+        .to_str()
+        .unwrap_or_default()
+        .replace('\\', "/")
+        .chars()
+        .rev()
+        .collect();
     pak_str.truncate(75);
     pak_str = "...".to_string() + &pak_str.chars().rev().collect::<String>();
     pak_str
@@ -130,7 +140,58 @@ impl eframe::App for Rando {
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.horizontal(|ui| {
                 ui.heading(egui::RichText::new("pseudoregalia rando").size(40.0));
-                ui.label(egui::RichText::new("by spuds").italics().size(15.0));
+                if ui.button("credits").clicked() {
+                    self.credits.open()
+                }
+                if ui.button("faq").clicked() {
+                    self.faq.open()
+                }
+            });
+            self.credits.show(|ui| {
+                ui.label("coding, reverse engineering and initial logic by spuds");
+                ui.label("logic overhaul and trick levels by MeriKatt");
+                ui.with_layout(
+                    egui::Layout {
+                        cross_justify: true,
+                        cross_align: egui::Align::Center,
+                        ..Default::default()
+                    },
+                    |ui| self.credits.button(ui, "close"),
+                );
+            });
+            self.faq.show(|ui| {
+                ui.spacing_mut().item_spacing.x = ui.fonts(|fonts| {
+                    fonts.glyph_width(&egui::TextStyle::Body.resolve(ui.style()), ' ')
+                });
+                ui.collapsing("where can i talk with people about the rando?", |ui| {
+                    ui.horizontal(|ui| {
+                        ui.label("you can chat about the rando on the");
+                        ui.hyperlink_to("pseudoregalia discord", "http://discord.gg/Mny2HfNMrT");
+                    })
+                });
+                ui.collapsing("how can i share seeds/race people?", |ui| {
+                    ui.horizontal(|ui| {
+                        ui.label("you can share");
+                        if ui.link("rando_p.pak").clicked() {
+                            notify!(
+                                self,
+                                std::process::Command::new("explorer",)
+                                    .arg(&self.pak)
+                                    .spawn(),
+                                "share and put it in the same folder"
+                            )
+                        }
+                        ui.label("to share/race the seed")
+                    })
+                });
+                ui.with_layout(
+                    egui::Layout {
+                        cross_justify: true,
+                        cross_align: egui::Align::Center,
+                        ..Default::default()
+                    },
+                    |ui| self.faq.button(ui, "close"),
+                );
             });
             ui.add_space(5.0);
             ui.horizontal(|ui| {
@@ -140,7 +201,12 @@ impl eframe::App for Rando {
                         self.pak_str = get_pak_str(&pak);
                         self.pak = pak
                     } else {
-                        self.notifs.dialog().with_title(":/").with_body("that isn't a valid pseudoregalia install location").with_icon(egui_modal::Icon::Warning).open();
+                        self.notifs
+                            .dialog()
+                            .with_title(":/")
+                            .with_body("that isn't a valid pseudoregalia install location")
+                            .with_icon(egui_modal::Icon::Warning)
+                            .open();
                     }
                 }
             });
@@ -170,24 +236,6 @@ impl eframe::App for Rando {
                     self.abilities,
                     egui::Checkbox::new(&mut self.progressive, "Progressive items"),
                 );
-            });
-            ui.horizontal(|ui| {
-                ui.spacing_mut().item_spacing.x = ui.fonts(|fonts| {
-                    fonts.glyph_width(&egui::TextStyle::Body.resolve(ui.style()), ' ')
-                });
-                ui.label("chat about the rando on");
-                ui.hyperlink_to("discord", "http://discord.gg/Mny2HfNMrT");
-                ui.label("and share");
-                if ui.link("rando_p.pak").clicked() {
-                    notify!(
-                        self,
-                        std::process::Command::new("explorer",)
-                            .arg(&self.pak)
-                            .spawn(),
-                        "share and put it in the same folder"
-                    )
-                }
-                ui.label("to race!")
             });
             ui.vertical_centered_justified(|ui| {
                 if ui.button("uninstall seed").clicked() {
@@ -221,21 +269,7 @@ impl eframe::App for Rando {
                         self,
                         logic::randomise(self),
                         "seed has been generated, written and installed"
-                    );
-                    match std::env::var_os("USERPROFILE")
-                        .map(std::path::PathBuf::from)
-                        .map(|path| path.join("AppData/Local/pseudoregalia/Saved/SaveGames"))
-                        .filter(|path| path.exists())
-                        .or_else(|| rfd::FileDialog::new().set_title("save folder couldn't be found - please select the location if you have created saves").pick_folder()){
-                            Some(saves) => if let Ok(dir) = saves.read_dir() {
-                                for cling in dir.filter_map(Result::ok).filter_map(|file| (file.file_name().to_str().is_some_and(|name| name.starts_with("Cling Gem File"))).then(|| file.path())) {
-                                    if let Err(e) = std::fs::remove_file(cling) {
-                                        self.notifs.dialog().with_title("owo").with_body(e).with_icon(egui_modal::Icon::Error).open()
-                                    }
-                                }
-                            },
-                            None => self.notifs.dialog().with_title("owo").with_body("no valid save folder could be found").with_icon(egui_modal::Icon::Error).open(),
-                        }
+                    )
                 }
             });
             self.notifs.show_dialog();

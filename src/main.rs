@@ -14,6 +14,7 @@ fn main() -> Result<(), eframe::Error> {
                     height: 32,
                 })
                 .with_app_id("pseudoregalia-rando"),
+            persist_window: false,
             ..Default::default()
         },
         Box::new(|ctx| Box::new(Rando::new(ctx))),
