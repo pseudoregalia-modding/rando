@@ -9,7 +9,7 @@ pub enum Ability {
     #[strum(serialize = "plunge")]
     Sunsetter,
     #[strum(serialize = "wallRide")]
-    ClingGem,
+    ClingGem(u8),
     #[strum(serialize = "light")]
     AscendantLight,
     #[strum(serialize = "projectile")]
