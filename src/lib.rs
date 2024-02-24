@@ -11,6 +11,7 @@ pub struct Rando {
     notifs: egui_modal::Modal,
     credits: egui_modal::Modal,
     faq: egui_modal::Modal,
+    tricks: egui_modal::Modal,
     pak: std::path::PathBuf,
     pak_str: String,
     abilities: bool,
@@ -72,6 +73,7 @@ impl Rando {
             notifs,
             credits: egui_modal::Modal::new(&ctx.egui_ctx, "credits"),
             faq: egui_modal::Modal::new(&ctx.egui_ctx, "faq"),
+            tricks: egui_modal::Modal::new(&ctx.egui_ctx, "trick"),
             pak,
             pak_str,
             abilities: get_bool("abilities"),
@@ -151,11 +153,9 @@ impl eframe::App for Rando {
                 ui.label("coding, reverse engineering and initial logic by spuds");
                 ui.label("logic overhaul and trick levels by MeriKatt");
                 ui.with_layout(
-                    egui::Layout {
-                        cross_justify: true,
-                        cross_align: egui::Align::Center,
-                        ..Default::default()
-                    },
+                    egui::Layout::default()
+                        .with_cross_justify(true)
+                        .with_cross_align(egui::Align::Center),
                     |ui| self.credits.button(ui, "close"),
                 );
             });
@@ -185,11 +185,9 @@ impl eframe::App for Rando {
                     })
                 });
                 ui.with_layout(
-                    egui::Layout {
-                        cross_justify: true,
-                        cross_align: egui::Align::Center,
-                        ..Default::default()
-                    },
+                    egui::Layout::default()
+                        .with_cross_justify(true)
+                        .with_cross_align(egui::Align::Center),
                     |ui| self.faq.button(ui, "close"),
                 );
             });
@@ -238,6 +236,20 @@ impl eframe::App for Rando {
                 );
             });
             ui.vertical_centered_justified(|ui| {
+                if ui
+                    .button(egui::RichText::new("trick settings").size(25.0))
+                    .clicked()
+                {
+                    self.tricks.open()
+                }
+                self.tricks.show(|ui| {
+                    ui.with_layout(
+                        egui::Layout::default()
+                            .with_cross_justify(true)
+                            .with_cross_align(egui::Align::Center),
+                        |ui| self.tricks.button(ui, "close"),
+                    );
+                });
                 if ui.button("uninstall seed").clicked() {
                     notify!(
                         self,
