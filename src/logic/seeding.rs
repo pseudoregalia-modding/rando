@@ -51,7 +51,7 @@ fn accessible(
                                 )
                             })
                         }
-                        Ability::SolarWind if app.progressive => {
+                        Ability::SolarWind => {
                             obtainable
                                 .iter()
                                 .chain(case)
@@ -90,7 +90,21 @@ fn accessible(
                                 .count()
                                 == 2
                         }
-                        Ability::SoulCutter if app.progressive => {
+                        Ability::Strikebreak => {
+                            obtainable
+                                .iter()
+                                .chain(case)
+                                .filter(|drop| {
+                                    matches!(
+                                        drop,
+                                        Drop::Ability(Ability::DreamBreaker)
+                                            | Drop::Ability(Ability::Strikebreak)
+                                    )
+                                })
+                                .count()
+                                == 2
+                        }
+                        Ability::SoulCutter => {
                             obtainable
                                 .iter()
                                 .chain(case)
@@ -114,6 +128,20 @@ fn accessible(
                                     _ => acc,
                                 })
                                 == 3
+                        }
+                        Ability::AscendantLight => {
+                            obtainable
+                                .iter()
+                                .chain(case)
+                                .filter(|drop| {
+                                    matches!(
+                                        drop,
+                                        Drop::Ability(Ability::DreamBreaker)
+                                            | Drop::Ability(Ability::AscendantLight)
+                                    )
+                                })
+                                .count()
+                                == 2
                         }
                         ability => obtainable.iter().chain(case).any(|drop| match drop {
                             Drop::Ability(a) => a == ability,
