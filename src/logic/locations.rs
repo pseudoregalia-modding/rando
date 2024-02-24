@@ -101,7 +101,7 @@ impl Location {
             ],
             L::PEntryTheatre => &[
                 &[Lock::Location(L::LatePrison), Lock::Movement(&[
-                    &[A::ClingGem],
+                    &[A::ClingGem(6)],
                     &[A::SunGreaves],
                     &[A::AscendantLight]
                 ])],
@@ -117,13 +117,13 @@ impl Location {
                 &[Lock::Location(L::MainLibrary)],
             ],
             L::CsTheatreEntryNearPrison => &[
-                &[Lock::Location(L::CsMain), Lock::Movement(&[&[A::SunGreaves], &[A::Sunsetter], &[A::ClingGem], &[A::Slide, A::SolarWind]])],
+                &[Lock::Location(L::CsMain), Lock::Movement(&[&[A::SunGreaves], &[A::Sunsetter], &[A::ClingGem(4)], &[A::Slide, A::SolarWind]])],
                 &[Lock::Location(L::PillarRoom)],
             ],
             L::CsOldSoftlockRoom => &[
-                &[Lock::Location(L::CsMain), Lock::Movement(&[&[A::ClingGem]])],
+                &[Lock::Location(L::CsMain), Lock::Movement(&[&[A::ClingGem(2)]])],
                 &[Lock::Location(L::CsTheatreEntrance), Lock::Movement(&[
-                    &[A::ClingGem],
+                    &[A::ClingGem(4)],
                     &[A::Slide, A::HeliacalPower],
                     &[A::Slide, A::SunGreaves],
                     &[A::Slide, A::SolarWind],
@@ -137,7 +137,7 @@ impl Location {
                 &[Lock::Location(L::SansaKeep)],
             ],
             L::CsKeepEntryRamp => &[
-                &[Lock::Location(L::CsMain), Lock::Movement(&[&[A::DreamBreaker], &[A::ClingGem], &[A::SunGreaves], &[A::Sunsetter]])],
+                &[Lock::Location(L::CsMain), Lock::Movement(&[&[A::DreamBreaker], &[A::ClingGem(4)], &[A::SunGreaves], &[A::Sunsetter]])],
                 &[Lock::Location(L::SansaKeep)],
             ],
             L::CsBaileyEntry => &[
@@ -149,7 +149,7 @@ impl Location {
                 &[Lock::Location(L::CsPrisonEntry)],
                 &[Lock::Location(L::CsBaileyEntry)],
                 &[Lock::Location(L::CsOldSoftlockRoom), Lock::Movement(&[
-                    &[A::ClingGem],
+                    &[A::ClingGem(4)],
                 ])],
                 &[Lock::Location(L::CsLibraryEntry), Lock::Movement(&[
                     &[A::DreamBreaker],
@@ -159,8 +159,8 @@ impl Location {
             L::CsTheatreEntrance => &[
                 &[Lock::Location(L::ThCastleEntryMain)],
                 &[Lock::Location(L::CsOldSoftlockRoom), Lock::Movement(&[
-                    &[A::Sunsetter, A::HeliacalPower, A::ClingGem],
-                    &[A::Sunsetter, A::SunGreaves, A::ClingGem],
+                    &[A::Sunsetter, A::HeliacalPower, A::ClingGem(4)],
+                    &[A::Sunsetter, A::SunGreaves, A::ClingGem(4)],
                 ])]
             ],
             // Library
@@ -172,8 +172,8 @@ impl Location {
                     &[A::DreamBreaker, A::Slide, A::SunGreaves],
                     //Entry from Reverse..
                     &[A::SunGreaves],
-                    &[A::ClingGem, A::HeliacalPower],
-                    &[A::ClingGem, A::Sunsetter],
+                    &[A::ClingGem(2), A::HeliacalPower],
+                    &[A::ClingGem(2), A::Sunsetter],
                     &[A::Slide, A::SolarWind, A::HeliacalPower],
                 ])],
             ],
@@ -183,8 +183,8 @@ impl Location {
                 ])],
                 &[Lock::Location(L::LibSaveNearGreaves), Lock::Movement(&[
                     &[A::SunGreaves],
-                    &[A::ClingGem, A::HeliacalPower],
-                    &[A::ClingGem, A::Sunsetter],
+                    &[A::ClingGem(2), A::HeliacalPower],
+                    &[A::ClingGem(2), A::Sunsetter],
                     &[A::Slide, A::SolarWind, A::HeliacalPower],
                     &[A::DreamBreaker, A::HeliacalPower],
                 ])],
@@ -200,7 +200,7 @@ impl Location {
             ],
             L::SkCastleRampEntry => &[
                 &[Lock::Location(L::SansaKeep), Lock::Movement(&[
-                    &[A::ClingGem],
+                    &[A::ClingGem(2)],
                     &[A::SunGreaves],
                     &[A::Slide, A::SolarWind],
                 ])],
@@ -218,7 +218,7 @@ impl Location {
             L::SkTheatreEntry => &[
                 &[Lock::Location(L::ThKeepEntry)],
                 &[Lock::Location(L::SansaKeep), Lock::Movement(&[
-                    &[A::ClingGem],
+                    &[A::ClingGem(2)],
                     &[A::SunGreaves],
                     &[A::Slide, A::SolarWind]
                 ])]
@@ -228,7 +228,7 @@ impl Location {
                 &[Lock::Location(L::SkCastleMainEntry)],
                 &[
                     Lock::Location(L::MainTheatre),
-                    Lock::Movement(&[&[A::ClingGem]]),
+                    Lock::Movement(&[&[A::ClingGem(2)]]),
                 ],
                 &[Lock::Location(L::SkUnderbellyEntry), Lock::Movement(&[
                     &[A::Sunsetter],
@@ -242,7 +242,7 @@ impl Location {
                 &[Lock::Location(L::SansaKeep), Lock::SmallKey, Lock::Movement(&[&[A::DreamBreaker]])],
                 &[
                     Lock::Location(L::SansaKeep),
-                    Lock::Movement(&[&[A::SunGreaves], &[A::ClingGem]]),
+                    Lock::Movement(&[&[A::SunGreaves], &[A::ClingGem(2)]]),
                 ],
             ],
             // Bailey
@@ -254,13 +254,13 @@ impl Location {
                 &[Lock::Location(L::TowerRuinsEntrance), Lock::Movement(&[
                     &[A::SunGreaves],
                     &[A::Sunsetter],
-                    &[A::ClingGem, A::HeliacalPower],
+                    &[A::ClingGem(2), A::HeliacalPower],
                     &[A::Slide, A::SolarWind],
                 ])],
                 &[Lock::Location(L::EmptyBailey), Lock::Movement(&[
                     &[A::SunGreaves],
                     &[A::Sunsetter],
-                    &[A::ClingGem, A::HeliacalPower],
+                    &[A::ClingGem(2), A::HeliacalPower],
                     &[A::Slide, A::SolarWind],
                 ])],
             ],
@@ -284,7 +284,7 @@ impl Location {
                 &[Lock::Location(L::EbEntryRuins), Lock::Movement(&[
                     &[A::SunGreaves],
                     &[A::Sunsetter],
-                    &[A::ClingGem, A::HeliacalPower],
+                    &[A::ClingGem(2), A::HeliacalPower],
                     &[A::Slide, A::SolarWind],
                 ])],
             ],
@@ -295,7 +295,7 @@ impl Location {
                     Lock::Movement(&[
                         &[A::SunGreaves],
                         &[A::Sunsetter],
-                        &[A::ClingGem, A::HeliacalPower],
+                        &[A::ClingGem(2), A::HeliacalPower],
                         &[A::Slide, A::SolarWind],
                     ]),
                 ],
@@ -303,8 +303,8 @@ impl Location {
             ],
             L::TowerRuinsKeep => &[
                 &[Lock::Location(L::TowerRuinsEntrance), Lock::Movement(&[
-                    &[A::Sunsetter, A::ClingGem],
-                    &[A::ClingGem, A::HeliacalPower],
+                    &[A::Sunsetter, A::ClingGem(2)],
+                    &[A::ClingGem(2), A::HeliacalPower],
                     &[A::SunGreaves],
                     // Test the below to make sure not miss remembering.
                     // &[A::Slide, A::SolarWind, A::HeliacalPower],
@@ -374,8 +374,8 @@ impl Location {
                     &[A::SunGreaves, A::HeliacalPower, A::Sunsetter], // Going from first bubble to the circular platform
                 ])],
                 &[Lock::Location(L::HpSave), Lock::Movement(&[
-                    &[A::Slide, A::SunGreaves, A::Slide, A::SolarWind, A::ClingGem], // Slide through top of gap and ultra out of solar into wall kick up.
-                    &[A::DreamBreaker, A::ClingGem, A::Sunsetter],
+                    &[A::Slide, A::SunGreaves, A::Slide, A::SolarWind, A::ClingGem(2)], // Slide through top of gap and ultra out of solar into wall kick up.
+                    &[A::DreamBreaker, A::ClingGem(2), A::Sunsetter],
                     &[A::DreamBreaker, A::HeliacalPower, A::SunGreaves],
                     &[A::DreamBreaker, A::Slide, A::SolarWind, A::HeliacalPower],
                 ])],
@@ -393,7 +393,7 @@ impl Location {
                     &[A::Slide, A::HeliacalPower,],
                 ])],
                 &[Lock::Location(L::MainUnderbelly), Lock::Movement(&[
-                    &[A::DreamBreaker, A::ClingGem, A::Sunsetter],
+                    &[A::DreamBreaker, A::ClingGem(2), A::Sunsetter],
                     &[A::DreamBreaker, A::HeliacalPower, A::SunGreaves],
                     &[A::DreamBreaker, A::Slide, A::SolarWind, A::HeliacalPower],
                 ])],
@@ -404,7 +404,7 @@ impl Location {
                 &[Lock::Location(L::PillarRoom), Lock::Movement(&[
                     &[A::SunGreaves],
                     &[A::HeliacalPower],
-                    &[A::ClingGem],
+                    &[A::ClingGem(4)],
                     &[A::Sunsetter],
                 ])],
             ],
@@ -417,7 +417,7 @@ impl Location {
                 &[Lock::Location(L::PillarRoom), Lock::Movement(&[
                     &[A::SunGreaves],
                     &[A::HeliacalPower],
-                    &[A::ClingGem],
+                    &[A::ClingGem(2)],
                     &[A::Sunsetter],
                 ])],
             ],
@@ -425,7 +425,7 @@ impl Location {
                 &[Lock::Location(L::SkTheatreEntry)],
                 &[Lock::Location(L::OtherTheatrePath), 
                     Lock::Movement(&[
-                        &[A::AscendantLight, A::DreamBreaker], &[A::HeliacalPower], &[A::ClingGem]
+                        &[A::AscendantLight, A::DreamBreaker], &[A::HeliacalPower], &[A::ClingGem(2)]
                     ])
                 ],
             ],
@@ -434,14 +434,14 @@ impl Location {
                     &[A::AscendantLight, A::DreamBreaker],
                     &[A::Sunsetter, A::HeliacalPower],
                     &[A::SunGreaves],
-                    &[A::ClingGem],
+                    &[A::ClingGem(2)],
                 ])],
                 &[Lock::Location(L::PEntryTheatre)],
             ],
             L::OtherTheatrePath => &[
                 &[
                     Lock::Location(L::ThKeepEntry),
-                    Lock::Movement(&[&[A::AscendantLight, A::DreamBreaker], &[A::HeliacalPower], &[A::ClingGem]]),
+                    Lock::Movement(&[&[A::AscendantLight, A::DreamBreaker], &[A::HeliacalPower], &[A::ClingGem(2)]]),
                 ],
                 &[
                     Lock::Location(L::ThDungeonEntry),
@@ -449,7 +449,7 @@ impl Location {
                         &[A::AscendantLight, A::DreamBreaker],
                         &[A::Sunsetter, A::HeliacalPower],
                         &[A::SunGreaves],
-                        &[A::ClingGem],
+                        &[A::ClingGem(2)],
                     ]),
                 ],
             ],
@@ -460,14 +460,14 @@ impl Location {
                     Lock::Movement(&[
                         &[A::SunGreaves],
                         &[A::HeliacalPower],
-                        &[A::ClingGem],
+                        &[A::ClingGem(2)],
                         &[A::Sunsetter],
                     ]),
                 ],
                 &[Lock::Location(L::ThBaileyEntry), Lock::Movement(&[
                     &[A::SunGreaves],
                     &[A::HeliacalPower],
-                    &[A::ClingGem],
+                    &[A::ClingGem(2)],
                     &[A::Sunsetter],
                 ])],
             ],
@@ -476,7 +476,7 @@ impl Location {
                 &[
                     Lock::Location(L::ThCastleEntryMain),
                     Lock::Movement(&[
-                        &[A::ClingGem],
+                        &[A::ClingGem(2)],
                         &[A::Slide, A::SolarWind, A::SunGreaves, A::HeliacalPower],
                         // this is hella precise but possible
                         // &[A::Slide, A::SolarWind, A::SunGreaves, A::Sunsetter],
@@ -487,7 +487,7 @@ impl Location {
                 &[
                     Lock::Location(L::TheatreEntrance),
                     Lock::Movement(&[
-                        &[A::ClingGem],
+                        &[A::ClingGem(2)],
                         &[A::SunGreaves],
                         &[A::Sunsetter, A::HeliacalPower],
                     ]),
@@ -495,16 +495,16 @@ impl Location {
                 &[
                     Lock::Location(L::PillarRoom),
                     Lock::Movement(&[
-                        &[A::Sunsetter, A::ClingGem],
+                        &[A::Sunsetter, A::ClingGem(2)],
                         &[A::Sunsetter, A::SunGreaves, A::HeliacalPower],
                     ]),
                 ],
                 &[
                     Lock::Location(L::OtherTheatrePath),
                     Lock::Movement(&[
-                        &[A::ClingGem, A::SunGreaves],
-                        &[A::ClingGem, A::HeliacalPower],
-                        &[A::Slide, A::SolarWind, A::ClingGem],
+                        &[A::ClingGem(2), A::SunGreaves],
+                        &[A::ClingGem(2), A::HeliacalPower],
+                        &[A::Slide, A::SolarWind, A::ClingGem(2)],
                     ]),
                 ],
             ],
@@ -512,8 +512,8 @@ impl Location {
             L::FinalBoss => &[&[
                 Lock::Location(L::TowerRuinsEntrance),
                 Lock::Movement(&[
-                    &[A::SunGreaves, A::ClingGem],
-                    &[A::HeliacalPower, A::Sunsetter, A::ClingGem],
+                    &[A::SunGreaves, A::ClingGem(2)],
+                    &[A::HeliacalPower, A::Sunsetter, A::ClingGem(2)],
                 ]),
                 Lock::Ending,
             ]],
