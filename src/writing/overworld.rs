@@ -77,12 +77,12 @@ pub fn write(
                         match &drop {
                             Drop::Ability(ability) => {
                                 replace(match ability {
-                                    Ability::ClingGem if app.split_cling => 59, 
+                                    Ability::ClingGem(_) if app.split_cling => 59, 
                                     Ability::DreamBreaker
                                     | Ability::SunGreaves
                                     | Ability::Slide
                                     | Ability::Sunsetter
-                                    | Ability::ClingGem
+                                    | Ability::ClingGem(_)
                                     | Ability::AscendantLight
                                     | Ability::SoulCutter
                                     | Ability::Indignation

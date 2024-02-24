@@ -55,7 +55,7 @@ impl Ability {
             A::SunGreaves => "icon_greaves",
             A::Slide => "icon_slide",
             A::Sunsetter => "icon_plunge",
-            A::ClingGem => "icon_clingGem",
+            A::ClingGem(_) => "icon_clingGem",
             A::AscendantLight => "icon_Light",
             A::SoulCutter => "icon_Projectile",
             A::Indignation => "icon_indignationEye",
@@ -138,7 +138,7 @@ impl Ability {
                             A::SunGreaves => "Sun Greaves",
                             A::Slide => "Slide",
                             A::Sunsetter => "Sunsetter",
-                            A::ClingGem => "Cling Gem",
+                            A::ClingGem(_) => "Cling Gem",
                             A::AscendantLight => "Ascendant Light",
                             A::SoulCutter => "Soul Cutter",
                             A::Indignation => "Indignation",
@@ -158,7 +158,7 @@ impl Ability {
                            A::SunGreaves => "F5EBEAAF4DE4C2FDBB8ECE8C3F09044F",
                            A::Slide => "93169A98407AD262918B48B6FCEEBBB8",
                            A::Sunsetter => "7713B83844855522BE804393CBF59B35",
-                           A::ClingGem => "154C81074176B157AFF21D9EE30A0606",
+                           A::ClingGem(_) => "154C81074176B157AFF21D9EE30A0606",
                            A::AscendantLight => "F889BC4F42EE8304568F558DB19F73CB",
                            A::SoulCutter => "7F34D58F47D6ACA7568298B166EBE3A7",
                            A::Indignation => "79D70BDB46BE7CF0D19D63819605CC47",
@@ -187,7 +187,7 @@ impl Ability {
                         | A::SunGreaves
                         | A::Slide
                         | A::Sunsetter
-                        | A::ClingGem
+                        | A::ClingGem(_)
                         | A::AscendantLight
                         | A::SoulCutter
                         | A::Indignation
@@ -211,7 +211,7 @@ impl Ability {
                         A::SunGreaves => "Press A Button/Space bar while in the air.",
                         A::Slide => "Press Left Trigger/Q Key on the ground to Slide.",
                         A::Sunsetter => "Press LT/Q key while in the air to Plunge downwards, which can then chain into a High Jump.",
-                        A::ClingGem => "Press RT/Left Shift while falling along walls to Ride them",
+                        A::ClingGem(_) => "Press RT/Left Shift while falling along walls to Ride them",
                         A::AscendantLight => "Attack objects and enemies to bounce off of them.",
                         A::SoulCutter => "Hold Attack until your weapon is ready, release to fire",
                         A::Indignation => "Higher Power gives you increased combat capabilities.",
@@ -231,7 +231,7 @@ impl Ability {
                         A::SunGreaves => "BE6A54A04043100F0B3A9FAF700AC4AB",
                         A::Slide => "308F9AEC4FCF7A9A78840BAA38F5CB3D",
                         A::Sunsetter => "5B587B464EA3C43149F28D9F2B03C6AC",
-                        A::ClingGem => "1E99C4744CC23033138F8997D5D7B698",
+                        A::ClingGem(_) => "1E99C4744CC23033138F8997D5D7B698",
                         A::AscendantLight => "392D2D8E4A14E17034C3C291F90802E3",
                         A::SoulCutter => "FB2BCAA74CA827DCE37DF0B03E07CFCC",
                         A::Indignation => "EE34C0D54B8DEA46FAE5D4AAFACE22C1",
@@ -269,7 +269,7 @@ Use this to break through fragile floors or simply stop yourself in the air.
 
 Jumping right after the Plunge will result in a High Jump.
                         "#),
-                        A::ClingGem => Some(r#"
+                        A::ClingGem(_) => Some(r#"
 Hold tight to walls while you propel yourself a short distance. Can be jumped out of, and can go around curved walls and corners.
                         "#),
                         A::AscendantLight => Some(r#"
@@ -307,7 +307,7 @@ A more powerful attack that locks you in place. Can be used to destroy heavy bar
                         A::SunGreaves => Some("9EF681CE4028EDD178E0AC874046D521"),
                         A::Slide => Some("FD693F06487DFFD545C65EBCF8F30D35"),
                         A::Sunsetter => Some("58AA68FC48C82F69376623868F960C0F"),
-                        A::ClingGem => Some("2F4E91DA4B633EB9DB393790550EBA19"),
+                        A::ClingGem(_) => Some("2F4E91DA4B633EB9DB393790550EBA19"),
                         A::AscendantLight => Some("0CAF88DE4124BED45A484FAC8D5DF9E4"),
                         A::SoulCutter => Some("71FE2CAB4DD98A5BE9BFAD88C9DFDFBA"),
                         A::Indignation => Some("918EEC2D441E4E18FF9243A0DD5A27DF"),
@@ -371,7 +371,7 @@ This can only be done once until reset, so be careful!
                                 Some("1ED62D7A4F230567C3946DA4FE08CE2B")
                             )),
                         ],
-                        A::ClingGem => vec![
+                        A::ClingGem(_) => vec![
                             Property::TextProperty(text(
                                 FName::Dummy { value: 0.to_string(), number: 0 },
                                 Some(r#"
