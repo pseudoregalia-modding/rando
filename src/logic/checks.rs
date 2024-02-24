@@ -665,7 +665,7 @@ pub const CHECKS: [Check; 81] = [
         description: "where cling gem normally is",
         location: L::TowerRuinsKeep,
         index: 89,
-        drop: Drop::Ability(A::ClingGem),
+        drop: Drop::Ability(A::ClingGem(6)),
         locks: &[&[Lock::Movement(&[
             &[A::ClingGem],
             &[A::SunGreaves],

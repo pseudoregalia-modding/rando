@@ -119,15 +119,15 @@ fn accessible(
                                 .count()
                                 == 3
                         }
-                        Ability::ClingGem if app.split_cling => {
-                            obtainable
+                        Ability::ClingGem(req) => {
+                            &obtainable
                                 .iter()
                                 .chain(case)
                                 .fold(0, |acc, drop| match drop {
-                                    Drop::Ability(Ability::ClingGem) => acc + 1,
+                                    Drop::Ability(Ability::ClingGem(count)) => acc + count,
                                     _ => acc,
                                 })
-                                == 3
+                                >= req
                         }
                         Ability::AscendantLight => {
                             obtainable
@@ -289,7 +289,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
     if app.split_cling {
         if let Some(i) = pool
             .iter()
-            .position(|check| check.drop == Drop::Ability(Ability::ClingGem))
+            .position(|check| check.drop == Drop::Ability(Ability::ClingGem(6)))
         {
             pool.remove(i);
         }
@@ -299,7 +299,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
                 description: "where cling gem normally is",
                 location: Location::TowerRuinsKeep,
                 index: 671,
-                drop: Drop::Ability(A::ClingGem),
+                drop: Drop::Ability(A::ClingGem(2)),
                 locks: &[&[Lock::Movement(&[
                     &[A::ClingGem],
                     &[A::SunGreaves],
@@ -310,7 +310,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
                 description: "where cling gem normally is",
                 location: Location::TowerRuinsKeep,
                 index: 677,
-                drop: Drop::Ability(A::ClingGem),
+                drop: Drop::Ability(A::ClingGem(2)),
                 locks: &[&[Lock::Movement(&[
                     &[A::ClingGem],
                     &[A::SunGreaves],
@@ -321,7 +321,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
                 description: "where cling gem normally is",
                 location: Location::TowerRuinsKeep,
                 index: 683,
-                drop: Drop::Ability(A::ClingGem),
+                drop: Drop::Ability(A::ClingGem(2)),
                 locks: &[&[Lock::Movement(&[
                     &[A::ClingGem],
                     &[A::SunGreaves],
