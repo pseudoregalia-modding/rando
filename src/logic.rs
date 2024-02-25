@@ -40,7 +40,7 @@ pub struct Check {
     pub location: Location,
     pub index: usize,
     pub drop: Drop,
-    locks: &'static [&'static [Lock]],
+    locks: Lock,
 }
 
 impl std::fmt::Debug for Check {
@@ -56,8 +56,23 @@ impl std::fmt::Debug for Check {
 
 #[derive(Debug, Clone, Copy)]
 pub enum Lock {
+    None,
+    Any(&'static [Lock]),
+    All(&'static [Lock]),
     Location(Location),
-    Movement(&'static [&'static [Ability]]),
+    Movement(Ability),
     SmallKey,
     Ending,
+}
+
+impl Into<Lock> for Ability {
+    fn into(self) -> Lock {
+        Lock::Movement(self)
+    }
+}
+
+impl Into<Lock> for Location {
+    fn into(self) -> Lock {
+        Lock::Location(self)
+    }
 }
