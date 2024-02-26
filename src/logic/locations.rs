@@ -65,458 +65,688 @@ pub enum Location {
 
 use Ability as A;
 use Location as L;
-
+use Lock::{All, Any};
 impl Location {
     // need to include some reverse directions
-    pub const fn locks(&self) -> &[&[Lock]] {
+    pub const fn locks(&self) -> Lock {
         match self {
             // Prison / Dilapidated Dungeon
-            L::LatePrison => &[
-                &[Lock::Location(L::PEntryUnderBelly), Lock::Movement(&[&[A::DreamBreaker]])],// Enter from Underbelly
-                &[Lock::Location(L::CsMain)],
-                &[Lock::Location(L::EarlyPrison), Lock::Movement(&[&[A::DreamBreaker]])],
-            ],
-            L::EarlyPrison => &[
-                &[Lock::Location(L::StrongEyes), Lock::SmallKey, Lock::Movement(&[&[A::DreamBreaker]])],
-                &[Lock::Location(L::CsMain)],
-                &[Lock::Location(L::VDreamBreaker), Lock::Movement(&[&[A::DreamBreaker]])],
-                &[Lock::Location(L::LatePrison), Lock::Movement(&[&[A::DreamBreaker]])]
-            ],
-            L::PEntryUnderBelly => &[
-                &[Lock::Location(L::LatePrison), Lock::Movement(&[&[A::DreamBreaker]])],
-                &[Lock::Location(L::PrisonHole),  Lock::Movement(&[
-                    &[A::DreamBreaker, A::AscendantLight] // Climb the poles and break the wall in LatePrison
-                ])],
-            ],
-            L::VDreamBreaker => &[
-                &[Lock::Location(L::EarlyPrison)]
-            ],
-            L::StrongEyes => &[
-                &[Lock::Location(L::LatePrison), Lock::Movement(&[&[A::Slide]])],
-                &[Lock::Location(L::CsMain), Lock::SmallKey, Lock::Movement(&[&[A::DreamBreaker]])],
-            ],
-            L::PEntryCastle => &[
-                &[Lock::Location(L::StrongEyes), Lock::SmallKey, Lock::Movement(&[&[A::DreamBreaker]])],
-                &[Lock::Location(L::CsPrisonEntry)],
-            ],
-            L::PEntryTheatre => &[
-                &[Lock::Location(L::LatePrison), Lock::Movement(&[
-                    &[A::ClingGem(6)],
-                    &[A::SunGreaves],
-                    &[A::AscendantLight]
-                ])],
-                &[Lock::Location(L::ThDungeonEntry)],
-            ],
+            L::LatePrison => All(&[
+                Any(&[
+                    A::DreamBreaker.into(),
+                    L::CsMain.into(),
+                ]),
+
+                Any(&[
+                    L::PEntryUnderBelly.into(),
+                    L::EarlyPrison.into()
+                ]),
+            ]),
+            L::EarlyPrison => All(&[
+                Any(&[
+                    A::DreamBreaker.into(),
+                    L::CsMain.into(),
+                ]),
+                Any(&[
+                    All(&[
+                        L::StrongEyes.into(),
+                        Lock::SmallKey
+                    ]),
+                    L::VDreamBreaker.into(),
+                    L::LatePrison.into()
+                ]),
+            ]),
+            L::PEntryUnderBelly => All(&[
+                A::DreamBreaker.into(),
+                Any(&[
+                    L::LatePrison.into(),
+                    All(&[
+                        L::PrisonHole.into(),
+                        A::AscendantLight.into(),
+                    ]),
+                ]),
+            ]),
+            L::VDreamBreaker => All(&[
+                L::EarlyPrison.into()
+            ]),
+            L::StrongEyes => All(&[
+                Any(&[
+                    All(&[
+                        L::LatePrison.into(),
+                        A::Slide.into()
+                    ]),
+                    All(&[
+                        L::CsMain.into(),
+                        Lock::SmallKey,
+                        A::DreamBreaker.into(),
+                    ]),
+                ]),
+            ]),
+            L::PEntryCastle => All(&[
+                Any(&[
+                    L::CsPrisonEntry.into(),
+                    All(&[
+                        L::StrongEyes.into(),
+                        Lock::SmallKey,
+                        A::DreamBreaker.into()
+                    ]),
+                ]),
+            ]),
+            L::PEntryTheatre => All(&[
+                Any(&[
+                    L::ThDungeonEntry.into(),
+                    All(&[
+                        L::LatePrison.into(),
+                        Any(&[
+                            A::ClingGem(6).into(),
+                            A::SunGreaves.into(),
+                            A::AscendantLight.into(),
+                        ]),
+                    ]),
+                ]),
+            ]),
             // Castle Sansa
-            L::CsPrisonEntry => &[
-                &[Lock::Location(L::CsMain)],
-                &[Lock::Location(L::PEntryCastle)],
-            ],
-            L::CsLibraryEntry => &[
-                &[Lock::Location(L::CsMain), Lock::Movement(&[&[A::DreamBreaker]])],
-                &[Lock::Location(L::MainLibrary)],
-            ],
-            L::CsTheatreEntryNearPrison => &[
-                &[Lock::Location(L::CsMain), Lock::Movement(&[&[A::SunGreaves], &[A::Sunsetter], &[A::ClingGem(4)], &[A::Slide, A::SolarWind]])],
-                &[Lock::Location(L::PillarRoom)],
-            ],
-            L::CsOldSoftlockRoom => &[
-                &[Lock::Location(L::CsMain), Lock::Movement(&[&[A::ClingGem(2)]])],
-                &[Lock::Location(L::CsTheatreEntrance), Lock::Movement(&[
-                    &[A::ClingGem(4)],
-                    &[A::Slide, A::HeliacalPower],
-                    &[A::Slide, A::SunGreaves],
-                    &[A::Slide, A::SolarWind],
-                ])],
-            ],
-            L::CsKeepClimbEntrance => &[
-                &[Lock::Location(L::CsMain), Lock::SmallKey],
-            ],
-            L::CsKeepEntryMain => &[
-                &[Lock::Location(L::CsMain)],
-                &[Lock::Location(L::SansaKeep)],
-            ],
-            L::CsKeepEntryRamp => &[
-                &[Lock::Location(L::CsMain), Lock::Movement(&[&[A::DreamBreaker], &[A::ClingGem(4)], &[A::SunGreaves], &[A::Sunsetter]])],
-                &[Lock::Location(L::SansaKeep)],
-            ],
-            L::CsBaileyEntry => &[
-                &[Lock::Location(L::CsMain)],
-                &[Lock::Location(L::EbEntryCastle)],
-            ],
-            L::CsMain => &[
-                &[Lock::Location(L::CsKeepClimbEntrance), Lock::SmallKey, Lock::Movement(&[&[A::DreamBreaker]])],
-                &[Lock::Location(L::CsPrisonEntry)],
-                &[Lock::Location(L::CsBaileyEntry)],
-                &[Lock::Location(L::CsOldSoftlockRoom), Lock::Movement(&[
-                    &[A::ClingGem(4)],
-                ])],
-                &[Lock::Location(L::CsLibraryEntry), Lock::Movement(&[
-                    &[A::DreamBreaker],
-                ])],
-                &[Lock::Location(L::CsTheatreEntryNearPrison)],
-            ],
-            L::CsTheatreEntrance => &[
-                &[Lock::Location(L::ThCastleEntryMain)],
-                &[Lock::Location(L::CsOldSoftlockRoom), Lock::Movement(&[
-                    &[A::Sunsetter, A::HeliacalPower, A::ClingGem(4)],
-                    &[A::Sunsetter, A::SunGreaves, A::ClingGem(4)],
-                ])]
-            ],
+            L::CsPrisonEntry => All(&[
+                Any(&[
+                    L::CsMain.into(),
+                    L::PEntryCastle.into(),
+                ]),
+            ]),
+            L::CsLibraryEntry => All(&[
+                Any(&[
+                    L::MainLibrary.into(),
+                    All(&[
+                        L::CsMain.into(),
+                        A::DreamBreaker.into(),
+                    ]),
+                ]),
+            ]),
+            L::CsTheatreEntryNearPrison => All(&[
+                Any(&[
+                    L::PillarRoom.into(),
+                    All(&[
+                        L::CsMain.into(),
+                        Any(&[
+                            A::SunGreaves.into(),
+                            A::Sunsetter.into(),
+                            A::ClingGem(4).into(),
+                            All(&[
+                                A::Slide.into(),
+                                A::SolarWind.into(),
+                            ]),
+                        ]),
+                    ]),
+                ]),
+            ]),
+            L::CsOldSoftlockRoom => All(&[
+                
+                Any(&[
+                    All(&[
+                        L::CsMain.into(),
+                        A::ClingGem(2).into(),
+                    ]),
+                    All(&[
+                        L::CsTheatreEntrance.into(),
+                        A::Slide.into(),
+                        Any(&[
+                            A::HeliacalPower.into(),
+                            A::SunGreaves.into(),
+                            A::SolarWind.into(),
+                        ]),
+                    ]),
+                ]),
+            ]),
+            L::CsKeepClimbEntrance => All(&[
+                L::CsMain.into(),
+                Lock::SmallKey,
+            ]),
+            L::CsKeepEntryMain => Any(&[
+                L::CsMain.into(),
+                L::SansaKeep.into(),
+            ]),
+            L::CsKeepEntryRamp => Any(&[
+                All(&[
+                    L::CsMain.into(),
+                    Any(&[
+                        A::DreamBreaker.into(),
+                        A::ClingGem(4).into(),
+                        A::SunGreaves.into(),
+                        A::Sunsetter.into(),
+                    ]),
+                ]),
+                L::SansaKeep.into(),
+            ]),
+            L::CsBaileyEntry => Any(&[
+                L::CsMain.into(),
+                L::EbEntryCastle.into(),
+            ]),
+            L::CsMain => All(&[
+                Any(&[
+                    L::CsPrisonEntry.into(),
+                    L::CsBaileyEntry.into(),
+                    L::CsTheatreEntryNearPrison.into(),
+                    All(&[
+                        L::CsOldSoftlockRoom.into(),
+                        A::ClingGem(4).into()
+                    ]),
+                    All(&[
+                        A::DreamBreaker.into(),
+                        Any(&[
+                            L::CsLibraryEntry.into(),
+                            All(&[
+                                L::CsKeepClimbEntrance.into(),
+                                Lock::SmallKey,
+                            ]),
+                        ]),
+                    ]),
+                ]),
+            ]),
+            L::CsTheatreEntrance => Any(&[
+                L::ThCastleEntryMain.into(),
+                All(&[
+                    L::CsOldSoftlockRoom.into(),
+                    A::Sunsetter.into(),
+                    A::ClingGem(4).into(),
+                    Any(&[
+                        A::HeliacalPower.into(),
+                        A::SunGreaves.into(),
+                    ]),
+                ]),
+            ]),
             // Library
-            L::LibSaveNearGreaves => &[
-                &[Lock::Location(L::MainLibrary), Lock::Movement(&[
-                    //Entry from Sungreaves route..
-                    &[A::DreamBreaker, A::Slide, A::SolarWind],
-                    &[A::DreamBreaker, A::Slide, A::Sunsetter],
-                    &[A::DreamBreaker, A::Slide, A::SunGreaves],
-                    //Entry from Reverse..
-                    &[A::SunGreaves],
-                    &[A::ClingGem(2), A::HeliacalPower],
-                    &[A::ClingGem(2), A::Sunsetter],
-                    &[A::Slide, A::SolarWind, A::HeliacalPower],
-                ])],
-            ],
-            L::MainLibrary => &[
-                &[Lock::Location(L::CsMain), Lock::Movement(&[
-                    &[A::DreamBreaker],
-                ])],
-                &[Lock::Location(L::LibSaveNearGreaves), Lock::Movement(&[
-                    &[A::SunGreaves],
-                    &[A::ClingGem(2), A::HeliacalPower],
-                    &[A::ClingGem(2), A::Sunsetter],
-                    &[A::Slide, A::SolarWind, A::HeliacalPower],
-                    &[A::DreamBreaker, A::HeliacalPower],
-                ])],
-            ],
-            L::Restricted => &[&[Lock::Location(L::MainLibrary), Lock::SmallKey, Lock::Movement(&[&[A::DreamBreaker]]), Lock::Movement(&[&[A::DreamBreaker]])]],
+            L::LibSaveNearGreaves => All(&[
+                L::MainLibrary.into(), // Can only reach here from main library OR random spawn
+                // Enter from the front entrance through the slide slot.
+                All(&[
+                    A::DreamBreaker.into(),
+                    A::Slide.into(),
+                    Any(&[
+                        A::SolarWind.into(),
+                        A::Sunsetter.into(),
+                        A::SunGreaves.into(),
+                    ]), 
+                ]),
+                //Enter through Reverse route.
+                Any(&[
+                    A::SunGreaves.into(), // Add trick MOVEMENT here once implemented, level Advanced.
+                    All(&[
+                        A::ClingGem(2).into(),
+                        Any(&[
+                            A::Sunsetter.into(),
+                            A::HeliacalPower.into(),
+                        ])
+                    ]), // Add Movement trick here level Expert
+                    All(&[
+                        A::Slide.into(),
+                        A::SolarWind.into(),
+                        A::HeliacalPower.into()
+                    ]), // Add Movement trick here level Advanced
+                ]),
+            ]),
+            L::MainLibrary => Any(&[
+                All(&[
+                    L::CsMain.into(),
+                    A::DreamBreaker.into(),
+                ]),
+                All(&[
+                    L::LibSaveNearGreaves.into(),
+                    Any(&[
+                        A::SunGreaves.into(),
+                        All(&[
+                            A::HeliacalPower.into(),
+                            Any(&[
+                                A::ClingGem(2).into(),
+                                A::DreamBreaker.into(),
+                                All(&[
+                                    A::Slide.into(),
+                                    A::SolarWind.into(),
+                                ]),
+                            ]),
+                        ]),
+                        All(&[
+                            A::ClingGem(2).into(),
+                            A::Sunsetter.into(),
+                        ]),
+                    ]),
+                ]),
+            ]),
+            L::Restricted => All(&[
+                L::MainLibrary.into(),
+                Lock::SmallKey,
+                A::DreamBreaker.into(),
+            ]),
             // Sansa Keep
-            L::SkCastleClimbEntry => &[
-                &[Lock::Location(L::CsKeepClimbEntrance)],
-            ],
-            L::SkCastleMainEntry => &[
-                &[Lock::Location(L::SansaKeep)],
-                &[Lock::Location(L::CsKeepEntryMain)],
-            ],
-            L::SkCastleRampEntry => &[
-                &[Lock::Location(L::SansaKeep), Lock::Movement(&[
-                    &[A::ClingGem(2)],
-                    &[A::SunGreaves],
-                    &[A::Slide, A::SolarWind],
-                ])],
-                &[Lock::Location(L::CsKeepEntryRamp)],
-            ],
-            L::SkUnderbellyEntry => &[
-                &[Lock::Location(L::SansaKeep), Lock::Movement(&[
-                    &[A::Sunsetter],
-                    &[A::HeliacalPower],
-                    &[A::SunGreaves],
-                    &[A::Slide, A::SolarWind],    
-                ])],
-                &[Lock::Location(L::SansaHole)],
-            ],
-            L::SkTheatreEntry => &[
-                &[Lock::Location(L::ThKeepEntry)],
-                &[Lock::Location(L::SansaKeep), Lock::Movement(&[
-                    &[A::ClingGem(2)],
-                    &[A::SunGreaves],
-                    &[A::Slide, A::SolarWind]
-                ])]
-            ],
-            L::SansaKeep => &[
-                &[Lock::Location(L::SkCastleRampEntry)],
-                &[Lock::Location(L::SkCastleMainEntry)],
-                &[
-                    Lock::Location(L::MainTheatre),
-                    Lock::Movement(&[&[A::ClingGem(2)]]),
-                ],
-                &[Lock::Location(L::SkUnderbellyEntry), Lock::Movement(&[
-                    &[A::Sunsetter],
-                    &[A::HeliacalPower],
-                    &[A::SunGreaves],
-                    &[A::Slide, A::SolarWind],
-                    
-                ])],
-            ],
-            L::Sunsetter => &[
-                &[Lock::Location(L::SansaKeep), Lock::SmallKey, Lock::Movement(&[&[A::DreamBreaker]])],
-                &[
-                    Lock::Location(L::SansaKeep),
-                    Lock::Movement(&[&[A::SunGreaves], &[A::ClingGem(2)]]),
-                ],
-            ],
+            L::SkCastleClimbEntry => All(&[
+                L::CsKeepClimbEntrance.into(),
+            ]),
+            L::SkCastleMainEntry => Any(&[
+                L::SansaKeep.into(),
+                L::CsKeepEntryMain.into(),
+            ]),
+            L::SkCastleRampEntry => Any(&[
+                All(&[
+                    L::SansaKeep.into(),
+                    Any(&[
+                        A::ClingGem(2).into(),
+                        A::SunGreaves.into(),
+                        All(&[
+                            A::Slide.into(),
+                            A::SolarWind.into(),
+                        ]),
+                    ]),
+                ]),
+                L::CsKeepEntryRamp.into(),
+            ]),
+            L::SkUnderbellyEntry => Any(&[
+                All(&[
+                    L::SansaKeep.into(),
+                    Any(&[
+                        A::Sunsetter.into(),
+                        A::HeliacalPower.into(),
+                        A::SunGreaves.into(),
+                        All(&[
+                            A::Slide.into(),
+                            A::SolarWind.into(),
+                        ]),
+                    ]),
+                ]),
+                L::SansaHole.into(),
+            ]),
+            L::SkTheatreEntry => Any(&[
+                L::ThKeepEntry.into(),
+                All(&[
+                    L::SansaKeep.into(),
+                    Any(&[
+                        A::SunGreaves.into(),
+                        All(&[
+                            A::Slide.into(),
+                            A::SolarWind.into(),
+                        ]),
+                    ]),
+                ]),
+            ]),
+            L::SansaKeep => Any(&[
+                L::SkCastleRampEntry.into(),
+                L::SkCastleMainEntry.into(),
+                All(&[
+                    L::MainTheatre.into(),
+                    A::ClingGem(2).into(),
+                ]),
+                All(&[
+                    L::SkUnderbellyEntry.into(),
+                    Any(&[
+                        A::Sunsetter.into(),
+                        A::HeliacalPower.into(),
+                        A::SunGreaves.into(),
+                        All(&[
+                            A::Slide.into(),
+                            A::SolarWind.into(),
+                        ]),
+                        // Add just MOVMENT trick Normal here since can just backflip up each of em lol.
+                    ])
+                ]),
+            ]),
+            L::Sunsetter => All(&[
+                L::SansaKeep.into(),
+                Any(&[
+                    All(&[
+                        Lock::SmallKey,
+                        A::DreamBreaker.into()
+                    ]),
+                    A::SunGreaves.into(),
+                    A::ClingGem(2).into(),
+                ]),
+            ]),
             // Bailey
-            L::EbEntryCastle => &[
-                &[Lock::Location(L::CsBaileyEntry)],
-                &[Lock::Location(L::EmptyBailey)],
-            ],
-            L::EbEntryRuins => &[
-                &[Lock::Location(L::TowerRuinsEntrance), Lock::Movement(&[
-                    &[A::SunGreaves],
-                    &[A::Sunsetter],
-                    &[A::ClingGem(2), A::HeliacalPower],
-                    &[A::Slide, A::SolarWind],
-                ])],
-                &[Lock::Location(L::EmptyBailey), Lock::Movement(&[
-                    &[A::SunGreaves],
-                    &[A::Sunsetter],
-                    &[A::ClingGem(2), A::HeliacalPower],
-                    &[A::Slide, A::SolarWind],
-                ])],
-            ],
-            L::EbEntryTheatre => &[
-                &[Lock::Location(L::EmptyBailey)],
-                &[Lock::Location(L::PillarRoom)],
-            ],
-            L::EbEntryUnderBelly => &[
-                &[Lock::Location(L::BaileyHole)],
-                &[Lock::Location(L::EmptyBailey), Lock::Movement(&[
-                    &[A::Sunsetter],
-                    &[A::Slide, A::SolarWind],
-                    &[A::SunGreaves],
-                    &[A::HeliacalPower]
-                ])],
-            ],
-            L::EmptyBailey => &[
-                &[Lock::Location(L::EbEntryCastle)],
-                &[Lock::Location(L::EbEntryUnderBelly)],
-                &[Lock::Location(L::EbEntryTheatre)],
-                &[Lock::Location(L::EbEntryRuins), Lock::Movement(&[
-                    &[A::SunGreaves],
-                    &[A::Sunsetter],
-                    &[A::ClingGem(2), A::HeliacalPower],
-                    &[A::Slide, A::SolarWind],
-                ])],
-            ],
+            L::EbEntryCastle => Any(&[
+                L::CsBaileyEntry.into(),
+                L::EmptyBailey.into(),
+            ]),
+            L::EbEntryRuins => All(&[
+                Any(&[
+                    L::TowerRuinsEntrance.into(),
+                    L::EmptyBailey.into(),
+                ]),
+                Any(&[
+                    A::SunGreaves.into(),
+                    A::Sunsetter.into(),
+                    All(&[
+                        A::ClingGem(2).into(),
+                        A::HeliacalPower.into(),
+                    ]),
+                    All(&[
+                        A::Slide.into(),
+                        A::SolarWind.into(),
+                    ]),
+                ]),
+            ]),
+            L::EbEntryTheatre => Any(&[
+                L::EmptyBailey.into(),
+                L::PillarRoom.into(),
+            ]),
+            L::EbEntryUnderBelly => Any(&[
+                L::BaileyHole.into(),
+                All(&[
+                    L::EmptyBailey.into(),
+                    Any(&[
+                        A::Sunsetter.into(),
+                        A::SunGreaves.into(),
+                        A::HeliacalPower.into(),
+                        All(&[
+                            A::Slide.into(),
+                            A::SolarWind.into(),
+                        ]),
+                    ]),
+                ]),
+            ]),
+            L::EmptyBailey => Any(&[
+                L::EbEntryCastle.into(),
+                L::EbEntryUnderBelly.into(),
+                L::EbEntryTheatre.into(),
+                All(&[
+                    L::EbEntryRuins.into(),
+                    Any(&[
+                        A::SunGreaves.into(),
+                        A::Sunsetter.into(),
+                        All(&[
+                            A::ClingGem(2).into(),
+                            A::HeliacalPower.into(),
+                        ]),
+                        All(&[
+                            A::Slide.into(),
+                            A::SolarWind.into(),
+                        ]),
+                    ]),
+                ]),
+            ]),
             // Tower
-            L::TowerRuinsEntrance => &[
-                &[
-                    Lock::Location(L::EmptyBailey),
-                    Lock::Movement(&[
-                        &[A::SunGreaves],
-                        &[A::Sunsetter],
-                        &[A::ClingGem(2), A::HeliacalPower],
-                        &[A::Slide, A::SolarWind],
+            L::TowerRuinsEntrance => Any(&[
+                All(&[
+                    L::EmptyBailey.into(),
+                    Any(&[
+                        A::SunGreaves.into(),
+                        A::Sunsetter.into(),
+                        All(&[
+                            A::ClingGem(2).into(),
+                            A::HeliacalPower.into(),
+                        ]),
+                        All(&[
+                            A::Slide.into(),
+                            A::SolarWind.into(),
+                        ]),
                     ]),
-                ],
-                &[Lock::Location(L::TowerRuinsKeep)],
-            ],
-            L::TowerRuinsKeep => &[
-                &[Lock::Location(L::TowerRuinsEntrance), Lock::Movement(&[
-                    &[A::Sunsetter, A::ClingGem(2)],
-                    &[A::ClingGem(2), A::HeliacalPower],
-                    &[A::SunGreaves],
-                    // Test the below to make sure not miss remembering.
-                    // &[A::Slide, A::SolarWind, A::HeliacalPower],
-                ])],
-                &[
-                    Lock::Location(L::FinalBoss)
-                ]
-            ],
+                ]),
+                L::TowerRuinsKeep.into(),
+            ]),
+            L::TowerRuinsKeep => Any(&[
+                All(&[
+                    L::TowerRuinsEntrance.into(),
+                    Any(&[
+                        //ADD MOVEMENT TRICK AND CLING ABUSE HERE. EXPERT / ADVANCED 
+                        A::SunGreaves.into(),
+                        All(&[
+                            A::ClingGem(2).into(),
+                            Any(&[
+                                A::Sunsetter.into(),
+                                A::HeliacalPower.into(),
+                            ]),
+                        ]),
+                    ]),
+                ]),
+                L::FinalBoss.into()
+            ]),
             // Underbelly
-            L::PrisonHole => &[
-                &[
-                    Lock::Location(L::PEntryUnderBelly),
-                    Lock::Movement(&[&[A::DreamBreaker] ])
-                ],
-                &[
-                    Lock::Location(L::MainUnderbelly), // From main to the hole (right below the gear mobs.)
-                    Lock::Movement(&[
-                        &[A::SunGreaves],
-                        &[A::Sunsetter],
-                        &[A::Slide, A::SolarWind],
-                    ])
-                ]
-            ],
-            L::BaileyHole => &[
-                &[
-                    Lock::Location(L::EbEntryUnderBelly),
-                    Lock::Movement(&[&[A::Sunsetter]]), // From Bailey into underbelly.
-                ],
-                &[
-                    Lock::Location(L::MainUnderbelly), // From main to hole.
-                ],
-                &[
-                    Lock::Location(L::SansaHole),
-                    Lock::Movement(&[
-                        &[A::Sunsetter],
-                    ])
-                ],
-            ],
-            L::SansaHole => &[
-                &[
-                    Lock::Location(L::SkUnderbellyEntry), // From Sansa keep into underbelly
-                    Lock::Movement(&[&[A::HeliacalPower], &[A::SunGreaves], &[A::Sunsetter]]),
-                ],
-                &[
-                    Lock::Location(L::MainUnderbelly), // From main underbelly to the hole.
-                    Lock::Movement(&[
-                        &[A::Sunsetter],
-                    ])
-                ],
-                &[
-                    Lock::Location(L::BaileyHole),
-                    Lock::Movement(&[
-                        &[A::Sunsetter],
-                    ])
-                ],
-                &[
-                    Lock::Location(L::HpSave),
-                    Lock::Movement(&[
-                        &[A::Sunsetter,
-                        A::Slide,],
-                    ])
-                ],
-            ],
-            L::MainUnderbelly => &[ // Main underbelly is now the main platform and any check possible from it. Helical power check will be combined with this.
-                &[Lock::Location(L::PrisonHole)],
-                &[Lock::Location(L::BaileyHole), Lock::Movement(&[
-                    &[A::SunGreaves, A::HeliacalPower, A::Sunsetter], // Going from first bubble to the circular platform
-                ])],
-                &[Lock::Location(L::HpSave), Lock::Movement(&[
-                    &[A::Slide, A::SunGreaves, A::Slide, A::SolarWind, A::ClingGem(2)], // Slide through top of gap and ultra out of solar into wall kick up.
-                    &[A::DreamBreaker, A::ClingGem(2), A::Sunsetter],
-                    &[A::DreamBreaker, A::HeliacalPower, A::SunGreaves],
-                    &[A::DreamBreaker, A::Slide, A::SolarWind, A::HeliacalPower],
-                ])],
-                &[Lock::Location(L::SansaHole), Lock::Movement(&[&[A::Sunsetter, A::Slide]])], // from Sansa hole (above going to Major Key)
-            ],
-            L::VAscendantLight => &[
-                &[Lock::Location(L::PrisonHole), Lock::Movement(&[
-                    &[A::DreamBreaker],
-                ])],
-            ],
-            L::HpSave => &[
-                &[Lock::Location(L::BaileyHole), Lock::Movement(&[
-                    &[A::Slide, A::SunGreaves,],
-                    &[A::Slide, A::Sunsetter,],
-                    &[A::Slide, A::HeliacalPower,],
-                ])],
-                &[Lock::Location(L::MainUnderbelly), Lock::Movement(&[
-                    &[A::DreamBreaker, A::ClingGem(2), A::Sunsetter],
-                    &[A::DreamBreaker, A::HeliacalPower, A::SunGreaves],
-                    &[A::DreamBreaker, A::Slide, A::SolarWind, A::HeliacalPower],
-                ])],
-            ],
+            L::PrisonHole => Any(&[
+                All(&[
+                    L::PEntryUnderBelly.into(),
+                    A::DreamBreaker.into(),
+                ]),
+                All(&[
+                    L::MainUnderbelly.into(), // From main to the hole (right below the gear mobs.)
+                    Any(&[
+                        A::SunGreaves.into(),
+                        A::Sunsetter.into(),
+                        All(&[
+                            A::Slide.into(),
+                            A::SolarWind.into()
+                        ]),
+                    ]),
+                ]),
+            ]),
+            L::BaileyHole => Any(&[
+                All(&[
+                    A::Sunsetter.into(),
+                    Any(&[
+                        L::EbEntryUnderBelly.into(),
+                        L::SansaHole.into(),
+                    ]),
+                ]),
+                L::MainUnderbelly.into(), // From main to hole.
+            ]),
+            L::SansaHole => Any(&[
+                All(&[
+                    A::Sunsetter.into(),
+                    Any(&[
+                        L::MainUnderbelly.into(),
+                        L::BaileyHole.into(),
+                        All(&[
+                            L::HpSave.into(),
+                            A::Slide.into(),
+                        ]),
+                    ]),
+                ]),
+                All(&[
+                    L::SkUnderbellyEntry.into(),
+                    Any(&[
+                        A::HeliacalPower.into(),
+                        A::SunGreaves.into(),
+                        A::Sunsetter.into(),
+                    ]),
+                ]),
+            ]),
+            L::MainUnderbelly => Any(&[
+                L::PrisonHole.into(),
+                All(&[
+                    L::BaileyHole.into(),
+                    A::SunGreaves.into(),
+                    A::HeliacalPower.into(), 
+                    A::Sunsetter.into(),
+                ]), // First bubble directly to circular platforms.
+                All(&[
+                    L::HpSave.into(),
+                    Any(&[
+                        A::DreamBreaker.into(),
+                        // Below is sliding through the gap above the hanging block and then doing an ultra to skip the lever.
+                        All(&[
+                            A::Slide.into(),
+                            A::SolarWind.into(),
+                            A::SunGreaves.into(),
+                            A::ClingGem(2).into()
+                        ]),
+                    ]),
+                ]),
+                All(&[
+                    L::SansaHole.into(),
+                    A::Sunsetter.into(), 
+                    A::Slide.into(),
+                ]), // from Sansa hole (above going to Major Key)
+            ]),
+            L::VAscendantLight => All(&[
+                L::PrisonHole.into(),
+                A::DreamBreaker.into(),
+            ]),
+            L::HpSave => Any(&[
+                All(&[
+                    L::BaileyHole.into(),
+                    A::Slide.into(),
+                    Any(&[
+                        A::SunGreaves.into(),
+                        A::Sunsetter.into(),
+                        A::HeliacalPower.into(),
+                    ]),
+                ]),
+                All(&[
+                    L::MainUnderbelly.into(),
+                    A::DreamBreaker.into(),
+                    Any(&[
+                        All(&[
+                            A::HeliacalPower.into(),
+                            Any(&[
+                                A::SunGreaves.into(),
+                                All(&[
+                                    A::Slide.into(),
+                                    A::SolarWind.into(),
+                                ]),
+                            ]),
+                        ]),
+                        All(&[
+                            A::ClingGem(2).into(),
+                            A::Sunsetter.into(),
+                        ])
+                    ]),
+                ]),
+            ]),
             //Theatre
-            L::ThBaileyEntry => &[
-                &[Lock::Location(L::EbEntryTheatre)],
-                &[Lock::Location(L::PillarRoom), Lock::Movement(&[
-                    &[A::SunGreaves],
-                    &[A::HeliacalPower],
-                    &[A::ClingGem(4)],
-                    &[A::Sunsetter],
-                ])],
-            ],
-            L::ThCastleEntryMain => &[
-                &[Lock::Location(L::CsTheatreEntrance)],
-                &[Lock::Location(L::TheatreEntrance)],
-            ],
-            L::ThCastleEntryPillar => &[
-                &[Lock::Location(L::CsTheatreEntryNearPrison)],
-                &[Lock::Location(L::PillarRoom), Lock::Movement(&[
-                    &[A::SunGreaves],
-                    &[A::HeliacalPower],
-                    &[A::ClingGem(2)],
-                    &[A::Sunsetter],
-                ])],
-            ],
-            L::ThKeepEntry => &[
-                &[Lock::Location(L::SkTheatreEntry)],
-                &[Lock::Location(L::OtherTheatrePath), 
-                    Lock::Movement(&[
-                        &[A::AscendantLight, A::DreamBreaker], &[A::HeliacalPower], &[A::ClingGem(2)]
-                    ])
-                ],
-            ],
-            L::ThDungeonEntry => &[
-                &[Lock::Location(L::OtherTheatrePath), Lock::Movement(&[
-                    &[A::AscendantLight, A::DreamBreaker],
-                    &[A::Sunsetter, A::HeliacalPower],
-                    &[A::SunGreaves],
-                    &[A::ClingGem(2)],
-                ])],
-                &[Lock::Location(L::PEntryTheatre)],
-            ],
-            L::OtherTheatrePath => &[
-                &[
-                    Lock::Location(L::ThKeepEntry),
-                    Lock::Movement(&[&[A::AscendantLight, A::DreamBreaker], &[A::HeliacalPower], &[A::ClingGem(2)]]),
-                ],
-                &[
-                    Lock::Location(L::ThDungeonEntry),
-                    Lock::Movement(&[
-                        &[A::AscendantLight, A::DreamBreaker],
-                        &[A::Sunsetter, A::HeliacalPower],
-                        &[A::SunGreaves],
-                        &[A::ClingGem(2)],
+            L::ThBaileyEntry => Any(&[
+                L::EbEntryTheatre.into(),
+                All(&[
+                    L::PillarRoom.into(), 
+                    Any(&[
+                        A::SunGreaves.into(),
+                        A::HeliacalPower.into(),
+                        A::ClingGem(2).into(),
+                        A::Sunsetter.into(),
                     ]),
-                ],
-            ],
-            L::PillarRoom => &[
-                // this is via the entrance above the normal entrance but needs some moar to get in maybe make separate
-                &[
-                    Lock::Location(L::ThCastleEntryPillar),
-                    Lock::Movement(&[
-                        &[A::SunGreaves],
-                        &[A::HeliacalPower],
-                        &[A::ClingGem(2)],
-                        &[A::Sunsetter],
+                ]),
+            ]),
+            L::ThCastleEntryMain => Any(&[
+                L::CsTheatreEntrance.into(),
+                L::TheatreEntrance.into(),
+            ]),
+            L::ThCastleEntryPillar => Any(&[
+                L::CsTheatreEntryNearPrison.into(),
+                All(&[
+                    L::PillarRoom.into(), 
+                    Any(&[
+                        A::SunGreaves.into(),
+                        A::HeliacalPower.into(),
+                        A::ClingGem(2).into(),
+                        A::Sunsetter.into(),
                     ]),
-                ],
-                &[Lock::Location(L::ThBaileyEntry), Lock::Movement(&[
-                    &[A::SunGreaves],
-                    &[A::HeliacalPower],
-                    &[A::ClingGem(2)],
-                    &[A::Sunsetter],
-                ])],
-            ],
-            L::TheatreEntrance => &[
-                &[Lock::Location(L::MainTheatre)],
-                &[
-                    Lock::Location(L::ThCastleEntryMain),
-                    Lock::Movement(&[
-                        &[A::ClingGem(2)],
-                        &[A::Slide, A::SolarWind, A::SunGreaves, A::HeliacalPower],
-                        // this is hella precise but possible
-                        // &[A::Slide, A::SolarWind, A::SunGreaves, A::Sunsetter],
+                ]),
+            ]),
+            L::ThKeepEntry => Any(&[
+                L::SkTheatreEntry.into(),
+                All(&[
+                    L::OtherTheatrePath.into(), 
+                    Any(&[
+                        All(&[A::AscendantLight.into(), A::DreamBreaker.into()]), 
+                        A::HeliacalPower.into(),
+                        A::ClingGem(2).into(),
                     ]),
-                ],
-            ],
-            L::MainTheatre => &[
-                &[
-                    Lock::Location(L::TheatreEntrance),
-                    Lock::Movement(&[
-                        &[A::ClingGem(2)],
-                        &[A::SunGreaves],
-                        &[A::Sunsetter, A::HeliacalPower],
+                ]),
+            ]),
+            L::ThDungeonEntry => Any(&[
+                All(&[
+                    L::OtherTheatrePath.into(),
+                    Any(&[
+                        All(&[A::AscendantLight.into(), A::DreamBreaker.into()]),
+                        All(&[A::Sunsetter.into(), A::HeliacalPower.into()]),
+                        A::SunGreaves.into(),
+                        A::ClingGem(2).into(),
                     ]),
-                ],
-                &[
-                    Lock::Location(L::PillarRoom),
-                    Lock::Movement(&[
-                        &[A::Sunsetter, A::ClingGem(2)],
-                        &[A::Sunsetter, A::SunGreaves, A::HeliacalPower],
+                ]),
+                L::PEntryTheatre.into(),
+            ]),
+            L::OtherTheatrePath => Any(&[
+                All(&[
+                    Any(&[L::ThKeepEntry.into(), L::ThDungeonEntry.into()]),
+                    Any(&[
+                        A::ClingGem(2).into(),
+                        All(&[
+                            A::AscendantLight.into(),
+                            A::DreamBreaker.into(),
+                        ]),
                     ]),
-                ],
-                &[
-                    Lock::Location(L::OtherTheatrePath),
-                    Lock::Movement(&[
-                        &[A::ClingGem(2), A::SunGreaves],
-                        &[A::ClingGem(2), A::HeliacalPower],
-                        &[A::Slide, A::SolarWind, A::ClingGem(2)],
+                ]),
+                All(&[L::ThKeepEntry.into(), A::HeliacalPower.into()]),
+                All(&[
+                    L::ThDungeonEntry.into(),
+                    Any(&[
+                        A::SunGreaves.into(),
+                        All(&[A::Sunsetter.into(), A::HeliacalPower.into()]),
                     ]),
-                ],
-            ],
+                ]),
+            ]),
+            L::PillarRoom => All(&[
+                Any(&[L::ThCastleEntryPillar.into(), L::ThBaileyEntry.into()]),
+                Any(&[
+                    A::SunGreaves.into(),
+                    A::HeliacalPower.into(),
+                    A::ClingGem(2).into(),
+                    A::Sunsetter.into(),
+                ]),
+            ]),
+            L::TheatreEntrance => Any(&[
+                L::MainTheatre.into(),
+                All(&[
+                    L::ThCastleEntryMain.into(),
+                    Any(&[
+                        A::ClingGem(2).into(),
+                        All(&[
+                            A::Slide.into(),
+                            A::SolarWind.into(),
+                            A::SunGreaves.into(),
+                        ]),
+                        All(&[
+                            A::HeliacalPower.into(),
+                            A::Sunsetter.into(),
+                        ]),
+                    ]),
+                ]),
+            ]),
+            L::MainTheatre => Any(&[
+                All(&[
+                    L::TheatreEntrance.into(),
+                    Any(&[
+                        A::ClingGem(2).into(),
+                        A::SunGreaves.into(),
+                        All(&[A::Sunsetter.into(), A::HeliacalPower.into()]),
+                    ]),
+                ]),
+                All(&[
+                    L::PillarRoom.into(),
+                    A::Sunsetter.into(),
+                    Any(&[
+                        A::ClingGem(2).into(),
+                        All(&[A::SunGreaves.into(), A::HeliacalPower.into()]),
+                    ]),
+                ]),
+                All(&[
+                    L::OtherTheatrePath.into(),
+                    A::ClingGem(2).into(),
+                    Any(&[
+                        A::SunGreaves.into(),
+                        A::HeliacalPower.into(),
+                        All(&[A::Slide.into(), A::SolarWind.into()]),
+                    ]),
+                ]),
+            ]),
             // Final Boss
-            L::FinalBoss => &[&[
-                Lock::Location(L::TowerRuinsEntrance),
-                Lock::Movement(&[
-                    &[A::SunGreaves, A::ClingGem(2)],
-                    &[A::HeliacalPower, A::Sunsetter, A::ClingGem(2)],
+            L::FinalBoss => Any(&[
+                All(&[
+                    L::TowerRuinsEntrance.into(),
+                    A::ClingGem(2).into(),
+                    Any(&[
+                        A::SunGreaves.into(),
+                        All(&[
+                            A::HeliacalPower.into(),
+                            A::Sunsetter.into(),
+                        ]),
+                    ]),
                 ]),
                 Lock::Ending,
-            ]],
+            ]),
         }
     }
     pub const fn file(&self) -> &'static str {
