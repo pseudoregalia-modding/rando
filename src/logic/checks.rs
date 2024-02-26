@@ -2,7 +2,7 @@ use super::*;
 
 use Ability as A;
 use Location as L;
-
+use Lock::{Any, All};
 pub const CHECKS: [Check; 81] = [
     // dream breaker is randomised with random start
     Check {
@@ -10,73 +10,78 @@ pub const CHECKS: [Check; 81] = [
         location: L::VDreamBreaker,
         index: 355,
         drop: Drop::Ability(A::DreamBreaker),
-        locks: &[],
+        locks: Any(&[]),
     },
     Check {
         description: "where the first health piece is",
         location: L::EarlyPrison,
         index: 214,
         drop: Drop::Health,
-        locks: &[
-            &[Lock::Movement(&[
-                &[A::Sunsetter],
-                &[A::AscendantLight, A::DreamBreaker],
+        locks: Any(&[
+            Any(&[
+                A::Sunsetter.into(),
+                All(&[A::AscendantLight.into(), A::DreamBreaker.into()]),
                 // just enough space to do this
-                &[A::Slide, A::SolarWind],
-                &[A::ClingGem(4)],
-                &[A::SunGreaves],
-                &[A::HeliacalPower],
-            ])],
+                All(&[A::Slide.into(), A::SolarWind.into()]),
+                A::ClingGem(4).into(),
+                A::SunGreaves.into(),
+                A::HeliacalPower.into(),
+            ]),
             // you can drop down from the entrance
-            &[Lock::Location(Location::CsMain)],
-        ],
+            Location::CsMain.into(),
+        ]),
     },
     Check {
         description: "where slide normally is",
         location: L::LatePrison,
         index: 356,
         drop: Drop::Ability(A::Slide),
-        locks: &[&[Lock::Movement(&[
-            &[A::Slide],
-            &[A::SunGreaves],
-            &[A::Sunsetter, A::HeliacalPower],
-            &[A::ClingGem(2)],
-        ])]],
+        locks: Any(&[
+            A::Slide.into(),
+            A::SunGreaves.into(),
+            All(&[A::Sunsetter.into(), A::HeliacalPower.into()]),
+            A::ClingGem(2).into(),
+        ]),
     },
     Check {
         description: "black hole parkour off the beaten path",
         location: L::LatePrison,
         index: 357,
         drop: Drop::Ability(A::GoodGraces),
-        locks: &[&[Lock::Movement(&[
-            &[A::ClingGem(6)],
-            &[A::AscendantLight, A::DreamBreaker, A::SunGreaves],
-        ])]],
+        locks: Any(&[
+            A::ClingGem(6).into(),
+            All(&[A::AscendantLight.into(), A::DreamBreaker.into(), A::SunGreaves.into()]),
+        ]),
     },
     Check {
         description: "up in the rafters",
         location: L::StrongEyes,
         index: 186,
         drop: Drop::SmallKey,
-        locks: &[&[Lock::Movement(&[
-            &[A::SunGreaves, A::Sunsetter],
-            &[A::SunGreaves, A::Slide, A::SolarWind],
-            &[A::ClingGem(4)],
-        ])]],
+        locks: Any(&[
+            All(&[
+                A::SunGreaves.into(),
+                Any(&[
+                    A::Sunsetter.into(),
+                    All(&[A::Slide.into(), A::SolarWind.into()])
+                ]),
+            ]),
+            A::ClingGem(4).into(),
+        ]),
     },
     Check {
         description: "missable high walled room",
         location: L::StrongEyes,
         index: 215,
         drop: Drop::Health,
-        locks: &[&[Lock::Movement(&[&[A::SunGreaves], &[A::ClingGem(4)]])]],
+        locks: Any(&[A::SunGreaves.into(), A::ClingGem(4).into()]),
     },
     Check {
         description: "strong eyes' lair",
         location: L::StrongEyes,
         index: 185,
         drop: Drop::SmallKey,
-        locks: &[&[Lock::Movement(&[&[A::DreamBreaker]])]],
+        locks: Any(&[A::DreamBreaker.into()]),
     },
     Check {
         description: "the goatling who wants to lick the checkpoint",
@@ -87,86 +92,89 @@ pub const CHECKS: [Check; 81] = [
             "They make me feel safe...",
             "I think i'm gonna lick it. I bet it's full of [#8ada1c, buoy, italics](minerals).",
         ]),
-        locks: &[],
+        locks: Any(&[]),
     },
     Check {
         description: "a chair next to the goatling who wants to lick the checkpoint",
         location: L::CsMain,
         index: 634,
         drop: Drop::Chair,
-        locks: &[],
+        locks: Any(&[]),
     },
     Check {
         description: "a chair next to the goatling who wants to lick the checkpoint",
         location: L::CsMain,
         index: 635,
         drop: Drop::Chair,
-        locks: &[],
+        locks: Any(&[]),
     },
     Check {
         description: "a chair next to the goatling who wants to lick the checkpoint",
         location: L::CsMain,
         index: 636,
         drop: Drop::Chair,
-        locks: &[],
+        locks: Any(&[]),
     },
     Check {
         description: "where indignation normally is",
         location: L::CsMain,
         index: 787,
         drop: Drop::Ability(A::Indignation),
-        locks: &[],
+        locks: Any(&[]),
     },
     Check {
         description: "chillin' on a ledge by the window",
         location: L::CsMain,
         index: 444,
         drop: Drop::SmallKey,
-        locks: &[&[Lock::Movement(&[
-            &[A::Sunsetter],
-            &[A::SunGreaves],
-            &[A::HeliacalPower],
-            &[A::ClingGem(2)],
-            &[A::Slide, A::SolarWind],
-        ])]],
+        locks: Any(&[
+            A::Sunsetter.into(),
+            A::SunGreaves.into(),
+            A::HeliacalPower.into(),
+            A::ClingGem(2).into(),
+            All(&[A::Slide.into(), A::SolarWind.into()]),
+        ]),
     },
     Check {
         description: "where the professional normally is",
         location: L::CsMain,
         index: 791,
         drop: Drop::Ability(A::Professional),
-        locks: &[&[Lock::SmallKey, Lock::Movement(&[&[A::DreamBreaker]])]],
+        locks: All(&[
+            Lock::SmallKey,
+            A::DreamBreaker.into()
+        ]),
     },
     Check {
         description: "tucked deep in a corner in the bouncer room",
         location: L::CsMain,
         index: 495,
         drop: Drop::Health,
-        locks: &[&[Lock::Movement(&[
-            &[A::ClingGem(6)],
-            &[A::SunGreaves, A::HeliacalPower],
-        ])]],
+        locks: Any(&[
+            A::ClingGem(6).into(),
+            All(&[A::SunGreaves.into(), A::HeliacalPower.into()]),
+        ]),
     },
     Check {
         description: "the extremely slappable wheel guy room",
         location: L::CsMain,
         index: 494,
         drop: Drop::Health,
-        locks: &[&[Lock::Movement(&[
-            &[A::AscendantLight, A::DreamBreaker],
-            &[A::SunGreaves],
-            &[A::ClingGem(2)],
-        ])]],
+        locks: Any(&[
+            All(&[A::AscendantLight.into(), A::DreamBreaker.into()]),
+            A::SunGreaves.into(),
+            A::ClingGem(2).into(),
+        ]),
     },
     Check {
         description: "the old softlock room",
         location: L::CsOldSoftlockRoom,
         index: 498,
         drop: Drop::Health,
-        locks: &[&[Lock::Movement(&[
-            &[A::ClingGem(6)],
-            &[A::Slide, A::SolarWind, A::SunGreaves, A::HeliacalPower],
-        ])]],
+        locks: Any(&[
+            A::ClingGem(6).into(),
+            All(&[A::Slide.into(), A::SolarWind.into(), A::SunGreaves.into(), A::HeliacalPower.into()]),
+        ]),
     },
     Check {
         description: "the goatling about to jump into the haze",
@@ -176,38 +184,38 @@ pub const CHECKS: [Check; 81] = [
             "Oh, thanks for breaking that wall down.",
             "Thought I was gonna have to jump into the haze..."
         ]),
-        locks: &[&[Lock::Movement(&[
-            &[A::ClingGem(6)],
-            &[A::Slide, A::SolarWind, A::SunGreaves, A::HeliacalPower],
-        ])]],
+        locks: Any(&[
+            A::ClingGem(6).into(),
+            All(&[A::Slide.into(), A::SolarWind.into(), A::SunGreaves.into(), A::HeliacalPower.into()]),
+        ]),
     },
     Check {
         description: "cool moon room",
         location: L::CsTheatreEntrance,
         index: 790,
         drop: Drop::Ability(A::ClearMind),
-        locks: &[&[Lock::Movement(&[
-            &[A::ClingGem(6)],
-            &[A::Slide, A::SolarWind, A::SunGreaves, A::HeliacalPower],
-        ])]],
+        locks: Any(&[
+            A::ClingGem(6).into(),
+            All(&[A::Slide.into(), A::SolarWind.into(), A::SunGreaves.into(), A::HeliacalPower.into()]),
+        ]),
     },
     Check {
         description: "through the wallkick tunnel",
         location: L::CsMain,
         index: 443,
         drop: Drop::SmallKey,
-        locks: &[&[Lock::Movement(&[&[A::SunGreaves], &[A::ClingGem(6)]])]],
+        locks: Any(&[A::SunGreaves.into(), A::ClingGem(6).into()]),
     },
     Check {
         description: "in the pit next to the dungeon entrance",
         location: L::CsMain,
         index: 497,
         drop: Drop::Health,
-        locks: &[&[Lock::Movement(&[
-            &[A::SunGreaves],
-            &[A::HeliacalPower],
-            &[A::ClingGem(6)],
-        ])]],
+        locks: Any(&[
+            A::SunGreaves.into(),
+            A::HeliacalPower.into(),
+            A::ClingGem(6).into(),
+        ]),
     },
     Check {
         description: "the goatling that calls you bubble girl",
@@ -218,24 +226,24 @@ pub const CHECKS: [Check; 81] = [
             "I just don't really wanna touch the [#cf2525](bubbles)...",
             "What? I dont have a problem. You go touch 'em then, bubble girl."
         ]),
-        locks: &[&[Lock::Movement(&[
-            &[A::SunGreaves],
-            &[A::HeliacalPower],
-            &[A::ClingGem(4)],
-            &[A::Slide, A::SunGreaves]
-        ])]],
+        locks: Any(&[
+            A::SunGreaves.into(),
+            A::HeliacalPower.into(),
+            A::ClingGem(4).into(),
+            All(&[A::Slide.into(), A::SunGreaves.into()])
+        ]),
     },
     Check {
         description: "on the ledge above the bailey entrance",
         location: L::CsMain,
         index: 496,
         drop: Drop::Health,
-        locks: &[&[Lock::Movement(&[
-            &[A::SunGreaves, A::HeliacalPower],
-            &[A::ClingGem(4)],
-            &[A::Slide, A::SolarWind, A::HeliacalPower],
-            &[A::Slide, A::SolarWind, A::SunGreaves],
-        ])]],
+        locks: Any(&[
+            All(&[A::SunGreaves.into(), A::HeliacalPower.into()]),
+            A::ClingGem(4).into(),
+            All(&[A::Slide.into(), A::SolarWind.into(), A::HeliacalPower.into()]),
+            All(&[A::Slide.into(), A::SolarWind.into(), A::SunGreaves.into()]),
+        ]),
     },
     Check {
         description: "the goatling in the gazebo",
@@ -246,37 +254,47 @@ pub const CHECKS: [Check; 81] = [
             "But the handmaiden has run out of her special ingredient.",
             "I guess the princess doesn't really want anybody else's tea...",
         ]),
-        locks: &[],
+        locks: Any(&[]),
     },
     Check {
         description: "the chair in the gazebo",
         location: L::CsMain,
         index: 637,
         drop: Drop::Chair,
-        locks: &[],
+        locks: Any(&[]),
     },
     Check {
         description: "next to a bouncer in the massive room",
         location: L::CsMain,
         index: 788,
         drop: Drop::Ability(A::Pilgrimage),
-        locks: &[&[Lock::Movement(&[
-            &[A::AscendantLight, A::DreamBreaker, A::Sunsetter],
-            &[A::AscendantLight, A::DreamBreaker, A::SunGreaves],
-            &[A::AscendantLight, A::DreamBreaker, A::SunGreaves],
-            &[A::AscendantLight, A::DreamBreaker, A::Slide, A::SolarWind],
-            &[A::SunGreaves, A::HeliacalPower],
-            &[A::ClingGem(6), A::HeliacalPower],
-            &[A::ClingGem(6), A::Sunsetter],
-            &[A::ClingGem(6), A::Slide, A::SolarWind],
-        ])]],
+        locks: Any(&[
+            All(&[
+                A::AscendantLight.into(),
+                A::DreamBreaker.into(),
+                Any(&[
+                    A::Sunsetter.into(),
+                    A::SunGreaves.into(),
+                    All(&[A::Slide.into(),A::SolarWind.into()]),
+                ]),
+            ]),
+            All(&[A::SunGreaves.into(), A::HeliacalPower.into()]),
+            All(&[
+                A::ClingGem(6).into(), 
+                Any(&[
+                    A::HeliacalPower.into(),
+                    A::Sunsetter.into(),
+                    All(&[A::Slide.into(),A::SolarWind.into()]),
+                ]),
+            ]),
+        ]),
     },
     Check {
         description: "in the room with two other ones to each side",
         location: L::CsMain,
         index: 789,
         drop: Drop::Ability(A::GoodGraces),
-        locks: &[&[Lock::Movement(&[&[A::ClingGem(6)], &[A::SunGreaves]])]],
+        locks: Any(&[A::ClingGem(6).into(), A::SunGreaves.into()]),
     },
     // Listless Library
     Check {
@@ -284,71 +302,71 @@ pub const CHECKS: [Check; 81] = [
         location: L::MainLibrary,
         index: 241,
         drop: Drop::Chair,
-        locks: &[],
+        locks: Any(&[]),
     },
     Check {
         description: "where sun greaves normally are",
         location: L::LibSaveNearGreaves,
         index: 267,
         drop: Drop::Ability(A::SunGreaves),
-        locks: &[&[Lock::Movement(&[
-            &[A::DreamBreaker]
-        ])]],
+        locks: Any(&[
+            A::DreamBreaker.into()
+        ]),
     },
     Check {
         description: "the chair after the normal sun greaves location",
         location: L::LibSaveNearGreaves,
         index: 243,
         drop: Drop::Chair,
-        locks: &[],
+        locks: Any(&[]),
     },
     Check {
         description: "the note next to the egg nest",
         location: L::MainLibrary,
         index: 240,
         drop: Drop::Note,
-        locks: &[&[Lock::Movement(&[
-            &[A::SunGreaves],
-            &[A::ClingGem(4)],
-            &[A::Slide, A::SolarWind],
-        ])]],
+        locks: Any(&[
+            A::SunGreaves.into(),
+            A::ClingGem(4).into(),
+            All(&[A::Slide.into(), A::SolarWind.into()]),
+        ]),
     },
     Check {
         description: "the chair next to the egg nest",
         location: L::MainLibrary,
         index: 242,
         drop: Drop::Chair,
-        locks: &[&[Lock::Movement(&[
-            &[A::SunGreaves],
-            &[A::ClingGem(4)],
-            &[A::Slide, A::SolarWind],
-        ])]],
+        locks: Any(&[
+            A::SunGreaves.into(),
+            A::ClingGem(4).into(),
+            All(&[A::Slide.into(), A::SolarWind.into()]),
+        ]),
     },
     Check {
         description: "in the buttress room",
         location: L::MainLibrary,
         index: 213,
         drop: Drop::Health,
-        locks: &[&[Lock::Movement(&[&[A::SunGreaves], &[A::ClingGem(4)]])]],
+        locks: Any(&[A::SunGreaves.into(), A::ClingGem(4).into()]),
     },
     Check {
         description: "in the hay behind the locked door",
         location: L::Restricted,
         index: 268,
         drop: Drop::Ability(A::ClearMind),
-        locks: &[&[Lock::Movement(&[
-            &[A::Slide, A::SolarWind],
-            &[A::SunGreaves],
-            &[A::HeliacalPower],
-            &[A::ClingGem(4)],
-        ])]],
+        locks: Any(&[
+            All(&[A::Slide.into(), A::SolarWind.into()]),
+            A::SunGreaves.into(),
+            A::HeliacalPower.into(),
+            A::ClingGem(4).into(),
+        ]),
     },
     Check {
         description: "tucked deep behind the locked door",
         location: L::Restricted,
         index: 214,
         drop: Drop::Health,
-        locks: &[&[Lock::Movement(&[&[A::SunGreaves], &[A::ClingGem(4)]])]],
+        locks: Any(&[A::SunGreaves.into(), A::ClingGem(4).into()]),
     },
     // Sansa Keep
     Check {
@@ -358,7 +376,7 @@ pub const CHECKS: [Check; 81] = [
         drop: Drop::Goatling(&[
             "They took away all my furniture."
         ]),
-        locks: &[],
+        locks: Any(&[]),
     },
     Check {
         description: "the goatling collapsing out of reality",
@@ -367,111 +385,131 @@ pub const CHECKS: [Check; 81] = [
         drop: Drop::Goatling(&[
             "[6rr](.....c.....y..u...i....y.......ce....)"
         ]),
-        locks: &[],
+        locks: Any(&[]),
     },
     Check {
         description: "the chair collapsing out of reality",
         location: L::SkCastleRampEntry,
         index: 325,
         drop: Drop::Chair,
-        locks: &[],
+        locks: Any(&[]),
     },
     Check {
         description: "where strikebreak normally is",
         location: L::SansaKeep,
         index: 393,
         drop: Drop::Ability(A::Strikebreak),
-        locks: &[&[Lock::Movement(&[
-            &[A::Strikebreak, A::Slide, A::SolarWind, A::DreamBreaker],
-            &[A::Strikebreak, A::SunGreaves, A::DreamBreaker],
-            &[A::Strikebreak, A::ClingGem(4), A::DreamBreaker],
-            // this is if you come from a certain entrance which is free
-            &[A::Strikebreak, A::HeliacalPower, A::DreamBreaker],
-        ])]],
+        locks: Any(&[
+            All(&[
+                A::Strikebreak.into(),
+                A::DreamBreaker.into(),
+                Any(&[
+                    A::SunGreaves.into(),
+                    A::HeliacalPower.into(),
+                    A::ClingGem(4).into(),
+                    All(&[A::Slide.into(), A::SolarWind.into()]),
+                ]),
+            ]),
+        ]),
     },
     Check {
         description: "where sunsetter normally is",
         location: L::Sunsetter,
         index: 392,
         drop: Drop::Ability(A::Sunsetter),
-        locks: &[&[Lock::Movement(&[
-            &[A::Sunsetter, A::DreamBreaker],
-            &[A::HeliacalPower, A::DreamBreaker],
-            &[A::SunGreaves, A::DreamBreaker],
-            &[A::ClingGem(2), A::DreamBreaker],
-        ])]],
+        locks: All(&[
+            A::DreamBreaker.into(),
+            Any(&[
+                A::Sunsetter.into(),
+                A::HeliacalPower.into(),
+                A::SunGreaves.into(),
+                A::ClingGem(2).into()
+            ]),
+        ]),
     },
     Check {
         description: "in an alcove next to the locked door",
         location: L::Sunsetter,
         index: 251,
         drop: Drop::Health,
-        locks: &[&[Lock::Movement(&[
-            &[A::Sunsetter],
-            &[A::SunGreaves],
-            &[A::Slide, A::SolarWind],
-        ])]],
+        locks: Any(&[
+            A::Sunsetter.into(),
+            A::SunGreaves.into(),
+            All(&[A::Slide.into(), A::SolarWind.into()]),
+        ]),
     },
     Check {
         description: "in the room with a lever on each side",
         location: L::SansaKeep,
         index: 226,
         drop: Drop::SmallKey,
-        locks: &[
-            &[Lock::Movement(&[&[A::DreamBreaker]])],
-        ],
+        locks: Any(&[A::DreamBreaker.into()]),
     },
     Check {
         description: "tucked near the theatre entrance",
         location: L::SansaKeep,
         index: 394,
         drop: Drop::Ability(A::ClearMind),
-        locks: &[&[Lock::Movement(&[
-            &[A::Sunsetter],
-            &[A::HeliacalPower],
-            &[A::SunGreaves],
-            &[A::ClingGem(4)],
-        ])]],
+        locks: Any(&[
+            A::Sunsetter.into(),
+            A::HeliacalPower.into(),
+            A::SunGreaves.into(),
+            A::ClingGem(4).into(),
+        ]),
     },
     Check {
         description: "at the end of the parkour",
         location: L::SansaKeep,
         index: 227,
         drop: Drop::BigKey,
-        locks: &[&[Lock::Movement(&[
-            
-            &[A::AscendantLight, A::DreamBreaker, A::ClingGem(4), A::Sunsetter],
-            &[A::AscendantLight, A::DreamBreaker, A::ClingGem(4), A::SunGreaves],
-            &[A::AscendantLight, A::DreamBreaker, A::Sunsetter, A::SunGreaves],
-            &[
-                A::DreamBreaker,
-                A::Slide,
-                A::SolarWind,
-                A::Sunsetter,
-                A::ClingGem(2),
-                A::SunGreaves,
-            ],
-        ])]],
+        locks: Any(&[
+            All(&[
+                A::AscendantLight.into(),
+                A::DreamBreaker.into(),
+                Any(&[
+                    All(&[
+                        A::ClingGem(4).into(),
+                        Any(&[A::Sunsetter.into(), A::SunGreaves.into()]),
+                    ]),
+                    All(&[A::Sunsetter.into(), A::SunGreaves.into()]),
+                ]),
+            ]),
+            All(&[
+                A::DreamBreaker.into(),
+                A::Slide.into(),
+                A::SolarWind.into(),
+                A::Sunsetter.into(),
+                A::ClingGem(2).into(),
+                A::SunGreaves.into(),
+            ]),
+        ]),
     },
     Check {
         description: "the chair in the middle of the parkour",
         location: L::SansaKeep,
         index: 326,
         drop: Drop::Chair,
-        locks: &[&[Lock::Movement(&[
-            
-            &[A::AscendantLight, A::DreamBreaker, A::ClingGem(4), A::Sunsetter],
-            &[A::AscendantLight, A::DreamBreaker, A::ClingGem(4), A::SunGreaves],
-            &[A::AscendantLight, A::DreamBreaker, A::Sunsetter, A::SunGreaves],
-            &[
-                A::DreamBreaker,
-                A::Slide,
-                A::SolarWind,
-                A::Sunsetter,
-                A::ClingGem(2),
-                A::SunGreaves,
-            ],
-        ])]],
+        locks:  Any(&[
+            All(&[
+                A::AscendantLight.into(),
+                A::DreamBreaker.into(),
+                Any(&[
+                    All(&[
+                        A::ClingGem(4).into(),
+                        Any(&[A::Sunsetter.into(), A::SunGreaves.into()]),
+                    ]),
+                    All(&[A::Sunsetter.into(), A::SunGreaves.into()]),
+                ]),
+            ]),
+            All(&[
+                A::DreamBreaker.into(),
+                A::Slide.into(),
+                A::SolarWind.into(),
+                A::Sunsetter.into(),
+                A::ClingGem(2).into(),
+                A::SunGreaves.into(),
+            ]),
+        ]),
     },
     // Empty Bailey
     Check {
@@ -479,61 +517,74 @@ pub const CHECKS: [Check; 81] = [
         location: L::EmptyBailey,
         index: 88,
         drop: Drop::Goatling(&["...i'm not here."]),
-        locks: &[&[Lock::Movement(&[&[A::Slide]])]],
+        locks: Any(&[A::Slide.into()]),
     },
     Check {
         description: "in the building you slide into",
         location: L::EmptyBailey,
         index: 56,
         drop: Drop::SmallKey,
-        locks: &[&[Lock::Movement(&[&[A::Slide]])]],
+        locks: Any(&[A::Slide.into()]),
     },
     Check {
         description: "guarded by the hand and soldier",
         location: L::EmptyBailey,
         index: 55,
         drop: Drop::BigKey,
-        locks: &[&[Lock::Movement(&[
-            &[A::Sunsetter],
-            &[A::SunGreaves],
-            &[A::ClingGem(4)],
-            &[A::Slide, A::SolarWind],
-        ])]],
+        locks: Any(&[
+            A::Sunsetter.into(),
+            A::SunGreaves.into(),
+            A::ClingGem(4).into(),
+            All(&[A::Slide.into(), A::SolarWind.into()]),
+        ]),
     },
     Check {
         description: "where solar wind normally is",
         location: L::EmptyBailey,
         index: 104,
         drop: Drop::Ability(A::SolarWind),
-        locks: &[&[Lock::Movement(&[
-            // need some way to cross the gap afterwards
-            &[A::Slide, A::SolarWind, A::DreamBreaker,],
-            &[A::Slide, A::HeliacalPower, A::DreamBreaker,],
-            &[A::Slide, A::SunGreaves, A::DreamBreaker,],
-        ])]],
+        locks: Any(&[
+            All(&[
+                A::Slide.into(),
+                A::DreamBreaker.into(),
+                Any(&[
+                    A::SolarWind.into(),
+                    A::HeliacalPower.into(),
+                    A::SunGreaves.into(),
+                ]),
+            ]),
+        ]),
     },
     Check {
         description: "in the tower in the middle",
         location: L::EmptyBailey,
         index: 66,
         drop: Drop::Health,
-        locks: &[&[Lock::Movement(&[
-            &[A::Sunsetter, A::HeliacalPower],
-            &[A::SunGreaves],
+        locks: Any(&[
+            All(&[A::Sunsetter.into(), A::HeliacalPower.into()]),
+            A::SunGreaves.into(),
             // you can jump down from cheese bell
-            &[A::Slide, A::SolarWind, A::ClingGem(6)],
-        ])]],
+            All(&[A::Slide.into(), A::SolarWind.into(), A::ClingGem(6).into()]),
+        ]),
     },
     Check {
         description: "under the cheese bell",
         location: L::EmptyBailey,
         index: 105,
         drop: Drop::Ability(A::Empathy),
-        locks: &[&[Lock::Movement(&[
-            &[A::Slide, A::SolarWind, A::Sunsetter, A::HeliacalPower],
-            &[A::Sunsetter, A::SunGreaves],
-            &[A::Slide, A::SolarWind, A::ClingGem(6)],
-        ])]],
+        locks: Any(&[
+            All(&[
+                A::Slide.into(),
+                A::SolarWind.into(),
+                Any(&[
+                    A::ClingGem(6).into(),
+                    All(&[A::Sunsetter.into(), A::HeliacalPower.into()]),
+                ]),
+            ]),
+            
+            All(&[A::Sunsetter.into(), A::SunGreaves.into()]),
+
+        ]),
     },
     // Underbelly
     Check {
@@ -541,22 +592,29 @@ pub const CHECKS: [Check; 81] = [
         location: L::SansaHole,
         index: 515,
         drop: Drop::Health,
-        locks: &[&[Lock::Movement(&[
-            &[A::SunGreaves],
-            &[A::Sunsetter, A::HeliacalPower],
-        ])]],
+        locks: Any(&[
+            A::SunGreaves.into(),
+            All(&[A::Sunsetter.into(), A::HeliacalPower.into()]),
+        ]),
     },
     Check {
         description: "the soul cutter lever room",
         location: L::SansaHole,
         index: 446,
         drop: Drop::BigKey,
-        locks: &[&[Lock::Movement(&[
-            
-            &[A::Sunsetter, A::SoulCutter, A::AscendantLight, A::DreamBreaker],
-            &[A::Sunsetter, A::SunGreaves, A::Slide, A::SolarWind, A::DreamBreaker,],
-            &[A::Sunsetter, A::SoulCutter, A::ClingGem(6), A::DreamBreaker,],
-        ])]],
+        locks: Any(&[
+            All(&[
+                A::DreamBreaker.into(),
+                A::Sunsetter.into(),
+                Any(&[
+                    All(&[
+                        A::SoulCutter.into(),
+                        Any(&[A::AscendantLight.into(), A::ClingGem(6).into()]),
+                    ]),
+                    All(&[A::SunGreaves.into(), A::Slide.into(), A::SolarWind.into()]),
+                ]),
+            ]),
+        ]),
     },
     Check {
         description: "where ascendant light normally is",
@@ -564,101 +622,100 @@ pub const CHECKS: [Check; 81] = [
         index: 834,
         drop: Drop::Ability(A::AscendantLight),
         // you can go through the dark area and there's a passage which you can do with nothing
-        locks: &[
-            &[Lock::Movement(&[&[A::DreamBreaker]])],
-            // &[Lock::Movement(&[
-            // &[A::AscendantLight, A::DreamBreaker],
-            // &[A::SunGreaves],
-            // &[A::ClingGem],
-            // &[A::Slide, A::SolarWind, A::HeliacalPower],
-            // ])]
-        ],
+        locks: Any(&[A::DreamBreaker.into()]),
     },
     Check {
         description: "in an alcove behind some pillars",
         location: L::VAscendantLight,
         index: 517,
         drop: Drop::Health,
-        locks: &[
-            &[Lock::Movement(&[&[A::DreamBreaker]])],
-        ],
+        locks: Any(&[A::DreamBreaker.into()]),
     },
     Check {
         description: "on a missable ledge in the centre",
         location: L::MainUnderbelly,
         index: 447,
         drop: Drop::SmallKey,
-        locks: &[&[Lock::Movement(&[
-            &[A::Sunsetter],
-            &[A::Slide, A::SolarWind],
-        ])]],
+        locks: Any(&[
+            A::Sunsetter.into(),
+            All(&[A::Slide.into(), A::SolarWind.into()]),
+        ]),
     },
     Check {
         description: "the note on a high ledge in the big room",
         location: L::MainUnderbelly,
         index: 702,
         drop: Drop::Note,
-        locks: &[&[Lock::Movement(&[
-            &[A::Slide, A::SolarWind, A::HeliacalPower, A::Sunsetter],
-            &[A::ClingGem(6), A::HeliacalPower, A::Sunsetter],
-            &[A::SunGreaves, A::HeliacalPower, A::Sunsetter]
-        ])]],
+        locks: Any(&[
+            All(&[
+                A::HeliacalPower.into(),
+                A::Sunsetter.into(),
+                Any(&[
+                    A::ClingGem(6).into(),
+                    A::SunGreaves.into(),
+                    All(&[A::Slide.into(), A::SolarWind.into()]),
+                ]),
+            ]),
+        ]),
     },
     Check {
         description: "black hole parkour behind strikebreak wall",
         location: L::MainUnderbelly,
         index: 835,
         drop: Drop::Ability(A::MartialProwess),
-        locks: &[&[Lock::Movement(&[
-            &[A::Strikebreak, A::AscendantLight, A::DreamBreaker, A::HeliacalPower],
-            &[A::Strikebreak, A::AscendantLight, A::DreamBreaker, A::SunGreaves],
-            &[A::Strikebreak, A::AscendantLight, A::DreamBreaker, A::Sunsetter],
-            &[A::Strikebreak, A::AscendantLight, A::DreamBreaker, A::Slide, A::SolarWind],
-        ])]],
+        locks: Any(&[
+            All(&[
+                A::Strikebreak.into(),
+                A::AscendantLight.into(),
+                A::DreamBreaker.into(),
+                Any(&[
+                    A::HeliacalPower.into(),
+                    A::SunGreaves.into(),
+                    A::Sunsetter.into(),
+                    All(&[A::Slide.into(), A::SolarWind.into()]),
+                ]),
+            ]),
+        ]),
     },
     Check {
         description: "behind the locked door",
         location: L::HpSave,
         index: 836,
         drop: Drop::Ability(A::HeliacalPower),
-        locks: &[&[
+        locks: All(&[
             Lock::SmallKey,
-            Lock::Movement(&[
-                &[A::DreamBreaker],
-            ])
-        ]],
+            A::DreamBreaker.into(),
+        ]),
     },
     Check {
         description: "the note behind the locked door",
         location: L::HpSave,
         index: 703,
         drop: Drop::Note,
-        locks: &[&[
+        locks: All(&[
             Lock::SmallKey,
-            Lock::Movement(&[
-                &[A::DreamBreaker],
-            ])
-        ]],
+            A::DreamBreaker.into(),
+        ]),
     },
     Check {
         description: "the note near the empty bailey entrance",
         location: L::BaileyHole,
         index: 704,
         drop: Drop::Note,
-        locks: &[&[Lock::Movement(&[
-            &[A::SunGreaves],
-            &[A::HeliacalPower, A::Sunsetter],
-            &[A::ClingGem(2)],
-            &[A::AscendantLight, A::DreamBreaker],
-            &[A::Slide, A::SolarWind]
-        ])]],
+        locks: Any(&[
+            A::SunGreaves.into(),
+            All(&[A::HeliacalPower.into(), A::Sunsetter.into()]),
+            A::ClingGem(6).into(),
+            All(&[A::AscendantLight.into(), A::DreamBreaker.into()]),
+            All(&[A::Slide.into(), A::SolarWind.into()])
+        ]),
     },
     Check {
         description: "on top of the big building",
         location: L::BaileyHole,
         index: 516,
         drop: Drop::Health,
-        locks: &[&[Lock::Movement(&[&[A::SunGreaves], &[A::Sunsetter]])]],
+        locks: Any(&[A::SunGreaves.into(), A::Sunsetter.into()]),
     },
     // Tower Ruins
     Check {
@@ -666,21 +723,29 @@ pub const CHECKS: [Check; 81] = [
         location: L::TowerRuinsKeep,
         index: 89,
         drop: Drop::Ability(A::ClingGem(6)),
-        locks: &[&[Lock::Movement(&[
-            &[A::ClingGem(2)],
-            &[A::SunGreaves],
-            &[A::HeliacalPower, A::Sunsetter],
-        ])]],
+        locks: Any(&[
+            A::ClingGem(6).into(),
+            A::SunGreaves.into(),
+            All(&[A::HeliacalPower.into(), A::Sunsetter.into()]),
+        ]),
     },
     Check {
         description: "atop the tower",
         location: L::TowerRuinsKeep,
         index: 56,
         drop: Drop::BigKey,
-        locks: &[&[Lock::Movement(&[
-            &[A::SunGreaves, A::ClingGem(2)],
-            &[A::HeliacalPower, A::Sunsetter, A::ClingGem(2)],
-        ])]],
+        locks: Any(&[
+            All(&[
+                A::ClingGem(2).into(),
+                Any(&[
+                    A::SunGreaves.into(),
+                    All(&[
+                        A::HeliacalPower.into(),
+                        A::Sunsetter.into(),
+                    ]),
+                ]),
+            ]),
+        ]),
     },
     // Twilight Theatre
     Check {
@@ -688,40 +753,42 @@ pub const CHECKS: [Check; 81] = [
         location: L::PillarRoom,
         index: 1080,
         drop: Drop::Ability(A::AerialFinesse),
-        locks: &[&[Lock::Movement(&[
-            &[A::ClingGem(2), A::SunGreaves],
-            &[A::Slide, A::SolarWind, A::ClingGem(2)],
-            &[A::Slide, A::SolarWind, A::SunGreaves],
-            &[A::Sunsetter, A::SunGreaves],
-        ])]],
+        locks: Any(&[
+            All(&[
+                Any(&[A::SunGreaves.into(), A::ClingGem(2).into()]),
+                Any(&[A::Slide.into(), A::SolarWind.into()]),
+            ]),
+            All(&[A::ClingGem(2).into(), A::SunGreaves.into()]),
+            All(&[A::Sunsetter.into(), A::SunGreaves.into()]),
+        ]),
     },
     Check {
         description: "a chair around the table",
         location: L::OtherTheatrePath,
         index: 949,
         drop: Drop::Chair,
-        locks: &[],
+        locks: Any(&[]),
     },
     Check {
         description: "a chair around the table",
         location: L::OtherTheatrePath,
         index: 950,
         drop: Drop::Chair,
-        locks: &[],
+        locks: Any(&[]),
     },
     Check {
         description: "a chair around the table",
         location: L::OtherTheatrePath,
         index: 946,
         drop: Drop::Chair,
-        locks: &[],
+        locks: Any(&[]),
     },
     Check {
         description: "the chair next to the books",
         location: L::OtherTheatrePath,
         index: 951,
         drop: Drop::Chair,
-        locks: &[],
+        locks: Any(&[]),
     },
     Check {
         description: "the goatling who can eat 20 beans at least",
@@ -732,7 +799,7 @@ pub const CHECKS: [Check; 81] = [
             "three bean casserole? not enough for 1 man. i can eat like, [#cf2525](20 beans), at least.",
             "so get to it. [up, 10rr](please?)"
         ]),
-        locks: &[],
+        locks: Any(&[]),
     },
     Check {
         description: "the goatling who thought the theatre was safe",
@@ -742,7 +809,7 @@ pub const CHECKS: [Check; 81] = [
             "I heard that the theatre was still in good condition...",
             "But it seems even this place has been affected."
         ]),
-        locks: &[],
+        locks: Any(&[]),
     },
     Check {
         description: "the goatling who really wanted to see the show",
@@ -751,7 +818,7 @@ pub const CHECKS: [Check; 81] = [
         drop: Drop::Goatling(&[
             "Ah nuts....I really wanted to see the show today."
         ]),
-        locks: &[],
+        locks: Any(&[]),
     },
     Check {
         description: "the goatling who really wanted to see the show",
@@ -761,14 +828,14 @@ pub const CHECKS: [Check; 81] = [
             "Sorry miss, can't let you in.",
             "Theatre's closed until all the haze is gone."
         ]),
-        locks: &[],
+        locks: Any(&[]),
     },
     Check {
         description: "hiding amid the boxes",
         location: L::MainTheatre,
         index: 843,
         drop: Drop::Health,
-        locks: &[],
+        locks: Any(&[]),
     },
     Check {
         description: "the goatling that will kill again",
@@ -778,35 +845,35 @@ pub const CHECKS: [Check; 81] = [
             "please leave me alone?",
             "i will [#cf2525](kill again)"
         ]),
-        locks: &[&[
-            Lock::Movement(&[
-                &[A::Slide, A::SolarWind, A::HeliacalPower],
-                &[A::SunGreaves],
-                &[A::ClingGem(2)]
-            ])
-        ]],
+        locks: Any(&[
+            All(&[A::Slide.into(), A::SolarWind.into(), A::HeliacalPower.into()]),
+            A::SunGreaves.into(),
+            A::ClingGem(6).into()
+        ]),
     },
     Check {
         description: "the chair near the courtyard",
         location: L::MainTheatre,
         index: 947,
         drop: Drop::Chair,
-        locks: &[&[Lock::Movement(&[
-                &[A::ClingGem(4)],
-                &[A::Slide, A::SolarWind, A::HeliacalPower, A::SunGreaves],
-            ])]
-        ],
+        locks: Any(&[
+                A::ClingGem(4).into(),
+                All(&[A::Slide.into(), A::SolarWind.into(), A::HeliacalPower.into(), A::SunGreaves.into()]),
+            ]),
     },
     Check {
         description: "the chair in the soul cutter zone",
         location: L::MainTheatre,
         index: 948,
         drop: Drop::Chair,
-        locks: &[&[Lock::Movement(&[
-            
-            &[A::Strikebreak, A::SoulCutter, A::SunGreaves, A::DreamBreaker,],
-            &[A::Strikebreak, A::SoulCutter, A::ClingGem(4), A::DreamBreaker,],
-        ])]],
+        locks: Any(&[
+            All(&[
+                A::Strikebreak.into(),
+                A::SoulCutter.into(),
+                A::DreamBreaker.into(),
+                Any(&[A::SunGreaves.into(), A::ClingGem(4).into()]),
+            ]),
+        ]),
     },
     Check {
         description: "behind three maximum security cages",
@@ -814,44 +881,52 @@ pub const CHECKS: [Check; 81] = [
         index: 802,
         drop: Drop::BigKey,
         // there's one gap in the open green room with enemies which is too big
-        locks: &[&[Lock::Movement(&[
-            &[
-                A::Strikebreak,
-                A::SoulCutter,
-                A::ClingGem(6),
-                A::Slide,
-                A::SolarWind,
-                A::DreamBreaker,
-            ],
-            &[A::DreamBreaker,A::Strikebreak, A::SoulCutter, A::ClingGem(6), A::HeliacalPower],
-            &[A::DreamBreaker,A::Strikebreak, A::SoulCutter, A::ClingGem(6), A::SunGreaves],
-        ])]],
+        locks: All(&[
+            A::DreamBreaker.into(),
+            A::Strikebreak.into(), 
+            A::SoulCutter.into(), 
+            A::ClingGem(6).into(),
+            Any(&[
+                A::HeliacalPower.into(),
+                A::SunGreaves.into(),
+                All(&[A::Slide.into(), A::SolarWind.into()])
+            ]),
+        ]),
     },
     Check {
         description: "where soul cutter normally is",
         location: L::MainTheatre,
         index: 1079,
         drop: Drop::Ability(A::SoulCutter),
-        locks: &[&[Lock::Movement(&[
-            &[A::DreamBreaker,A::Strikebreak, A::SoulCutter, A::ClingGem(6)],
-            &[A::DreamBreaker,A::Strikebreak, A::SoulCutter, A::SunGreaves],
-        ])]],
+        locks: All(&[
+            A::DreamBreaker.into(),
+            A::Strikebreak.into(), 
+            A::SoulCutter.into(),
+            Any(&[
+                A::ClingGem(6).into(),
+                A::SunGreaves.into(),
+            ]),
+        ]),
     },
     Check {
         description: "in the back on a pillar",
         location: L::MainTheatre,
         index: 844,
         drop: Drop::Health,
-        locks: &[&[Lock::Movement(&[&[A::SunGreaves], &[A::ClingGem(2)]])]],
+        locks: Any(&[A::SunGreaves.into(), A::ClingGem(6).into()]),
     },
     Check {
         description: "behind the locked door",
         location: L::MainTheatre,
         index: 1081,
         drop: Drop::Ability(A::Empathy),
-        locks: &[&[
+        locks: All(&[
             Lock::SmallKey,
-            Lock::Movement(&[&[A::DreamBreaker,A::SunGreaves], &[A::DreamBreaker,A::ClingGem(2)]]),
-        ]],
+            A::DreamBreaker.into(),
+            Any(&[
+                A::SunGreaves.into(),
+                A::ClingGem(2).into(),
+            ]),
+        ]),
     },
 ];

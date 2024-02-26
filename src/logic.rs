@@ -57,7 +57,7 @@ impl std::fmt::Debug for Check {
 #[derive(Debug, Clone, Copy)]
 pub enum Lock {
     None,
-    Any(&'static [Lock]),
+    Any(&'static [ Lock]),
     All(&'static [Lock]),
     Location(Location),
     Movement(Ability),
