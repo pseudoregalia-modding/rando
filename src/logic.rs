@@ -65,14 +65,15 @@ pub enum Lock {
     Ending,
 }
 
-impl Into<Lock> for Ability {
-    fn into(self) -> Lock {
+// the into trait isn't const but we want the same semantics
+impl Ability {
+    const fn into(self) -> Lock {
         Lock::Movement(self)
     }
 }
 
-impl Into<Lock> for Location {
-    fn into(self) -> Lock {
+impl Location {
+    const fn into(self) -> Lock {
         Lock::Location(self)
     }
 }
