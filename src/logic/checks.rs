@@ -3,6 +3,7 @@ use super::*;
 use Ability as A;
 use Location as L;
 use Lock::{All, Any, Movement as Powerup, Location as Loc};
+
 pub const CHECKS: [Check; 81] = [
     // dream breaker is randomised with random start
     Check {
@@ -10,7 +11,7 @@ pub const CHECKS: [Check; 81] = [
         location: L::VDreamBreaker,
         index: 355,
         drop: Drop::Ability(A::DreamBreaker),
-        locks: Lock::None,
+        locks: Powerup(A::DreamBreaker),
     },
     Check {
         description: "where the first health piece is",

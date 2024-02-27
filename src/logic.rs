@@ -57,23 +57,10 @@ impl std::fmt::Debug for Check {
 #[derive(Debug, Clone, Copy)]
 pub enum Lock {
     None,
-    Any(&'static [ Lock]),
+    Any(&'static [Lock]),
     All(&'static [Lock]),
     Location(Location),
     Movement(Ability),
     SmallKey,
     Ending,
-}
-
-// the into trait isn't const but we want the same semantics
-impl Ability {
-    const fn into(self) -> Lock {
-        Lock::Movement(self)
-    }
-}
-
-impl Location {
-    const fn into(self) -> Lock {
-        Lock::Location(self)
-    }
 }
