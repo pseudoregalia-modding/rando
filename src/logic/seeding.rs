@@ -1,6 +1,8 @@
 use super::*;
 use strum::{EnumCount, IntoEnumIterator};
 
+use Lock::{All, Any, Movement as Powerup, Location as Loc};
+
 fn accessible(
     locks: &Lock,
     locations: &[Location],
@@ -240,7 +242,6 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
             pool.remove(i);
         }
         use Ability as A;
-        use Lock::{All, Any};
         pool.extend([
             Check {
                 description: "where sun greaves normally is",
@@ -248,11 +249,11 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
                 index: 1548,
                 drop: Drop::Ability(A::HeliacalPower),
                 locks: Any(&[
-                    All(&[A::Slide.into(), A::SunGreaves.into()]),
-                    All(&[A::Slide.into(), A::HeliacalPower.into()]),
-                    All(&[A::SunGreaves.into(), A::HeliacalPower.into()]),
-                    A::ClingGem(2).into(),
-                    All(&[A::Slide.into(), A::SolarWind.into()]),
+                    All(&[Powerup(A::Slide),Powerup( A::SunGreaves)]),
+                    All(&[Powerup(A::Slide),Powerup( A::HeliacalPower)]),
+                    All(&[Powerup(A::SunGreaves),Powerup( A::HeliacalPower)]),
+                    Powerup(A::ClingGem(2)),
+                    All(&[Powerup(A::Slide), Powerup(A::SolarWind)]),
                 ]),
             },
             Check {
@@ -261,11 +262,11 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
                 index: 1554,
                 drop: Drop::Ability(A::HeliacalPower),
                 locks: Any(&[
-                    All(&[A::Slide.into(), A::SunGreaves.into()]),
-                    All(&[A::Slide.into(), A::HeliacalPower.into()]),
-                    All(&[A::SunGreaves.into(), A::HeliacalPower.into()]),
-                    A::ClingGem(2).into(),
-                    All(&[A::Slide.into(), A::SolarWind.into()]),
+                    All(&[Powerup(A::Slide),Powerup( A::SunGreaves)]),
+                    All(&[Powerup(A::Slide),Powerup( A::HeliacalPower)]),
+                    All(&[Powerup(A::SunGreaves),Powerup( A::HeliacalPower)]),
+                    Powerup(A::ClingGem(2)),
+                    All(&[Powerup(A::Slide), Powerup(A::SolarWind)]),
                 ]),
             },
             Check {
@@ -274,11 +275,11 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
                 index: 1560,
                 drop: Drop::Ability(A::HeliacalPower),
                 locks: Any(&[
-                    All(&[A::Slide.into(), A::SunGreaves.into()]),
-                    All(&[A::Slide.into(), A::HeliacalPower.into()]),
-                    All(&[A::SunGreaves.into(), A::HeliacalPower.into()]),
-                    A::ClingGem(2).into(),
-                    All(&[A::Slide.into(), A::SolarWind.into()]),
+                    All(&[Powerup(A::Slide),Powerup( A::SunGreaves)]),
+                    All(&[Powerup(A::Slide),Powerup( A::HeliacalPower)]),
+                    All(&[Powerup(A::SunGreaves),Powerup( A::HeliacalPower)]),
+                    Powerup(A::ClingGem(2)),
+                    All(&[Powerup(A::Slide), Powerup(A::SolarWind)]),
                 ]),
             },
         ]);
@@ -299,9 +300,9 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
                 index: 671,
                 drop: Drop::Ability(A::ClingGem(2)),
                 locks: Any(&[
-                    A::ClingGem(2).into(),
-                    A::SunGreaves.into(),
-                    All(&[A::HeliacalPower.into(), A::Sunsetter.into()]),
+                    Powerup( A::ClingGem(2)),
+                    Powerup( A::SunGreaves),
+                    All(&[Powerup( A::HeliacalPower),Powerup(A::Sunsetter)]),
                 ]),
             },
             Check {
@@ -310,9 +311,9 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
                 index: 677,
                 drop: Drop::Ability(A::ClingGem(2)),
                 locks: Any(&[
-                    A::ClingGem(2).into(),
-                    A::SunGreaves.into(),
-                    All(&[A::HeliacalPower.into(), A::Sunsetter.into()]),
+                    Powerup( A::ClingGem(2)),
+                    Powerup( A::SunGreaves),
+                    All(&[Powerup( A::HeliacalPower),Powerup(A::Sunsetter)]),
                 ]),
             },
             Check {
@@ -321,9 +322,9 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
                 index: 683,
                 drop: Drop::Ability(A::ClingGem(2)),
                 locks: Any(&[
-                    A::ClingGem(2).into(),
-                    A::SunGreaves.into(),
-                    All(&[A::HeliacalPower.into(), A::Sunsetter.into()]),
+                    Powerup( A::ClingGem(2)),
+                    Powerup( A::SunGreaves),
+                    All(&[Powerup( A::HeliacalPower),Powerup(A::Sunsetter)]),
                 ]),
             },
         ]);
