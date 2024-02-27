@@ -71,35 +71,35 @@ impl Location {
     pub const fn locks(&self) -> Lock {
         match self {
             // Prison / Dilapidated Dungeon
-            L::LatePrison => All(&[
-                Any(&[Powerup(A::DreamBreaker), Loc(L::CsMain)]),
-                Any(&[Loc(L::PEntryUnderBelly), Loc(L::EarlyPrison)]),
+            L::LatePrison => Any(&[
+                All(&[Powerup(A::DreamBreaker), Loc(L::CsMain)]),
+                All(&[Loc(L::PEntryUnderBelly), Loc(L::EarlyPrison)]),
             ]),
-            L::EarlyPrison => All(&[
-                Any(&[Powerup(A::DreamBreaker), Loc(L::CsMain)]),
-                Any(&[
-                    All(&[Loc(L::StrongEyes), Lock::SmallKey]),
-                    Loc(L::VDreamBreaker),
-                    Loc(L::LatePrison),
+            L::EarlyPrison => Any(&[
+                Loc(L::CsMain), // Drop in from castle
+                All(&[
+                    Powerup(A::DreamBreaker),
+                    Any(&[
+                        All(&[Loc(L::StrongEyes), Lock::SmallKey]), // From Strong Eyes
+                        Loc(L::VDreamBreaker), // Breaking wall from DB item check
+                        Loc(L::LatePrison),    // Breaking wall from late.
+                    ]),
                 ]),
             ]),
-            L::PEntryUnderBelly => All(&[
-                Powerup(A::DreamBreaker),
-                Any(&[
-                    Loc(L::LatePrison),
-                    All(&[Loc(L::PrisonHole), Powerup(A::AscendantLight)]),
-                ]),
+            L::PEntryUnderBelly => Any(&[
+                Any(&[Loc(L::LatePrison), Powerup(A::DreamBreaker)]),
+                All(&[Loc(L::PrisonHole), Powerup(A::AscendantLight)]),
             ]),
-            L::VDreamBreaker => All(&[Loc(L::EarlyPrison)]),
-            L::StrongEyes => All(&[Any(&[
+            L::VDreamBreaker => Loc(L::EarlyPrison),
+            L::StrongEyes => Any(&[
                 All(&[Loc(L::LatePrison), Powerup(A::Slide)]),
                 All(&[Loc(L::CsMain), Lock::SmallKey, Powerup(A::DreamBreaker)]),
-            ])]),
-            L::PEntryCastle => All(&[Any(&[
+            ]),
+            L::PEntryCastle => Any(&[
                 Loc(L::CsPrisonEntry),
                 All(&[Loc(L::StrongEyes), Lock::SmallKey, Powerup(A::DreamBreaker)]),
-            ])]),
-            L::PEntryTheatre => All(&[Any(&[
+            ]),
+            L::PEntryTheatre => Any(&[
                 Loc(L::ThDungeonEntry),
                 All(&[
                     Loc(L::LatePrison),
@@ -109,14 +109,14 @@ impl Location {
                         Powerup(A::AscendantLight),
                     ]),
                 ]),
-            ])]),
+            ]),
             // Castle Sansa
-            L::CsPrisonEntry => All(&[Any(&[Loc(L::CsMain), Loc(L::PEntryCastle)])]),
-            L::CsLibraryEntry => All(&[Any(&[
+            L::CsPrisonEntry => Any(&[Loc(L::CsMain), Loc(L::PEntryCastle)]),
+            L::CsLibraryEntry => Any(&[
                 Loc(L::MainLibrary),
                 All(&[Loc(L::CsMain), Powerup(A::DreamBreaker)]),
-            ])]),
-            L::CsTheatreEntryNearPrison => All(&[Any(&[
+            ]),
+            L::CsTheatreEntryNearPrison => Any(&[
                 Loc(L::PillarRoom),
                 All(&[
                     Loc(L::CsMain),
@@ -127,8 +127,8 @@ impl Location {
                         All(&[Powerup(A::Slide), Powerup(A::SolarWind)]),
                     ]),
                 ]),
-            ])]),
-            L::CsOldSoftlockRoom => All(&[Any(&[
+            ]),
+            L::CsOldSoftlockRoom => Any(&[
                 All(&[Loc(L::CsMain), Powerup(A::ClingGem(2))]),
                 All(&[
                     Loc(L::CsTheatreEntrance),
@@ -139,7 +139,7 @@ impl Location {
                         Powerup(A::SolarWind),
                     ]),
                 ]),
-            ])]),
+            ]),
             L::CsKeepClimbEntrance => All(&[Loc(L::CsMain), Lock::SmallKey]),
             L::CsKeepEntryMain => Any(&[Loc(L::CsMain), Loc(L::SansaKeep)]),
             L::CsKeepEntryRamp => Any(&[
@@ -155,7 +155,7 @@ impl Location {
                 Loc(L::SansaKeep),
             ]),
             L::CsBaileyEntry => Any(&[Loc(L::CsMain), Loc(L::EbEntryCastle)]),
-            L::CsMain => All(&[Any(&[
+            L::CsMain => Any(&[
                 Loc(L::CsPrisonEntry),
                 Loc(L::CsBaileyEntry),
                 Loc(L::CsTheatreEntryNearPrison),
@@ -167,7 +167,7 @@ impl Location {
                         All(&[Loc(L::CsKeepClimbEntrance), Lock::SmallKey]),
                     ]),
                 ]),
-            ])]),
+            ]),
             L::CsTheatreEntrance => Any(&[
                 Loc(L::ThCastleEntryMain),
                 All(&[
@@ -180,28 +180,24 @@ impl Location {
             // Library
             L::LibSaveNearGreaves => All(&[
                 Loc(L::MainLibrary), // Can only reach here from main library OR random spawn
-                // Enter from the front entrance through the slide slot.
-                All(&[
-                    Powerup(A::DreamBreaker),
-                    Powerup(A::Slide),
-                    Any(&[
-                        Powerup(A::SolarWind),
-                        Powerup(A::Sunsetter),
-                        Powerup(A::SunGreaves),
-                    ]),
-                ]),
-                //Enter through Reverse route.
                 Any(&[
+                    // Enter from the front entrance through the slide slot.
+                    All(&[
+                        Powerup(A::DreamBreaker),
+                        Powerup(A::Slide),
+                        Any(&[
+                            Powerup(A::SolarWind),
+                            Powerup(A::Sunsetter),
+                            Powerup(A::SunGreaves),
+                        ]),
+                    ]),
+                    // Enter through Reverse route.
                     Powerup(A::SunGreaves), // Add trick MOVEMENT here once implemented, level Advanced.
                     All(&[
                         Powerup(A::ClingGem(2)),
                         Any(&[Powerup(A::Sunsetter), Powerup(A::HeliacalPower)]),
                     ]), // Add Movement trick here level Expert
-                    All(&[
-                        Powerup(A::Slide),
-                        Powerup(A::SolarWind),
-                        Powerup(A::HeliacalPower),
-                    ]), // Add Movement trick here level Advanced
+                    All(&[Powerup(A::SolarWind), Powerup(A::HeliacalPower)]), // Add Movement trick here level Advanced
                 ]),
             ]),
             L::MainLibrary => Any(&[
@@ -228,7 +224,7 @@ impl Location {
                 Powerup(A::DreamBreaker),
             ]),
             // Sansa Keep
-            L::SkCastleClimbEntry => All(&[Loc(L::CsKeepClimbEntrance)]),
+            L::SkCastleClimbEntry => Loc(L::CsKeepClimbEntrance),
             L::SkCastleMainEntry => Any(&[Loc(L::SansaKeep), Loc(L::CsKeepEntryMain)]),
             L::SkCastleRampEntry => Any(&[
                 All(&[
@@ -341,7 +337,7 @@ impl Location {
                 All(&[
                     Loc(L::TowerRuinsEntrance),
                     Any(&[
-                        //ADD MOVEMENT TRICK AND CLING ABUSE HERE. EXPERT / ADVANCED
+                        // ADD MOVEMENT TRICK AND CLING ABUSE HERE. EXPERT / ADVANCED
                         Powerup(A::SunGreaves),
                         All(&[
                             Powerup(A::ClingGem(2)),

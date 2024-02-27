@@ -21,9 +21,9 @@ pub const CHECKS: [Check; 81] = [
         locks: Any(&[
             Any(&[
                 Powerup(A::Sunsetter),
-                All(&[Powerup(A::AscendantLight), Powerup(A::DreamBreaker)]),
+                Powerup(A::AscendantLight),
                 // just enough space to do this
-                All(&[Powerup(A::Slide), Powerup(A::SolarWind)]),
+                Powerup(A::SolarWind),
                 Powerup(A::ClingGem(4)),
                 Powerup(A::SunGreaves),
                 Powerup(A::HeliacalPower),
@@ -51,7 +51,7 @@ pub const CHECKS: [Check; 81] = [
         drop: Drop::Ability(A::GoodGraces),
         locks: Any(&[
             Powerup(A::ClingGem(6)),
-            All(&[Powerup(A::AscendantLight), Powerup(A::DreamBreaker), Powerup(A::SunGreaves)]),
+            All(&[Powerup(A::AscendantLight), Powerup(A::SunGreaves)]),
         ]),
     },
     Check {
@@ -64,7 +64,7 @@ pub const CHECKS: [Check; 81] = [
                 Powerup(A::SunGreaves),
                 Any(&[
                     Powerup(A::Sunsetter),
-                    All(&[Powerup(A::Slide), Powerup(A::SolarWind)])
+                    Powerup(A::SolarWind)
                 ]),
             ]),
             Powerup(A::ClingGem(4)),
@@ -82,7 +82,7 @@ pub const CHECKS: [Check; 81] = [
         location: L::StrongEyes,
         index: 185,
         drop: Drop::SmallKey,
-        locks: Any(&[Powerup(A::DreamBreaker)]),
+        locks: Powerup(A::DreamBreaker),
     },
     Check {
         description: "the goatling who wants to lick the checkpoint",
@@ -133,7 +133,7 @@ pub const CHECKS: [Check; 81] = [
             Powerup(A::SunGreaves),
             Powerup(A::HeliacalPower),
             Powerup(A::ClingGem(2)),
-            All(&[Powerup(A::Slide), Powerup(A::SolarWind)]),
+            Powerup(A::SolarWind),
         ]),
     },
     Check {
@@ -162,7 +162,7 @@ pub const CHECKS: [Check; 81] = [
         index: 494,
         drop: Drop::Health,
         locks: Any(&[
-            All(&[Powerup(A::AscendantLight), Powerup(A::DreamBreaker)]),
+            Powerup(A::AscendantLight),
             Powerup(A::SunGreaves),
             Powerup(A::ClingGem(2)),
         ]),
@@ -174,7 +174,7 @@ pub const CHECKS: [Check; 81] = [
         drop: Drop::Health,
         locks: Any(&[
             Powerup(A::ClingGem(6)),
-            All(&[Powerup(A::Slide), Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::HeliacalPower)]),
+            All(&[Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::HeliacalPower)]),
         ]),
     },
     Check {
@@ -187,7 +187,7 @@ pub const CHECKS: [Check; 81] = [
         ]),
         locks: Any(&[
             Powerup(A::ClingGem(6)),
-            All(&[Powerup(A::Slide), Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::HeliacalPower)]),
+            All(&[Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::HeliacalPower)]),
         ]),
     },
     Check {
@@ -197,7 +197,7 @@ pub const CHECKS: [Check; 81] = [
         drop: Drop::Ability(A::ClearMind),
         locks: Any(&[
             Powerup(A::ClingGem(6)),
-            All(&[Powerup(A::Slide), Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::HeliacalPower)]),
+            All(&[Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::HeliacalPower)]),
         ]),
     },
     Check {
@@ -242,8 +242,8 @@ pub const CHECKS: [Check; 81] = [
         locks: Any(&[
             All(&[Powerup(A::SunGreaves), Powerup(A::HeliacalPower)]),
             Powerup(A::ClingGem(4)),
-            All(&[Powerup(A::Slide), Powerup(A::SolarWind), Powerup(A::HeliacalPower)]),
-            All(&[Powerup(A::Slide), Powerup(A::SolarWind), Powerup(A::SunGreaves)]),
+            All(&[Powerup(A::SolarWind), Powerup(A::HeliacalPower)]),
+            All(&[Powerup(A::SolarWind), Powerup(A::SunGreaves)]),
         ]),
     },
     Check {
@@ -272,11 +272,10 @@ pub const CHECKS: [Check; 81] = [
         locks: Any(&[
             All(&[
                 Powerup(A::AscendantLight),
-                Powerup(A::DreamBreaker),
                 Any(&[
                     Powerup(A::Sunsetter),
                     Powerup(A::SunGreaves),
-                    All(&[Powerup(A::Slide),Powerup(A::SolarWind)]),
+                    Powerup(A::SolarWind),
                 ]),
             ]),
             All(&[Powerup(A::SunGreaves), Powerup(A::HeliacalPower)]),
@@ -285,7 +284,7 @@ pub const CHECKS: [Check; 81] = [
                 Any(&[
                     Powerup(A::HeliacalPower),
                     Powerup(A::Sunsetter),
-                    All(&[Powerup(A::Slide),Powerup(A::SolarWind)]),
+                    Powerup(A::SolarWind),
                 ]),
             ]),
         ]),
@@ -310,9 +309,7 @@ pub const CHECKS: [Check; 81] = [
         location: L::LibSaveNearGreaves,
         index: 267,
         drop: Drop::Ability(A::SunGreaves),
-        locks: Any(&[
-            Powerup(A::DreamBreaker)
-        ]),
+        locks: Powerup(A::DreamBreaker),
     },
     Check {
         description: "the chair after the normal sun greaves location",
@@ -329,7 +326,7 @@ pub const CHECKS: [Check; 81] = [
         locks: Any(&[
             Powerup(A::SunGreaves),
             Powerup(A::ClingGem(4)),
-            All(&[Powerup(A::Slide), Powerup(A::SolarWind)]),
+            Powerup(A::SolarWind),
         ]),
     },
     Check {
@@ -340,7 +337,7 @@ pub const CHECKS: [Check; 81] = [
         locks: Any(&[
             Powerup(A::SunGreaves),
             Powerup(A::ClingGem(4)),
-            All(&[Powerup(A::Slide), Powerup(A::SolarWind)]),
+            Powerup(A::SolarWind),
         ]),
     },
     Check {
@@ -356,7 +353,7 @@ pub const CHECKS: [Check; 81] = [
         index: 268,
         drop: Drop::Ability(A::ClearMind),
         locks: Any(&[
-            All(&[Powerup(A::Slide), Powerup(A::SolarWind)]),
+            Powerup(A::SolarWind),
             Powerup(A::SunGreaves),
             Powerup(A::HeliacalPower),
             Powerup(A::ClingGem(4)),
@@ -400,16 +397,13 @@ pub const CHECKS: [Check; 81] = [
         location: L::SansaKeep,
         index: 393,
         drop: Drop::Ability(A::Strikebreak),
-        locks: Any(&[
-            All(&[
-                Powerup(A::SoulCutter),
-                Powerup(A::DreamBreaker),
-                Any(&[
-                    Powerup(A::SunGreaves),
-                    Powerup(A::HeliacalPower),
-                    Powerup(A::ClingGem(4)),
-                    All(&[Powerup(A::Slide), Powerup(A::SolarWind)]),
-                ]),
+        locks:  All(&[
+            Powerup(A::Strikebreak),
+            Any(&[
+                Powerup(A::SunGreaves),
+                Powerup(A::HeliacalPower),
+                Powerup(A::ClingGem(4)),
+                Powerup(A::SolarWind),
             ]),
         ]),
     },
@@ -436,7 +430,7 @@ pub const CHECKS: [Check; 81] = [
         locks: Any(&[
             Powerup(A::Sunsetter),
             Powerup(A::SunGreaves),
-            All(&[Powerup(A::Slide), Powerup(A::SolarWind)]),
+            Powerup(A::SolarWind),
         ]),
     },
     Check {
@@ -444,7 +438,7 @@ pub const CHECKS: [Check; 81] = [
         location: L::SansaKeep,
         index: 226,
         drop: Drop::SmallKey,
-        locks: Any(&[Powerup(A::DreamBreaker)]),
+        locks: Powerup(A::DreamBreaker),
     },
     Check {
         description: "tucked near the theatre entrance",
@@ -466,7 +460,6 @@ pub const CHECKS: [Check; 81] = [
         locks: Any(&[
             All(&[
                 Powerup(A::AscendantLight),
-                Powerup(A::DreamBreaker),
                 Any(&[
                     All(&[
                         Powerup(A::ClingGem(4)),
@@ -493,7 +486,6 @@ pub const CHECKS: [Check; 81] = [
         locks:  Any(&[
             All(&[
                 Powerup(A::AscendantLight),
-                Powerup(A::DreamBreaker),
                 Any(&[
                     All(&[
                         Powerup(A::ClingGem(4)),
@@ -518,14 +510,14 @@ pub const CHECKS: [Check; 81] = [
         location: L::EmptyBailey,
         index: 88,
         drop: Drop::Goatling(&["...i'm not here."]),
-        locks: Any(&[Powerup(A::Slide)]),
+        locks: Powerup(A::Slide),
     },
     Check {
         description: "in the building you slide into",
         location: L::EmptyBailey,
         index: 56,
         drop: Drop::SmallKey,
-        locks: Any(&[Powerup(A::Slide)]),
+        locks: Powerup(A::Slide),
     },
     Check {
         description: "guarded by the hand and soldier",
@@ -536,7 +528,7 @@ pub const CHECKS: [Check; 81] = [
             Powerup(A::Sunsetter),
             Powerup(A::SunGreaves),
             Powerup(A::ClingGem(4)),
-            All(&[Powerup(A::Slide), Powerup(A::SolarWind)]),
+            Powerup(A::SolarWind),
         ]),
     },
     Check {
@@ -544,15 +536,13 @@ pub const CHECKS: [Check; 81] = [
         location: L::EmptyBailey,
         index: 104,
         drop: Drop::Ability(A::SolarWind),
-        locks: Any(&[
-            All(&[
-                Powerup(A::Slide),
-                Powerup(A::DreamBreaker),
-                Any(&[
-                    Powerup(A::SolarWind),
-                    Powerup(A::HeliacalPower),
-                    Powerup(A::SunGreaves),
-                ]),
+        locks: All(&[
+            Powerup(A::Slide),
+            Powerup(A::DreamBreaker),
+            Any(&[
+                Powerup(A::SolarWind),
+                Powerup(A::HeliacalPower),
+                Powerup(A::SunGreaves),
             ]),
         ]),
     },
@@ -565,7 +555,7 @@ pub const CHECKS: [Check; 81] = [
             All(&[Powerup(A::Sunsetter), Powerup(A::HeliacalPower)]),
             Powerup(A::SunGreaves),
             // you can jump down from cheese bell
-            All(&[Powerup(A::Slide), Powerup(A::SolarWind), Powerup(A::ClingGem(6))]),
+            All(&[Powerup(A::SolarWind), Powerup(A::ClingGem(6))]),
         ]),
     },
     Check {
@@ -575,16 +565,13 @@ pub const CHECKS: [Check; 81] = [
         drop: Drop::Ability(A::Empathy),
         locks: Any(&[
             All(&[
-                Powerup(A::Slide),
                 Powerup(A::SolarWind),
                 Any(&[
                     Powerup(A::ClingGem(6)),
                     All(&[Powerup(A::Sunsetter), Powerup(A::HeliacalPower)]),
                 ]),
             ]),
-            
             All(&[Powerup(A::Sunsetter), Powerup(A::SunGreaves)]),
-
         ]),
     },
     // Underbelly
@@ -603,17 +590,15 @@ pub const CHECKS: [Check; 81] = [
         location: L::SansaHole,
         index: 446,
         drop: Drop::BigKey,
-        locks: Any(&[
-            All(&[
-                Powerup(A::DreamBreaker),
-                Powerup(A::Sunsetter),
-                Any(&[
-                    All(&[
-                        Powerup(A::SoulCutter),
-                        Any(&[Powerup(A::AscendantLight), Powerup(A::ClingGem(6))]),
-                    ]),
-                    All(&[Powerup(A::SunGreaves), Powerup(A::Slide), Powerup(A::SolarWind)]),
+        locks: All(&[
+            Powerup(A::DreamBreaker),
+            Powerup(A::Sunsetter),
+            Any(&[
+                All(&[
+                    Powerup(A::SoulCutter),
+                    Any(&[Powerup(A::AscendantLight), Powerup(A::ClingGem(6))]),
                 ]),
+                All(&[Powerup(A::SunGreaves), Powerup(A::SolarWind)]),
             ]),
         ]),
     },
@@ -623,14 +608,14 @@ pub const CHECKS: [Check; 81] = [
         index: 834,
         drop: Drop::Ability(A::AscendantLight),
         // you can go through the dark area and there's a passage which you can do with nothing
-        locks: Any(&[Powerup(A::DreamBreaker)]),
+        locks: Powerup(A::DreamBreaker),
     },
     Check {
         description: "in an alcove behind some pillars",
         location: L::VAscendantLight,
         index: 517,
         drop: Drop::Health,
-        locks: Any(&[Powerup(A::DreamBreaker)]),
+        locks: Powerup(A::DreamBreaker),
     },
     Check {
         description: "on a missable ledge in the centre",
@@ -639,7 +624,7 @@ pub const CHECKS: [Check; 81] = [
         drop: Drop::SmallKey,
         locks: Any(&[
             Powerup(A::Sunsetter),
-            All(&[Powerup(A::Slide), Powerup(A::SolarWind)]),
+            Powerup(A::SolarWind),
         ]),
     },
     Check {
@@ -647,15 +632,13 @@ pub const CHECKS: [Check; 81] = [
         location: L::MainUnderbelly,
         index: 702,
         drop: Drop::Note,
-        locks: Any(&[
-            All(&[
-                Powerup(A::HeliacalPower),
-                Powerup(A::Sunsetter),
-                Any(&[
-                    Powerup(A::ClingGem(6)),
-                    Powerup(A::SunGreaves),
-                    All(&[Powerup(A::Slide), Powerup(A::SolarWind)]),
-                ]),
+        locks: All(&[
+            Powerup(A::HeliacalPower),
+            Powerup(A::Sunsetter),
+            Any(&[
+                Powerup(A::ClingGem(6)),
+                Powerup(A::SunGreaves),
+                Powerup(A::SolarWind),
             ]),
         ]),
     },
@@ -664,17 +647,14 @@ pub const CHECKS: [Check; 81] = [
         location: L::MainUnderbelly,
         index: 835,
         drop: Drop::Ability(A::MartialProwess),
-        locks: Any(&[
-            All(&[
-                Powerup(A::SoulCutter),
-                Powerup(A::AscendantLight),
-                Powerup(A::DreamBreaker),
-                Any(&[
-                    Powerup(A::HeliacalPower),
-                    Powerup(A::SunGreaves),
-                    Powerup(A::Sunsetter),
-                    All(&[Powerup(A::Slide), Powerup(A::SolarWind)]),
-                ]),
+        locks: All(&[
+            Powerup(A::SoulCutter),
+            Powerup(A::AscendantLight),
+            Any(&[
+                Powerup(A::HeliacalPower),
+                Powerup(A::SunGreaves),
+                Powerup(A::Sunsetter),
+                Powerup(A::SolarWind),
             ]),
         ]),
     },
@@ -707,8 +687,8 @@ pub const CHECKS: [Check; 81] = [
             Powerup(A::SunGreaves),
             All(&[Powerup(A::HeliacalPower), Powerup(A::Sunsetter)]),
             Powerup(A::ClingGem(6)),
-            All(&[Powerup(A::AscendantLight), Powerup(A::DreamBreaker)]),
-            All(&[Powerup(A::Slide), Powerup(A::SolarWind)])
+            Powerup(A::AscendantLight),
+            Powerup(A::SolarWind)
         ]),
     },
     Check {
@@ -735,15 +715,13 @@ pub const CHECKS: [Check; 81] = [
         location: L::TowerRuinsKeep,
         index: 56,
         drop: Drop::BigKey,
-        locks: Any(&[
-            All(&[
-                Powerup(A::ClingGem(2)),
-                Any(&[
-                    Powerup(A::SunGreaves),
-                    All(&[
-                        Powerup(A::HeliacalPower),
-                        Powerup(A::Sunsetter),
-                    ]),
+        locks: All(&[
+            Powerup(A::ClingGem(2)),
+            Any(&[
+                Powerup(A::SunGreaves),
+                All(&[
+                    Powerup(A::HeliacalPower),
+                    Powerup(A::Sunsetter),
                 ]),
             ]),
         ]),
@@ -756,11 +734,10 @@ pub const CHECKS: [Check; 81] = [
         drop: Drop::Ability(A::AerialFinesse),
         locks: Any(&[
             All(&[
-                Any(&[Powerup(A::SunGreaves), Powerup(A::ClingGem(2))]),
-                Any(&[Powerup(A::Slide), Powerup(A::SolarWind)]),
+              Powerup(A::SunGreaves),
+              Any(&[Powerup(A::ClingGem(2)), Powerup(A::SolarWind), Powerup(A::Sunsetter)])
             ]),
-            All(&[Powerup(A::ClingGem(2)), Powerup(A::SunGreaves)]),
-            All(&[Powerup(A::Sunsetter), Powerup(A::SunGreaves)]),
+            All(&[Powerup(A::SolarWind), Powerup(A::ClingGem(2))])
         ]),
     },
     Check {
@@ -847,7 +824,7 @@ pub const CHECKS: [Check; 81] = [
             "i will [#cf2525](kill again)"
         ]),
         locks: Any(&[
-            All(&[Powerup(A::Slide), Powerup(A::SolarWind), Powerup(A::HeliacalPower)]),
+            All(&[Powerup(A::SolarWind), Powerup(A::HeliacalPower)]),
             Powerup(A::SunGreaves),
             Powerup(A::ClingGem(6))
         ]),
@@ -858,22 +835,20 @@ pub const CHECKS: [Check; 81] = [
         index: 947,
         drop: Drop::Chair,
         locks: Any(&[
-                Powerup(A::ClingGem(4)),
-                All(&[Powerup(A::Slide), Powerup(A::SolarWind), Powerup(A::HeliacalPower), Powerup(A::SunGreaves)]),
-            ]),
+            Powerup(A::ClingGem(4)),
+            All(&[Powerup(A::SolarWind), Powerup(A::HeliacalPower), Powerup(A::SunGreaves)]),
+        ]),
     },
     Check {
         description: "the chair in the soul cutter zone",
         location: L::MainTheatre,
         index: 948,
         drop: Drop::Chair,
-        locks: Any(&[
-            All(&[
-                Powerup(A::SoulCutter),
-                Powerup(A::SoulCutter),
-                Powerup(A::DreamBreaker),
-                Any(&[Powerup(A::SunGreaves), Powerup(A::ClingGem(4))]),
-            ]),
+        locks: All(&[
+            Powerup(A::SoulCutter),
+            Powerup(A::SoulCutter),
+            Powerup(A::DreamBreaker),
+            Any(&[Powerup(A::SunGreaves), Powerup(A::ClingGem(4))]),
         ]),
     },
     Check {
@@ -890,7 +865,7 @@ pub const CHECKS: [Check; 81] = [
             Any(&[
                 Powerup(A::HeliacalPower),
                 Powerup(A::SunGreaves),
-                All(&[Powerup(A::Slide), Powerup(A::SolarWind)])
+                Powerup(A::SolarWind)
             ]),
         ]),
     },
