@@ -10,7 +10,7 @@ pub const CHECKS: [Check; 81] = [
         location: L::VDreamBreaker,
         index: 355,
         drop: Drop::Ability(A::DreamBreaker),
-        locks: Any(&[]),
+        locks: Lock::None,
     },
     Check {
         description: "where the first health piece is",
@@ -92,35 +92,35 @@ pub const CHECKS: [Check; 81] = [
             "They make me feel safe...",
             "I think i'm gonna lick it. I bet it's full of [#8ada1c, buoy, italics](minerals).",
         ]),
-        locks: Any(&[]),
+        locks: Lock::None,
     },
     Check {
         description: "a chair next to the goatling who wants to lick the checkpoint",
         location: L::CsMain,
         index: 634,
         drop: Drop::Chair,
-        locks: Any(&[]),
+        locks: Lock::None,
     },
     Check {
         description: "a chair next to the goatling who wants to lick the checkpoint",
         location: L::CsMain,
         index: 635,
         drop: Drop::Chair,
-        locks: Any(&[]),
+        locks: Lock::None,
     },
     Check {
         description: "a chair next to the goatling who wants to lick the checkpoint",
         location: L::CsMain,
         index: 636,
         drop: Drop::Chair,
-        locks: Any(&[]),
+        locks: Lock::None,
     },
     Check {
         description: "where indignation normally is",
         location: L::CsMain,
         index: 787,
         drop: Drop::Ability(A::Indignation),
-        locks: Any(&[]),
+        locks: Lock::None,
     },
     Check {
         description: "chillin' on a ledge by the window",
@@ -254,14 +254,14 @@ pub const CHECKS: [Check; 81] = [
             "But the handmaiden has run out of her special ingredient.",
             "I guess the princess doesn't really want anybody else's tea...",
         ]),
-        locks: Any(&[]),
+        locks: Lock::None,
     },
     Check {
         description: "the chair in the gazebo",
         location: L::CsMain,
         index: 637,
         drop: Drop::Chair,
-        locks: Any(&[]),
+        locks: Lock::None,
     },
     Check {
         description: "next to a bouncer in the massive room",
@@ -302,7 +302,7 @@ pub const CHECKS: [Check; 81] = [
         location: L::MainLibrary,
         index: 241,
         drop: Drop::Chair,
-        locks: Any(&[]),
+        locks: Lock::None,
     },
     Check {
         description: "where sun greaves normally are",
@@ -318,7 +318,7 @@ pub const CHECKS: [Check; 81] = [
         location: L::LibSaveNearGreaves,
         index: 243,
         drop: Drop::Chair,
-        locks: Any(&[]),
+        locks: Lock::None,
     },
     Check {
         description: "the note next to the egg nest",
@@ -376,7 +376,7 @@ pub const CHECKS: [Check; 81] = [
         drop: Drop::Goatling(&[
             "They took away all my furniture."
         ]),
-        locks: Any(&[]),
+        locks: Lock::None,
     },
     Check {
         description: "the goatling collapsing out of reality",
@@ -385,14 +385,14 @@ pub const CHECKS: [Check; 81] = [
         drop: Drop::Goatling(&[
             "[6rr](.....c.....y..u...i....y.......ce....)"
         ]),
-        locks: Any(&[]),
+        locks: Lock::None,
     },
     Check {
         description: "the chair collapsing out of reality",
         location: L::SkCastleRampEntry,
         index: 325,
         drop: Drop::Chair,
-        locks: Any(&[]),
+        locks: Lock::None,
     },
     Check {
         description: "where strikebreak normally is",
@@ -767,28 +767,28 @@ pub const CHECKS: [Check; 81] = [
         location: L::OtherTheatrePath,
         index: 949,
         drop: Drop::Chair,
-        locks: Any(&[]),
+        locks: Lock::None,
     },
     Check {
         description: "a chair around the table",
         location: L::OtherTheatrePath,
         index: 950,
         drop: Drop::Chair,
-        locks: Any(&[]),
+        locks: Lock::None,
     },
     Check {
         description: "a chair around the table",
         location: L::OtherTheatrePath,
         index: 946,
         drop: Drop::Chair,
-        locks: Any(&[]),
+        locks: Lock::None,
     },
     Check {
         description: "the chair next to the books",
         location: L::OtherTheatrePath,
         index: 951,
         drop: Drop::Chair,
-        locks: Any(&[]),
+        locks: Lock::None,
     },
     Check {
         description: "the goatling who can eat 20 beans at least",
@@ -799,7 +799,7 @@ pub const CHECKS: [Check; 81] = [
             "three bean casserole? not enough for 1 man. i can eat like, [#cf2525](20 beans), at least.",
             "so get to it. [up, 10rr](please?)"
         ]),
-        locks: Any(&[]),
+        locks: Lock::None,
     },
     Check {
         description: "the goatling who thought the theatre was safe",
@@ -809,7 +809,7 @@ pub const CHECKS: [Check; 81] = [
             "I heard that the theatre was still in good condition...",
             "But it seems even this place has been affected."
         ]),
-        locks: Any(&[]),
+        locks: Lock::None,
     },
     Check {
         description: "the goatling who really wanted to see the show",
@@ -818,7 +818,7 @@ pub const CHECKS: [Check; 81] = [
         drop: Drop::Goatling(&[
             "Ah nuts....I really wanted to see the show today."
         ]),
-        locks: Any(&[]),
+        locks: Lock::None,
     },
     Check {
         description: "the goatling who really wanted to see the show",
@@ -828,14 +828,14 @@ pub const CHECKS: [Check; 81] = [
             "Sorry miss, can't let you in.",
             "Theatre's closed until all the haze is gone."
         ]),
-        locks: Any(&[]),
+        locks: Lock::None,
     },
     Check {
         description: "hiding amid the boxes",
         location: L::MainTheatre,
         index: 843,
         drop: Drop::Health,
-        locks: Any(&[]),
+        locks: Lock::None,
     },
     Check {
         description: "the goatling that will kill again",

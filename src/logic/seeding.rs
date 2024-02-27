@@ -242,7 +242,6 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
             pool.remove(i);
         }
         use Ability as A;
-        use Lock::{All, Any};
         pool.extend([
             Check {
                 description: "where sun greaves normally is",
