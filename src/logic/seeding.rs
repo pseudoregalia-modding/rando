@@ -141,6 +141,12 @@ fn accessible(
                         .count()
                         == 2
                 }
+                Ability::HeliacalPower => obtainable.iter().chain(case).any(|drop| {
+                    matches!(
+                        drop,
+                        Drop::Ability(Ability::HeliacalPower) | Drop::Ability(Ability::SunGreaves)
+                    )
+                }),
                 ability => obtainable.iter().chain(case).any(|drop| match drop {
                     Drop::Ability(a) => a == ability,
                     _ => false,

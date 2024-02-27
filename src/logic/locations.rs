@@ -133,11 +133,7 @@ impl Location {
                 All(&[
                     Loc(L::CsTheatreEntrance),
                     Powerup(A::Slide),
-                    Any(&[
-                        Powerup(A::HeliacalPower),
-                        Powerup(A::SunGreaves),
-                        Powerup(A::SolarWind),
-                    ]),
+                    Any(&[Powerup(A::HeliacalPower), Powerup(A::SolarWind)]),
                 ]),
             ]),
             L::CsKeepClimbEntrance => All(&[Loc(L::CsMain), Lock::SmallKey]),
@@ -174,7 +170,7 @@ impl Location {
                     Loc(L::CsOldSoftlockRoom),
                     Powerup(A::Sunsetter),
                     Powerup(A::ClingGem(4)),
-                    Any(&[Powerup(A::HeliacalPower), Powerup(A::SunGreaves)]),
+                    Powerup(A::HeliacalPower),
                 ]),
             ]),
             // Library
@@ -243,7 +239,6 @@ impl Location {
                     Any(&[
                         Powerup(A::Sunsetter),
                         Powerup(A::HeliacalPower),
-                        Powerup(A::SunGreaves),
                         All(&[Powerup(A::Slide), Powerup(A::SolarWind)]),
                     ]),
                 ]),
@@ -268,7 +263,6 @@ impl Location {
                     Any(&[
                         Powerup(A::Sunsetter),
                         Powerup(A::HeliacalPower),
-                        Powerup(A::SunGreaves),
                         All(&[Powerup(A::Slide), Powerup(A::SolarWind)]),
                         // Add just MOVMENT trick Normal here since can just backflip up each of em lol.
                     ]),
@@ -300,7 +294,6 @@ impl Location {
                     Loc(L::EmptyBailey),
                     Any(&[
                         Powerup(A::Sunsetter),
-                        Powerup(A::SunGreaves),
                         Powerup(A::HeliacalPower),
                         All(&[Powerup(A::Slide), Powerup(A::SolarWind)]),
                     ]),
@@ -377,11 +370,7 @@ impl Location {
                 ]),
                 All(&[
                     Loc(L::SkUnderbellyEntry),
-                    Any(&[
-                        Powerup(A::HeliacalPower),
-                        Powerup(A::SunGreaves),
-                        Powerup(A::Sunsetter),
-                    ]),
+                    Any(&[Powerup(A::HeliacalPower), Powerup(A::Sunsetter)]),
                 ]),
             ]),
             L::MainUnderbelly => Any(&[
@@ -412,11 +401,7 @@ impl Location {
                 All(&[
                     Loc(L::BaileyHole),
                     Powerup(A::Slide),
-                    Any(&[
-                        Powerup(A::SunGreaves),
-                        Powerup(A::Sunsetter),
-                        Powerup(A::HeliacalPower),
-                    ]),
+                    Any(&[Powerup(A::Sunsetter), Powerup(A::HeliacalPower)]),
                 ]),
                 All(&[
                     Loc(L::MainUnderbelly),
@@ -424,10 +409,7 @@ impl Location {
                     Any(&[
                         All(&[
                             Powerup(A::HeliacalPower),
-                            Any(&[
-                                Powerup(A::SunGreaves),
-                                All(&[Powerup(A::Slide), Powerup(A::SolarWind)]),
-                            ]),
+                            Any(&[Powerup(A::SunGreaves), Powerup(A::SolarWind)]),
                         ]),
                         All(&[Powerup(A::ClingGem(2)), Powerup(A::Sunsetter)]),
                     ]),
@@ -439,7 +421,6 @@ impl Location {
                 All(&[
                     Loc(L::PillarRoom),
                     Any(&[
-                        Powerup(A::SunGreaves),
                         Powerup(A::HeliacalPower),
                         Powerup(A::ClingGem(2)),
                         Powerup(A::Sunsetter),
@@ -452,7 +433,6 @@ impl Location {
                 All(&[
                     Loc(L::PillarRoom),
                     Any(&[
-                        Powerup(A::SunGreaves),
                         Powerup(A::HeliacalPower),
                         Powerup(A::ClingGem(2)),
                         Powerup(A::Sunsetter),
@@ -464,7 +444,7 @@ impl Location {
                 All(&[
                     Loc(L::OtherTheatrePath),
                     Any(&[
-                        All(&[Powerup(A::AscendantLight), Powerup(A::DreamBreaker)]),
+                        Powerup(A::AscendantLight),
                         Powerup(A::HeliacalPower),
                         Powerup(A::ClingGem(2)),
                     ]),
@@ -474,7 +454,7 @@ impl Location {
                 All(&[
                     Loc(L::OtherTheatrePath),
                     Any(&[
-                        All(&[Powerup(A::AscendantLight), Powerup(A::DreamBreaker)]),
+                        Powerup(A::AscendantLight),
                         All(&[Powerup(A::Sunsetter), Powerup(A::HeliacalPower)]),
                         Powerup(A::SunGreaves),
                         Powerup(A::ClingGem(2)),
@@ -485,10 +465,7 @@ impl Location {
             L::OtherTheatrePath => Any(&[
                 All(&[
                     Any(&[Loc(L::ThKeepEntry), Loc(L::ThDungeonEntry)]),
-                    Any(&[
-                        Powerup(A::ClingGem(2)),
-                        All(&[Powerup(A::AscendantLight), Powerup(A::DreamBreaker)]),
-                    ]),
+                    Any(&[Powerup(A::ClingGem(2)), Powerup(A::AscendantLight)]),
                 ]),
                 All(&[Loc(L::ThKeepEntry), Powerup(A::HeliacalPower)]),
                 All(&[
@@ -502,7 +479,6 @@ impl Location {
             L::PillarRoom => All(&[
                 Any(&[Loc(L::ThCastleEntryPillar), Loc(L::ThBaileyEntry)]),
                 Any(&[
-                    Powerup(A::SunGreaves),
                     Powerup(A::HeliacalPower),
                     Powerup(A::ClingGem(2)),
                     Powerup(A::Sunsetter),
@@ -544,7 +520,6 @@ impl Location {
                     Loc(L::OtherTheatrePath),
                     Powerup(A::ClingGem(2)),
                     Any(&[
-                        Powerup(A::SunGreaves),
                         Powerup(A::HeliacalPower),
                         All(&[Powerup(A::Slide), Powerup(A::SolarWind)]),
                     ]),

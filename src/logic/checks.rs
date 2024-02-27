@@ -25,7 +25,6 @@ pub const CHECKS: [Check; 81] = [
                 // just enough space to do this
                 Powerup(A::SolarWind),
                 Powerup(A::ClingGem(4)),
-                Powerup(A::SunGreaves),
                 Powerup(A::HeliacalPower),
             ]),
             // you can drop down from the entrance
@@ -130,7 +129,6 @@ pub const CHECKS: [Check; 81] = [
         drop: Drop::SmallKey,
         locks: Any(&[
             Powerup(A::Sunsetter),
-            Powerup(A::SunGreaves),
             Powerup(A::HeliacalPower),
             Powerup(A::ClingGem(2)),
             Powerup(A::SolarWind),
@@ -213,7 +211,6 @@ pub const CHECKS: [Check; 81] = [
         index: 497,
         drop: Drop::Health,
         locks: Any(&[
-            Powerup(A::SunGreaves),
             Powerup(A::HeliacalPower),
             Powerup(A::ClingGem(6)),
         ]),
@@ -228,7 +225,6 @@ pub const CHECKS: [Check; 81] = [
             "What? I dont have a problem. You go touch 'em then, bubble girl."
         ]),
         locks: Any(&[
-            Powerup(A::SunGreaves),
             Powerup(A::HeliacalPower),
             Powerup(A::ClingGem(4)),
             All(&[Powerup(A::Slide), Powerup(A::SunGreaves)])
@@ -243,7 +239,6 @@ pub const CHECKS: [Check; 81] = [
             All(&[Powerup(A::SunGreaves), Powerup(A::HeliacalPower)]),
             Powerup(A::ClingGem(4)),
             All(&[Powerup(A::SolarWind), Powerup(A::HeliacalPower)]),
-            All(&[Powerup(A::SolarWind), Powerup(A::SunGreaves)]),
         ]),
     },
     Check {
@@ -354,7 +349,6 @@ pub const CHECKS: [Check; 81] = [
         drop: Drop::Ability(A::ClearMind),
         locks: Any(&[
             Powerup(A::SolarWind),
-            Powerup(A::SunGreaves),
             Powerup(A::HeliacalPower),
             Powerup(A::ClingGem(4)),
         ]),
@@ -400,7 +394,6 @@ pub const CHECKS: [Check; 81] = [
         locks:  All(&[
             Powerup(A::Strikebreak),
             Any(&[
-                Powerup(A::SunGreaves),
                 Powerup(A::HeliacalPower),
                 Powerup(A::ClingGem(4)),
                 Powerup(A::SolarWind),
@@ -417,7 +410,6 @@ pub const CHECKS: [Check; 81] = [
             Any(&[
                 Powerup(A::Sunsetter),
                 Powerup(A::HeliacalPower),
-                Powerup(A::SunGreaves),
                 Powerup(A::ClingGem(2))
             ]),
         ]),
@@ -448,7 +440,6 @@ pub const CHECKS: [Check; 81] = [
         locks: Any(&[
             Powerup(A::Sunsetter),
             Powerup(A::HeliacalPower),
-            Powerup(A::SunGreaves),
             Powerup(A::ClingGem(4)),
         ]),
     },
@@ -542,7 +533,6 @@ pub const CHECKS: [Check; 81] = [
             Any(&[
                 Powerup(A::SolarWind),
                 Powerup(A::HeliacalPower),
-                Powerup(A::SunGreaves),
             ]),
         ]),
     },
@@ -652,7 +642,6 @@ pub const CHECKS: [Check; 81] = [
             Powerup(A::AscendantLight),
             Any(&[
                 Powerup(A::HeliacalPower),
-                Powerup(A::SunGreaves),
                 Powerup(A::Sunsetter),
                 Powerup(A::SolarWind),
             ]),
@@ -864,7 +853,6 @@ pub const CHECKS: [Check; 81] = [
             Powerup(A::ClingGem(6)),
             Any(&[
                 Powerup(A::HeliacalPower),
-                Powerup(A::SunGreaves),
                 Powerup(A::SolarWind)
             ]),
         ]),
