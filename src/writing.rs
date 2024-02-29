@@ -85,6 +85,38 @@ pub fn write(
             None,
         );
     overworld::write(checks, app, &pak, &mut mod_pak)?;
+    let mut asset = std::io::Cursor::new(vec![]);
+    let mut bulk = std::io::Cursor::new(vec![]);
+    let mut orig = extract(app, &pak, "Blueprints/LevelActors/BP_SavePoint.uasset")?;
+    orig.folder_name = "/Game/Blueprints/LevelActors/ORIG_SavePoint".into();
+    let len = orig
+        .get_name_map()
+        .get_ref()
+        .get_name_map_index_list()
+        .len() as i32;
+    let mut names = orig.get_name_map();
+    for i in 0..len {
+        let mut names = names.get_mut();
+        let name = names.get_name_reference_mut(i);
+        *name = name.replace("BP_SavePoint", "ORIG_SavePoint");
+    }
+    orig.write_data(&mut asset, Some(&mut bulk))?;
+    mod_pak.write_file(
+        "pseudoregalia/Content/Blueprints/LevelActors/ORIG_SavePoint.uasset",
+        asset.into_inner(),
+    )?;
+    mod_pak.write_file(
+        "pseudoregalia/Content/Blueprints/LevelActors/ORIG_SavePoint.uexp",
+        bulk.into_inner(),
+    )?;
+    mod_pak.write_file(
+        "pseudoregalia/Content/Blueprints/LevelActors/BP_SavePoint.uasset",
+        include_bytes!("assets/BP_SavePoint.uasset"),
+    )?;
+    mod_pak.write_file(
+        "pseudoregalia/Content/Blueprints/LevelActors/BP_SavePoint.uexp",
+        include_bytes!("assets/BP_SavePoint.uexp"),
+    )?;
     if app.spawn {
         let mut savegame = extract(app, &pak, "Blueprints/GameData/MVMain_Save.uasset")?;
         if let Some(default) = savegame.asset_data.exports[1].get_normal_export_mut() {
@@ -100,8 +132,8 @@ pub fn write(
                 })
             }
         }
-        let mut asset = std::io::Cursor::new(vec![]);
-        let mut bulk = std::io::Cursor::new(vec![]);
+        asset = std::io::Cursor::new(vec![]);
+        bulk = std::io::Cursor::new(vec![]);
         savegame.write_data(&mut asset, Some(&mut bulk))?;
         mod_pak.write_file(
             "pseudoregalia/Content/Blueprints/GameData/MVMain_Save.uasset",
