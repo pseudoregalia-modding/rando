@@ -4,19 +4,19 @@ use Ability as A;
 use Location as L;
 use Lock::{All, Any, Movement as Powerup, Location as Loc};
 
-pub const CHECKS: [Check; 81] = [
+pub const CHECKS: [Check; 80] = [
     // dream breaker is randomised with random start
     Check {
         description: "where dream breaker normally is",
         location: L::VDreamBreaker,
-        index: 355,
+        index: 501,
         drop: Drop::Ability(A::DreamBreaker),
         locks: Powerup(A::DreamBreaker),
     },
     Check {
         description: "where the first health piece is",
         location: L::EarlyPrison,
-        index: 214,
+        index: 283,
         drop: Drop::Health,
         locks: Any(&[
             Any(&[
@@ -34,7 +34,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "where slide normally is",
         location: L::LatePrison,
-        index: 356,
+        index: 502,
         drop: Drop::Ability(A::Slide),
         locks: Any(&[
             Powerup(A::Slide),
@@ -46,7 +46,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "black hole parkour off the beaten path",
         location: L::LatePrison,
-        index: 357,
+        index: 504,
         drop: Drop::Ability(A::GoodGraces),
         locks: Any(&[
             Powerup(A::ClingGem(6)),
@@ -56,7 +56,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "up in the rafters",
         location: L::StrongEyes,
-        index: 186,
+        index: 255,
         drop: Drop::SmallKey,
         locks: Any(&[
             All(&[
@@ -72,21 +72,21 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "missable high walled room",
         location: L::StrongEyes,
-        index: 215,
+        index: 284,
         drop: Drop::Health,
         locks: Any(&[Powerup(A::SunGreaves), Powerup(A::ClingGem(4))]),
     },
     Check {
         description: "strong eyes' lair",
         location: L::StrongEyes,
-        index: 185,
+        index: 254,
         drop: Drop::SmallKey,
         locks: Powerup(A::DreamBreaker),
     },
     Check {
         description: "the goatling who wants to lick the checkpoint",
         location: L::CsMain,
-        index: 631,
+        index: 817,
         drop: Drop::Goatling(&[
             "These [#7c79e8](crystals) are pretty nice, right?",
             "They make me feel safe...",
@@ -97,35 +97,35 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "a chair next to the goatling who wants to lick the checkpoint",
         location: L::CsMain,
-        index: 634,
+        index: 822,
         drop: Drop::Chair,
         locks: Lock::None,
     },
     Check {
         description: "a chair next to the goatling who wants to lick the checkpoint",
         location: L::CsMain,
-        index: 635,
+        index: 823,
         drop: Drop::Chair,
         locks: Lock::None,
     },
     Check {
         description: "a chair next to the goatling who wants to lick the checkpoint",
         location: L::CsMain,
-        index: 636,
+        index: 824,
         drop: Drop::Chair,
         locks: Lock::None,
     },
     Check {
         description: "where indignation normally is",
         location: L::CsMain,
-        index: 787,
+        index: 994,
         drop: Drop::Ability(A::Indignation),
         locks: Lock::None,
     },
     Check {
         description: "chillin' on a ledge by the window",
         location: L::CsMain,
-        index: 444,
+        index: 540,
         drop: Drop::SmallKey,
         locks: Any(&[
             Powerup(A::Sunsetter),
@@ -134,20 +134,20 @@ pub const CHECKS: [Check; 81] = [
             Powerup(A::SolarWind),
         ]),
     },
-    Check {
-        description: "where the professional normally is",
-        location: L::CsMain,
-        index: 791,
-        drop: Drop::Ability(A::Professional),
-        locks: All(&[
-            Lock::SmallKey,
-            Powerup(A::DreamBreaker)
-        ]),
-    },
+    // Check {
+    //     description: "where the professional normally is",
+    //     location: L::CsMain,
+    //     index: 791,
+    //     drop: Drop::Ability(A::Professional),
+    //     locks: All(&[
+    //         Lock::SmallKey,
+    //         Powerup(A::DreamBreaker)
+    //     ]),
+    // },
     Check {
         description: "tucked deep in a corner in the bouncer room",
         location: L::CsMain,
-        index: 495,
+        index: 592,
         drop: Drop::Health,
         locks: Any(&[
             Powerup(A::ClingGem(6)),
@@ -157,7 +157,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "the extremely slappable wheel guy room",
         location: L::CsMain,
-        index: 494,
+        index: 591,
         drop: Drop::Health,
         locks: Any(&[
             Powerup(A::AscendantLight),
@@ -168,7 +168,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "the old softlock room",
         location: L::CsOldSoftlockRoom,
-        index: 498,
+        index: 595,
         drop: Drop::Health,
         locks: Any(&[
             Powerup(A::ClingGem(6)),
@@ -178,7 +178,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "the goatling about to jump into the haze",
         location: L::CsOldSoftlockRoom,
-        index: 633,
+        index: 819,
         drop: Drop::Goatling(&[
             "Oh, thanks for breaking that wall down.",
             "Thought I was gonna have to jump into the haze..."
@@ -191,7 +191,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "cool moon room",
         location: L::CsTheatreEntrance,
-        index: 790,
+        index: 997,
         drop: Drop::Ability(A::ClearMind),
         locks: Any(&[
             Powerup(A::ClingGem(6)),
@@ -201,14 +201,14 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "through the wallkick tunnel",
         location: L::CsMain,
-        index: 443,
+        index: 539,
         drop: Drop::SmallKey,
         locks: Any(&[Powerup(A::SunGreaves), Powerup(A::ClingGem(6))]),
     },
     Check {
         description: "in the pit next to the dungeon entrance",
         location: L::CsMain,
-        index: 497,
+        index: 594,
         drop: Drop::Health,
         locks: Any(&[
             Powerup(A::HeliacalPower),
@@ -218,7 +218,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "the goatling that calls you bubble girl",
         location: L::CsMain,
-        index: 630,
+        index: 816,
         drop: Drop::Goatling(&[
             "I was supposed to go help in the [#cf2525](theatre), but I can't really get through here.",
             "I just don't really wanna touch the [#cf2525](bubbles)...",
@@ -233,7 +233,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "on the ledge above the bailey entrance",
         location: L::CsMain,
-        index: 496,
+        index: 593,
         drop: Drop::Health,
         locks: Any(&[
             All(&[Powerup(A::SunGreaves), Powerup(A::HeliacalPower)]),
@@ -244,7 +244,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "the goatling in the gazebo",
         location: L::CsMain,
-        index: 632,
+        index: 818,
         drop: Drop::Goatling(&[
             "The princess used to love having afternoon tea here.",
             "But the handmaiden has run out of her special ingredient.",
@@ -255,14 +255,14 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "the chair in the gazebo",
         location: L::CsMain,
-        index: 637,
+        index: 825,
         drop: Drop::Chair,
         locks: Lock::None,
     },
     Check {
         description: "next to a bouncer in the massive room",
         location: L::CsMain,
-        index: 788,
+        index: 995,
         drop: Drop::Ability(A::Pilgrimage),
         locks: Any(&[
             All(&[
@@ -287,7 +287,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "in the room with two other ones to each side",
         location: L::CsMain,
-        index: 789,
+        index: 996,
         drop: Drop::Ability(A::GoodGraces),
         locks: Any(&[Powerup(A::ClingGem(6)), Powerup(A::SunGreaves)]),
     },
@@ -295,28 +295,28 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "the chair at the entrance",
         location: L::MainLibrary,
-        index: 241,
+        index: 289,
         drop: Drop::Chair,
         locks: Lock::None,
     },
     Check {
         description: "where sun greaves normally are",
         location: L::LibSaveNearGreaves,
-        index: 267,
+        index: 324,
         drop: Drop::Ability(A::SunGreaves),
         locks: Powerup(A::DreamBreaker),
     },
     Check {
         description: "the chair after the normal sun greaves location",
         location: L::LibSaveNearGreaves,
-        index: 243,
+        index: 291,
         drop: Drop::Chair,
         locks: Lock::None,
     },
     Check {
         description: "the note next to the egg nest",
         location: L::MainLibrary,
-        index: 240,
+        index: 288,
         drop: Drop::Note,
         locks: Any(&[
             Powerup(A::SunGreaves),
@@ -327,7 +327,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "the chair next to the egg nest",
         location: L::MainLibrary,
-        index: 242,
+        index: 290,
         drop: Drop::Chair,
         locks: Any(&[
             Powerup(A::SunGreaves),
@@ -338,14 +338,14 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "in the buttress room",
         location: L::MainLibrary,
-        index: 213,
+        index: 237,
         drop: Drop::Health,
         locks: Any(&[Powerup(A::SunGreaves), Powerup(A::ClingGem(4))]),
     },
     Check {
         description: "in the hay behind the locked door",
         location: L::Restricted,
-        index: 268,
+        index: 326,
         drop: Drop::Ability(A::ClearMind),
         locks: Any(&[
             Powerup(A::SolarWind),
@@ -356,7 +356,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "tucked deep behind the locked door",
         location: L::Restricted,
-        index: 214,
+        index: 238,
         drop: Drop::Health,
         locks: Any(&[Powerup(A::SunGreaves), Powerup(A::ClingGem(4))]),
     },
@@ -364,7 +364,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "the goatling sad about the lack of furniture",
         location: L::SansaKeep,
-        index: 323,
+        index: 475,
         drop: Drop::Goatling(&[
             "They took away all my furniture."
         ]),
@@ -373,7 +373,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "the goatling collapsing out of reality",
         location: L::SkCastleRampEntry,
-        index: 324,
+        index: 476,
         drop: Drop::Goatling(&[
             "[6rr](.....c.....y..u...i....y.......ce....)"
         ]),
@@ -382,14 +382,14 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "the chair collapsing out of reality",
         location: L::SkCastleRampEntry,
-        index: 325,
+        index: 477,
         drop: Drop::Chair,
         locks: Lock::None,
     },
     Check {
         description: "where strikebreak normally is",
         location: L::SansaKeep,
-        index: 393,
+        index: 565,
         drop: Drop::Ability(A::Strikebreak),
         locks:  All(&[
             Powerup(A::Strikebreak),
@@ -403,7 +403,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "where sunsetter normally is",
         location: L::Sunsetter,
-        index: 392,
+        index: 564,
         drop: Drop::Ability(A::Sunsetter),
         locks: All(&[
             Powerup(A::DreamBreaker),
@@ -417,7 +417,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "in an alcove next to the locked door",
         location: L::Sunsetter,
-        index: 251,
+        index: 330,
         drop: Drop::Health,
         locks: Any(&[
             Powerup(A::Sunsetter),
@@ -428,14 +428,14 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "in the room with a lever on each side",
         location: L::SansaKeep,
-        index: 226,
+        index: 304,
         drop: Drop::SmallKey,
         locks: Powerup(A::DreamBreaker),
     },
     Check {
         description: "tucked near the theatre entrance",
         location: L::SansaKeep,
-        index: 394,
+        index: 566,
         drop: Drop::Ability(A::ClearMind),
         locks: Any(&[
             Powerup(A::Sunsetter),
@@ -446,7 +446,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "at the end of the parkour",
         location: L::SansaKeep,
-        index: 227,
+        index: 305,
         drop: Drop::BigKey,
         locks: Any(&[
             All(&[
@@ -472,7 +472,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "the chair in the middle of the parkour",
         location: L::SansaKeep,
-        index: 326,
+        index: 478,
         drop: Drop::Chair,
         locks:  Any(&[
             All(&[
@@ -499,21 +499,21 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "the goatling who's hiding",
         location: L::EmptyBailey,
-        index: 88,
+        index: 115,
         drop: Drop::Goatling(&["...i'm not here."]),
         locks: Powerup(A::Slide),
     },
     Check {
         description: "in the building you slide into",
         location: L::EmptyBailey,
-        index: 56,
+        index: 70,
         drop: Drop::SmallKey,
         locks: Powerup(A::Slide),
     },
     Check {
         description: "guarded by the hand and soldier",
         location: L::EmptyBailey,
-        index: 55,
+        index: 69,
         drop: Drop::BigKey,
         locks: Any(&[
             Powerup(A::Sunsetter),
@@ -525,7 +525,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "where solar wind normally is",
         location: L::EmptyBailey,
-        index: 104,
+        index: 148,
         drop: Drop::Ability(A::SolarWind),
         locks: All(&[
             Powerup(A::Slide),
@@ -539,7 +539,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "in the tower in the middle",
         location: L::EmptyBailey,
-        index: 66,
+        index: 80,
         drop: Drop::Health,
         locks: Any(&[
             All(&[Powerup(A::Sunsetter), Powerup(A::HeliacalPower)]),
@@ -551,7 +551,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "under the cheese bell",
         location: L::EmptyBailey,
-        index: 105,
+        index: 149,
         drop: Drop::Ability(A::Empathy),
         locks: Any(&[
             All(&[
@@ -568,7 +568,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "near the entrance from sansa keep",
         location: L::SansaHole,
-        index: 515,
+        index: 614,
         drop: Drop::Health,
         locks: Any(&[
             Powerup(A::SunGreaves),
@@ -578,7 +578,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "the soul cutter lever room",
         location: L::SansaHole,
-        index: 446,
+        index: 545,
         drop: Drop::BigKey,
         locks: All(&[
             Powerup(A::DreamBreaker),
@@ -595,7 +595,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "where ascendant light normally is",
         location: L::VAscendantLight,
-        index: 834,
+        index: 1044,
         drop: Drop::Ability(A::AscendantLight),
         // you can go through the dark area and there's a passage which you can do with nothing
         locks: Powerup(A::DreamBreaker),
@@ -603,14 +603,14 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "in an alcove behind some pillars",
         location: L::VAscendantLight,
-        index: 517,
+        index: 616,
         drop: Drop::Health,
         locks: Powerup(A::DreamBreaker),
     },
     Check {
         description: "on a missable ledge in the centre",
         location: L::MainUnderbelly,
-        index: 447,
+        index: 546,
         drop: Drop::SmallKey,
         locks: Any(&[
             Powerup(A::Sunsetter),
@@ -620,7 +620,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "the note on a high ledge in the big room",
         location: L::MainUnderbelly,
-        index: 702,
+        index: 894,
         drop: Drop::Note,
         locks: All(&[
             Powerup(A::HeliacalPower),
@@ -635,7 +635,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "black hole parkour behind strikebreak wall",
         location: L::MainUnderbelly,
-        index: 835,
+        index: 1046,
         drop: Drop::Ability(A::MartialProwess),
         locks: All(&[
             Powerup(A::SoulCutter),
@@ -650,7 +650,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "behind the locked door",
         location: L::HpSave,
-        index: 836,
+        index: 1047,
         drop: Drop::Ability(A::HeliacalPower),
         locks: All(&[
             Lock::SmallKey,
@@ -660,7 +660,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "the note behind the locked door",
         location: L::HpSave,
-        index: 703,
+        index: 895,
         drop: Drop::Note,
         locks: All(&[
             Lock::SmallKey,
@@ -670,7 +670,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "the note near the empty bailey entrance",
         location: L::BaileyHole,
-        index: 704,
+        index: 896,
         drop: Drop::Note,
         locks: Any(&[
             Powerup(A::SunGreaves),
@@ -683,7 +683,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "on top of the big building",
         location: L::BaileyHole,
-        index: 516,
+        index: 615,
         drop: Drop::Health,
         locks: Any(&[Powerup(A::SunGreaves), Powerup(A::Sunsetter)]),
     },
@@ -691,7 +691,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "where cling gem normally is",
         location: L::TowerRuinsKeep,
-        index: 89,
+        index: 155,
         drop: Drop::Ability(A::ClingGem(6)),
         locks: Any(&[
             Powerup(A::ClingGem(6)),
@@ -702,7 +702,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "atop the tower",
         location: L::TowerRuinsKeep,
-        index: 56,
+        index: 77,
         drop: Drop::BigKey,
         locks: All(&[
             Powerup(A::ClingGem(2)),
@@ -719,7 +719,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "on a beam in the corner",
         location: L::PillarRoom,
-        index: 1080,
+        index: 1231,
         drop: Drop::Ability(A::AerialFinesse),
         locks: Any(&[
             All(&[
@@ -732,35 +732,35 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "a chair around the table",
         location: L::OtherTheatrePath,
-        index: 949,
+        index: 1081,
         drop: Drop::Chair,
         locks: Lock::None,
     },
     Check {
         description: "a chair around the table",
         location: L::OtherTheatrePath,
-        index: 950,
+        index: 1084,
         drop: Drop::Chair,
         locks: Lock::None,
     },
     Check {
         description: "a chair around the table",
         location: L::OtherTheatrePath,
-        index: 946,
+        index: 1085,
         drop: Drop::Chair,
         locks: Lock::None,
     },
     Check {
         description: "the chair next to the books",
         location: L::OtherTheatrePath,
-        index: 951,
+        index: 1086,
         drop: Drop::Chair,
         locks: Lock::None,
     },
     Check {
         description: "the goatling who can eat 20 beans at least",
         location: L::TheatreEntrance,
-        index: 937,
+        index: 1072,
         drop: Drop::Goatling(&[
             "where have [#cf2525](you been)?",
             "three bean casserole? not enough for 1 man. i can eat like, [#cf2525](20 beans), at least.",
@@ -771,7 +771,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "the goatling who thought the theatre was safe",
         location: L::TheatreEntrance,
-        index: 939,
+        index: 1074,
         drop: Drop::Goatling(&[
             "I heard that the theatre was still in good condition...",
             "But it seems even this place has been affected."
@@ -781,7 +781,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "the goatling who really wanted to see the show",
         location: L::TheatreEntrance,
-        index: 944,
+        index: 1079,
         drop: Drop::Goatling(&[
             "Ah nuts....I really wanted to see the show today."
         ]),
@@ -790,7 +790,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "the goatling who really wanted to see the show",
         location: L::TheatreEntrance,
-        index: 945,
+        index: 1080,
         drop: Drop::Goatling(&[
             "Sorry miss, can't let you in.",
             "Theatre's closed until all the haze is gone."
@@ -800,14 +800,14 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "hiding amid the boxes",
         location: L::MainTheatre,
-        index: 843,
+        index: 912,
         drop: Drop::Health,
         locks: Lock::None,
     },
     Check {
         description: "the goatling that will kill again",
         location: L::MainTheatre,
-        index: 936,
+        index: 1071,
         drop: Drop::Goatling(&[
             "please leave me alone?",
             "i will [#cf2525](kill again)"
@@ -821,7 +821,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "the chair near the courtyard",
         location: L::MainTheatre,
-        index: 947,
+        index: 1082,
         drop: Drop::Chair,
         locks: Any(&[
             Powerup(A::ClingGem(4)),
@@ -831,7 +831,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "the chair in the soul cutter zone",
         location: L::MainTheatre,
-        index: 948,
+        index: 1083,
         drop: Drop::Chair,
         locks: All(&[
             Powerup(A::SoulCutter),
@@ -843,7 +843,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "behind three maximum security cages",
         location: L::MainTheatre,
-        index: 802,
+        index: 871,
         drop: Drop::BigKey,
         // there's one gap in the open green room with enemies which is too big
         locks: All(&[
@@ -860,7 +860,7 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "where soul cutter normally is",
         location: L::MainTheatre,
-        index: 1079,
+        index: 1230,
         drop: Drop::Ability(A::SoulCutter),
         locks: All(&[
             Powerup(A::DreamBreaker),
@@ -875,14 +875,14 @@ pub const CHECKS: [Check; 81] = [
     Check {
         description: "in the back on a pillar",
         location: L::MainTheatre,
-        index: 844,
+        index: 913,
         drop: Drop::Health,
         locks: Any(&[Powerup(A::SunGreaves), Powerup(A::ClingGem(6))]),
     },
     Check {
         description: "behind the locked door",
         location: L::MainTheatre,
-        index: 1081,
+        index: 1233,
         drop: Drop::Ability(A::Empathy),
         locks: All(&[
             Lock::SmallKey,

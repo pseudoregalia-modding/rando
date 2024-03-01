@@ -26,8 +26,8 @@ pub fn write(
                         "ZONE_Dungeon" => transplant(36, &mut map, &donor)?,
                         "Zone_Library" if app.split_greaves => {
                             use unreal_asset::types::vector::Vector;
-                            delete(267, &mut map);
-                            let mut place = |location: Vector<f64>| -> Result<(),Error>{
+                            delete(324, &mut map);
+                            let mut place = |location: Vector<f64>| -> Result<(), Error>{
                                 let insert = map.asset_data.exports.len();
                                 transplant(30, &mut map, &donor)?;
                                 set_location(insert, &mut map, location);
@@ -39,7 +39,7 @@ pub fn write(
                         },
                         "Zone_Tower" if app.split_cling => {
                             use unreal_asset::types::vector::Vector;
-                            delete(89, &mut map);
+                            delete(155, &mut map);
                             let mut place = |location: Vector<f64>| -> Result<(),Error>{
                                 let insert = map.asset_data.exports.len();
                                 transplant(59, &mut map, &donor)?;

@@ -251,7 +251,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
             Check {
                 description: "where sun greaves normally is",
                 location: Location::MainLibrary,
-                index: 1548,
+                index: 1679,
                 drop: Drop::Ability(A::HeliacalPower),
                 locks: Any(&[
                     All(&[Powerup(A::Slide), Powerup(A::SunGreaves)]),
@@ -264,7 +264,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
             Check {
                 description: "where sun greaves normally is",
                 location: Location::MainLibrary,
-                index: 1554,
+                index: 1685,
                 drop: Drop::Ability(A::HeliacalPower),
                 locks: Any(&[
                     All(&[Powerup(A::Slide), Powerup(A::SunGreaves)]),
@@ -277,7 +277,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
             Check {
                 description: "where sun greaves normally is",
                 location: Location::MainLibrary,
-                index: 1560,
+                index: 1691,
                 drop: Drop::Ability(A::HeliacalPower),
                 locks: Any(&[
                     All(&[Powerup(A::Slide), Powerup(A::SunGreaves)]),
@@ -302,7 +302,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
             Check {
                 description: "where cling gem normally is",
                 location: Location::TowerRuinsKeep,
-                index: 671,
+                index: 853,
                 drop: Drop::Ability(A::ClingGem(2)),
                 locks: Any(&[
                     Powerup(A::ClingGem(2)),
@@ -313,7 +313,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
             Check {
                 description: "where cling gem normally is",
                 location: Location::TowerRuinsKeep,
-                index: 677,
+                index: 859,
                 drop: Drop::Ability(A::ClingGem(2)),
                 locks: Any(&[
                     Powerup(A::ClingGem(2)),
@@ -324,7 +324,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
             Check {
                 description: "where cling gem normally is",
                 location: Location::TowerRuinsKeep,
-                index: 683,
+                index: 865,
                 drop: Drop::Ability(A::ClingGem(2)),
                 locks: Any(&[
                     Powerup(A::ClingGem(2)),
