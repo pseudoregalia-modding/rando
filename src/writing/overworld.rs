@@ -19,8 +19,8 @@ pub fn write(
                     path = MOD.to_string() + &path;
                     // unfortunately i can't share this between threads
                     let donor = open_slice(
-                        include_bytes!("../assets/collectibles.umap"),
-                        include_bytes!("../assets/collectibles.uexp"),
+                        include_bytes!("../assets/drops.umap"),
+                        include_bytes!("../assets/drops.uexp"),
                     )?;
                     match location {
                         "ZONE_Dungeon" => transplant(36, &mut map, &donor)?,
