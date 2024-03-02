@@ -20,25 +20,25 @@ fn accessible(
         Lock::Movement(ability) => {
             // in the cases where requirements are after obtaining
             let case = match ctx {
-                Some((355, Drop::Ability(Ability::DreamBreaker))) => {
+                Some((501, Drop::Ability(Ability::DreamBreaker))) => {
                     [Drop::Ability(Ability::DreamBreaker)].as_slice()
                 }
-                Some((356, Drop::Ability(Ability::Slide))) => {
+                Some((502, Drop::Ability(Ability::Slide))) => {
                     [Drop::Ability(Ability::Slide)].as_slice()
                 }
-                Some((267, Drop::Ability(Ability::SunGreaves))) => {
+                Some((324, Drop::Ability(Ability::SunGreaves))) => {
                     [Drop::Ability(Ability::SunGreaves)].as_slice()
                 }
-                Some((393, Drop::Ability(Ability::Strikebreak))) => {
+                Some((565, Drop::Ability(Ability::Strikebreak))) => {
                     [Drop::Ability(Ability::Strikebreak)].as_slice()
                 }
-                Some((392, Drop::Ability(Ability::Sunsetter))) => {
+                Some((564, Drop::Ability(Ability::Sunsetter))) => {
                     [Drop::Ability(Ability::Sunsetter)].as_slice()
                 }
-                Some((104, Drop::Ability(Ability::SolarWind))) => {
+                Some((148, Drop::Ability(Ability::SolarWind))) => {
                     [Drop::Ability(Ability::SolarWind)].as_slice()
                 }
-                Some((1079, Drop::Ability(Ability::SoulCutter))) => {
+                Some((1230, Drop::Ability(Ability::SoulCutter))) => {
                     [Drop::Ability(Ability::SoulCutter)].as_slice()
                 }
                 _ => [].as_slice(),
