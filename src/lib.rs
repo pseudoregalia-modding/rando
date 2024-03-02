@@ -214,12 +214,14 @@ impl eframe::App for Rando {
                     self.split_cling = false;
                     self.progressive = false;
                 }
+                ui[0].add_enabled(false, egui::Checkbox::new(&mut false, "Outfits"));
                 ui[0].checkbox(&mut self.health, "Health");
                 ui[0].checkbox(&mut self.goatlings, "Goatlings");
-                ui[0].checkbox(&mut self.spawn, "Spawn");
+                ui[0].add_enabled(false, egui::Checkbox::new(&mut false, "Enemies?"));
                 ui[1].checkbox(&mut self.small_keys, "Small keys");
                 ui[1].checkbox(&mut self.big_keys, "Big keys");
                 ui[1].checkbox(&mut self.notes, "Notes");
+                ui[1].checkbox(&mut self.chairs, "Chairs");
                 ui[1].add_enabled(false, egui::Checkbox::new(&mut false, "Levers?"));
                 ui[2].add_enabled(
                     self.abilities,
@@ -229,11 +231,12 @@ impl eframe::App for Rando {
                     self.abilities,
                     egui::Checkbox::new(&mut self.split_cling, "Split cling"),
                 );
-                ui[2].checkbox(&mut self.chairs, "Chairs");
                 ui[2].add_enabled(
                     self.abilities,
                     egui::Checkbox::new(&mut self.progressive, "Progressive items"),
                 );
+                ui[2].checkbox(&mut self.spawn, "Spawn");
+                ui[2].add_enabled(false, egui::Checkbox::new(&mut false, "Transitions?"));
             });
             ui.vertical_centered_justified(|ui| {
                 if ui
