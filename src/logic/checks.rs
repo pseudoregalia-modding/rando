@@ -864,7 +864,6 @@ pub const CHECKS: [Check; 80] = [
         drop: Drop::Ability(A::SoulCutter),
         locks: All(&[
             Powerup(A::DreamBreaker),
-            Powerup(A::SoulCutter), 
             Powerup(A::SoulCutter),
             Any(&[
                 Powerup(A::ClingGem(6)),

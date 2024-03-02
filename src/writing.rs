@@ -126,8 +126,8 @@ pub fn write(
                 .filter_map(|prop| unreal_asset::cast!(Property, StrProperty, prop))
             {
                 prop.get_name().get_content(|name| match name {
-                    "lastSavePointName" => prop.value = Some(tag.into()),
                     "lastSavedZoneSpawnIn" => prop.value = Some(spawn.file().into()),
+                    "spawnPointTag" => prop.value = Some(tag.into()),
                     _ => (),
                 })
             }

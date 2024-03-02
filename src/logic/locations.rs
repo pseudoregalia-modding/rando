@@ -87,7 +87,7 @@ impl Location {
                 ]),
             ]),
             L::PEntryUnderBelly => Any(&[
-                Any(&[Loc(L::LatePrison), Powerup(A::DreamBreaker)]),
+                All(&[Loc(L::LatePrison), Powerup(A::DreamBreaker)]),
                 All(&[Loc(L::PrisonHole), Powerup(A::AscendantLight)]),
             ]),
             L::VDreamBreaker => Loc(L::EarlyPrison),
@@ -485,7 +485,14 @@ impl Location {
                 ]),
             ]),
             L::TheatreEntrance => Any(&[
-                Loc(L::MainTheatre),
+                All(&[
+                    Loc(L::MainTheatre),
+                    Any(&[
+                        Powerup(A::ClingGem(1)),
+                        Powerup(A::HeliacalPower),
+                        Powerup(A::SolarWind),
+                    ]),
+                ]),
                 All(&[
                     Loc(L::ThCastleEntryMain),
                     Any(&[
