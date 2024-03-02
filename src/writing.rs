@@ -77,10 +77,10 @@ pub fn write(
         .reader_with_version(&mut sync, repak::Version::V11)?;
     let mut mod_pak = repak::PakBuilder::new()
         // for some reason it's not loading properly with compression
-        // .compression([repak::Compression::Zlib])
+        .compression([repak::Compression::Zlib])
         .writer(
             std::io::BufWriter::new(std::fs::File::create(app.pak.join("rando_p.pak"))?),
-            repak::Version::V9,
+            repak::Version::V10,
             "../../../".to_string(),
             None,
         );
