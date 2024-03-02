@@ -1,5 +1,6 @@
 use super::logic::*;
 use crate::{io::*, map::*};
+use oodle_loader::decompress;
 use unreal_asset::{exports::*, properties::*};
 
 mod overworld;
@@ -55,24 +56,7 @@ pub fn write(
     let mut sync = app.pak()?;
     let pak = repak::PakBuilder::new()
         .oodle(|| {
-            Ok(|comp_buf, raw_buf| unsafe {
-                OodleLZ_Decompress(
-                    comp_buf.as_ptr(),
-                    comp_buf.len(),
-                    raw_buf.as_mut_ptr(),
-                    raw_buf.len(),
-                    1,
-                    1,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    std::ptr::null_mut(),
-                    0,
-                    3,
-                )
-            })
+            Ok(decompress()?)
         })
         .reader_with_version(&mut sync, repak::Version::V11)?;
     let mut mod_pak = repak::PakBuilder::new()
@@ -214,24 +198,4 @@ pub fn write(
     }
     mod_pak.write_index()?;
     Ok(())
-}
-
-#[link(name = "oo2core_win64", kind = "static")]
-extern "C" {
-    fn OodleLZ_Decompress(
-        compBuf: *const u8,
-        compBufSize: usize,
-        rawBuf: *mut u8,
-        rawLen: usize,
-        fuzzSafe: u32,
-        checkCRC: u32,
-        verbosity: u32,
-        decBufBase: u64,
-        decBufSize: usize,
-        fpCallback: u64,
-        callbackUserData: u64,
-        decoderMemory: *mut u8,
-        decoderMemorySize: usize,
-        threadPhase: u32,
-    ) -> i32;
 }

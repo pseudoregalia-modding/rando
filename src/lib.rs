@@ -100,7 +100,7 @@ fn ask_game_path() -> Option<std::path::PathBuf> {
         .pick_folder()?;
     path.join("pseudoregalia/Content/Paks")
         .exists()
-        .then(|| path.join("pseudoregalia\\Content\\Paks"))
+        .then(|| path.join("pseudoregalia/Content/Paks"))
 }
 
 fn get_pak_str(pak: &std::path::Path) -> String {

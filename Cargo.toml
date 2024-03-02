@@ -9,7 +9,8 @@ edition = "2021"
 [dependencies]
 eframe = { version = "0.26", default-features = false, features = ["default_fonts", "glow", "persistence"] }
 unreal_asset = { git = "https://github.com/astrotechies/unrealmodding", rev = "b64d3f4" }
-repak = { git = "https://github.com/trumank/repak", rev = "abda6da", features = ["oodle"] }
+repak = { git = "https://github.com/trumank/repak", rev = "96410d6", features = ["oodle_explicit"] }
+oodle_loader = { git = "https://github.com/trumank/repak", rev = "96410d6" }
 strum = { version = "0.25", features = ["derive"] }
 rand = "0.8"
 egui-modal = "0.3"
