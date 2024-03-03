@@ -4,6 +4,7 @@ mod io;
 mod logic;
 mod map;
 mod writing;
+mod oodle;
 
 type Asset<T> = unreal_asset::Asset<std::io::Cursor<T>>;
 
