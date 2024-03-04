@@ -10,7 +10,7 @@ pub const CHECKS: [Check; 80] = [
         description: "where dream breaker normally is",
         location: L::VDreamBreaker,
         index: 501,
-        drop: Drop::Ability(A::DreamBreaker),
+        drop: Drop::Ability(A::DreamBreaker, None),
         locks: Powerup(A::DreamBreaker),
     },
     Check {
@@ -35,7 +35,7 @@ pub const CHECKS: [Check; 80] = [
         description: "where slide normally is",
         location: L::LatePrison,
         index: 502,
-        drop: Drop::Ability(A::Slide),
+        drop: Drop::Ability(A::Slide, None),
         locks: Any(&[
             Powerup(A::Slide),
             Powerup(A::SunGreaves),
@@ -47,7 +47,7 @@ pub const CHECKS: [Check; 80] = [
         description: "black hole parkour off the beaten path",
         location: L::LatePrison,
         index: 504,
-        drop: Drop::Ability(A::GoodGraces),
+        drop: Drop::Ability(A::GoodGraces, None),
         locks: Any(&[
             Powerup(A::ClingGem(6)),
             All(&[Powerup(A::AscendantLight), Powerup(A::SunGreaves)]),
@@ -119,7 +119,7 @@ pub const CHECKS: [Check; 80] = [
         description: "where indignation normally is",
         location: L::CsMain,
         index: 994,
-        drop: Drop::Ability(A::Indignation),
+        drop: Drop::Ability(A::Indignation, None),
         locks: Lock::None,
     },
     Check {
@@ -192,7 +192,7 @@ pub const CHECKS: [Check; 80] = [
         description: "cool moon room",
         location: L::CsTheatreEntrance,
         index: 997,
-        drop: Drop::Ability(A::ClearMind),
+        drop: Drop::Ability(A::ClearMind, None),
         locks: Any(&[
             Powerup(A::ClingGem(6)),
             All(&[Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::HeliacalPower)]),
@@ -263,7 +263,7 @@ pub const CHECKS: [Check; 80] = [
         description: "next to a bouncer in the massive room",
         location: L::CsMain,
         index: 995,
-        drop: Drop::Ability(A::Pilgrimage),
+        drop: Drop::Ability(A::Pilgrimage, None),
         locks: Any(&[
             All(&[
                 Powerup(A::AscendantLight),
@@ -288,7 +288,7 @@ pub const CHECKS: [Check; 80] = [
         description: "in the room with two other ones to each side",
         location: L::CsMain,
         index: 996,
-        drop: Drop::Ability(A::GoodGraces),
+        drop: Drop::Ability(A::GoodGraces, None),
         locks: Any(&[Powerup(A::ClingGem(6)), Powerup(A::SunGreaves)]),
     },
     // Listless Library
@@ -303,7 +303,7 @@ pub const CHECKS: [Check; 80] = [
         description: "where sun greaves normally are",
         location: L::LibSaveNearGreaves,
         index: 324,
-        drop: Drop::Ability(A::SunGreaves),
+        drop: Drop::Ability(A::SunGreaves, None),
         locks: Powerup(A::DreamBreaker),
     },
     Check {
@@ -346,7 +346,7 @@ pub const CHECKS: [Check; 80] = [
         description: "in the hay behind the locked door",
         location: L::Restricted,
         index: 326,
-        drop: Drop::Ability(A::ClearMind),
+        drop: Drop::Ability(A::ClearMind, None),
         locks: Any(&[
             Powerup(A::SolarWind),
             Powerup(A::HeliacalPower),
@@ -390,7 +390,7 @@ pub const CHECKS: [Check; 80] = [
         description: "where strikebreak normally is",
         location: L::SansaKeep,
         index: 565,
-        drop: Drop::Ability(A::Strikebreak),
+        drop: Drop::Ability(A::Strikebreak, None),
         locks:  All(&[
             Powerup(A::Strikebreak),
             Any(&[
@@ -404,7 +404,7 @@ pub const CHECKS: [Check; 80] = [
         description: "where sunsetter normally is",
         location: L::Sunsetter,
         index: 564,
-        drop: Drop::Ability(A::Sunsetter),
+        drop: Drop::Ability(A::Sunsetter, None),
         locks: All(&[
             Powerup(A::DreamBreaker),
             Any(&[
@@ -436,7 +436,7 @@ pub const CHECKS: [Check; 80] = [
         description: "tucked near the theatre entrance",
         location: L::SansaKeep,
         index: 566,
-        drop: Drop::Ability(A::ClearMind),
+        drop: Drop::Ability(A::ClearMind, None),
         locks: Any(&[
             Powerup(A::Sunsetter),
             Powerup(A::HeliacalPower),
@@ -526,7 +526,7 @@ pub const CHECKS: [Check; 80] = [
         description: "where solar wind normally is",
         location: L::EmptyBailey,
         index: 148,
-        drop: Drop::Ability(A::SolarWind),
+        drop: Drop::Ability(A::SolarWind, None),
         locks: All(&[
             Powerup(A::Slide),
             Powerup(A::DreamBreaker),
@@ -552,7 +552,7 @@ pub const CHECKS: [Check; 80] = [
         description: "under the cheese bell",
         location: L::EmptyBailey,
         index: 149,
-        drop: Drop::Ability(A::Empathy),
+        drop: Drop::Ability(A::Empathy, None),
         locks: Any(&[
             All(&[
                 Powerup(A::SolarWind),
@@ -596,7 +596,7 @@ pub const CHECKS: [Check; 80] = [
         description: "where ascendant light normally is",
         location: L::VAscendantLight,
         index: 1044,
-        drop: Drop::Ability(A::AscendantLight),
+        drop: Drop::Ability(A::AscendantLight, None),
         // you can go through the dark area and there's a passage which you can do with nothing
         locks: Powerup(A::DreamBreaker),
     },
@@ -636,7 +636,7 @@ pub const CHECKS: [Check; 80] = [
         description: "black hole parkour behind strikebreak wall",
         location: L::MainUnderbelly,
         index: 1046,
-        drop: Drop::Ability(A::MartialProwess),
+        drop: Drop::Ability(A::MartialProwess, None),
         locks: All(&[
             Powerup(A::SoulCutter),
             Powerup(A::AscendantLight),
@@ -651,7 +651,7 @@ pub const CHECKS: [Check; 80] = [
         description: "behind the locked door",
         location: L::HpSave,
         index: 1047,
-        drop: Drop::Ability(A::HeliacalPower),
+        drop: Drop::Ability(A::HeliacalPower, None),
         locks: All(&[
             Lock::SmallKey,
             Powerup(A::DreamBreaker),
@@ -692,7 +692,7 @@ pub const CHECKS: [Check; 80] = [
         description: "where cling gem normally is",
         location: L::TowerRuinsKeep,
         index: 155,
-        drop: Drop::Ability(A::ClingGem(6)),
+        drop: Drop::Ability(A::ClingGem(6), None),
         locks: Any(&[
             Powerup(A::ClingGem(6)),
             Powerup(A::SunGreaves),
@@ -720,7 +720,7 @@ pub const CHECKS: [Check; 80] = [
         description: "on a beam in the corner",
         location: L::PillarRoom,
         index: 1231,
-        drop: Drop::Ability(A::AerialFinesse),
+        drop: Drop::Ability(A::AerialFinesse, None),
         locks: Any(&[
             All(&[
               Powerup(A::SunGreaves),
@@ -861,7 +861,7 @@ pub const CHECKS: [Check; 80] = [
         description: "where soul cutter normally is",
         location: L::MainTheatre,
         index: 1230,
-        drop: Drop::Ability(A::SoulCutter),
+        drop: Drop::Ability(A::SoulCutter, None),
         locks: All(&[
             Powerup(A::DreamBreaker),
             Powerup(A::SoulCutter),
@@ -882,7 +882,7 @@ pub const CHECKS: [Check; 80] = [
         description: "behind the locked door",
         location: L::MainTheatre,
         index: 1233,
-        drop: Drop::Ability(A::Empathy),
+        drop: Drop::Ability(A::Empathy, None),
         locks: All(&[
             Lock::SmallKey,
             Powerup(A::DreamBreaker),

@@ -11,7 +11,7 @@ pub use spawns::SPAWNS;
 
 #[derive(Clone, Copy, PartialEq)]
 pub enum Drop {
-    Ability(Ability),
+    Ability(Ability, Option<usize>),
     SmallKey,
     BigKey,
     Health,
@@ -23,7 +23,7 @@ pub enum Drop {
 impl std::fmt::Debug for Drop {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Drop::Ability(a) => f.write_fmt(format_args!("{:?}", a)),
+            Drop::Ability(a, _) => f.write_fmt(format_args!("{:?}", a)),
             Drop::SmallKey => f.write_str("Small Key"),
             Drop::BigKey => f.write_str("Big Key"),
             Drop::Health => f.write_str("Health"),

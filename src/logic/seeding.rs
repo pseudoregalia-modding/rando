@@ -20,26 +20,26 @@ fn accessible(
         Lock::Movement(ability) => {
             // in the cases where requirements are after obtaining
             let case = match ctx {
-                Some((501, Drop::Ability(Ability::DreamBreaker))) => {
-                    [Drop::Ability(Ability::DreamBreaker)].as_slice()
+                Some((501, Drop::Ability(Ability::DreamBreaker, None))) => {
+                    [Drop::Ability(Ability::DreamBreaker, None)].as_slice()
                 }
-                Some((502, Drop::Ability(Ability::Slide))) => {
-                    [Drop::Ability(Ability::Slide)].as_slice()
+                Some((502, Drop::Ability(Ability::Slide, None))) => {
+                    [Drop::Ability(Ability::Slide, None)].as_slice()
                 }
-                Some((324, Drop::Ability(Ability::SunGreaves))) => {
-                    [Drop::Ability(Ability::SunGreaves)].as_slice()
+                Some((324, Drop::Ability(Ability::SunGreaves, None))) => {
+                    [Drop::Ability(Ability::SunGreaves, None)].as_slice()
                 }
-                Some((565, Drop::Ability(Ability::Strikebreak))) => {
-                    [Drop::Ability(Ability::Strikebreak)].as_slice()
+                Some((565, Drop::Ability(Ability::Strikebreak, None))) => {
+                    [Drop::Ability(Ability::Strikebreak, None)].as_slice()
                 }
-                Some((564, Drop::Ability(Ability::Sunsetter))) => {
-                    [Drop::Ability(Ability::Sunsetter)].as_slice()
+                Some((564, Drop::Ability(Ability::Sunsetter, None))) => {
+                    [Drop::Ability(Ability::Sunsetter, None)].as_slice()
                 }
-                Some((148, Drop::Ability(Ability::SolarWind))) => {
-                    [Drop::Ability(Ability::SolarWind)].as_slice()
+                Some((148, Drop::Ability(Ability::SolarWind, None))) => {
+                    [Drop::Ability(Ability::SolarWind, None)].as_slice()
                 }
-                Some((1230, Drop::Ability(Ability::SoulCutter))) => {
-                    [Drop::Ability(Ability::SoulCutter)].as_slice()
+                Some((1230, Drop::Ability(Ability::SoulCutter, None))) => {
+                    [Drop::Ability(Ability::SoulCutter, None)].as_slice()
                 }
                 _ => [].as_slice(),
             };
@@ -47,7 +47,8 @@ fn accessible(
                 Ability::Slide if app.progressive => obtainable.iter().chain(case).any(|drop| {
                     matches!(
                         drop,
-                        Drop::Ability(Ability::Slide) | Drop::Ability(Ability::SolarWind)
+                        Drop::Ability(Ability::Slide, None)
+                            | Drop::Ability(Ability::SolarWind, None)
                     )
                 }),
                 Ability::SolarWind => {
@@ -57,7 +58,8 @@ fn accessible(
                         .filter(|drop| {
                             matches!(
                                 drop,
-                                Drop::Ability(Ability::Slide) | Drop::Ability(Ability::SolarWind)
+                                Drop::Ability(Ability::Slide, None)
+                                    | Drop::Ability(Ability::SolarWind, None)
                             )
                         })
                         .count()
@@ -67,9 +69,9 @@ fn accessible(
                     obtainable.iter().chain(case).any(|drop| {
                         matches!(
                             drop,
-                            Drop::Ability(Ability::DreamBreaker)
-                                | Drop::Ability(Ability::Strikebreak)
-                                | Drop::Ability(Ability::SoulCutter)
+                            Drop::Ability(Ability::DreamBreaker, None)
+                                | Drop::Ability(Ability::Strikebreak, None)
+                                | Drop::Ability(Ability::SoulCutter, None)
                         )
                     })
                 }
@@ -80,9 +82,9 @@ fn accessible(
                         .filter(|drop| {
                             matches!(
                                 drop,
-                                Drop::Ability(Ability::DreamBreaker)
-                                    | Drop::Ability(Ability::Strikebreak)
-                                    | Drop::Ability(Ability::SoulCutter)
+                                Drop::Ability(Ability::DreamBreaker, None)
+                                    | Drop::Ability(Ability::Strikebreak, None)
+                                    | Drop::Ability(Ability::SoulCutter, None)
                             )
                         })
                         .count()
@@ -95,8 +97,8 @@ fn accessible(
                         .filter(|drop| {
                             matches!(
                                 drop,
-                                Drop::Ability(Ability::DreamBreaker)
-                                    | Drop::Ability(Ability::Strikebreak)
+                                Drop::Ability(Ability::DreamBreaker, None)
+                                    | Drop::Ability(Ability::Strikebreak, None)
                             )
                         })
                         .count()
@@ -109,9 +111,9 @@ fn accessible(
                         .filter(|drop| {
                             matches!(
                                 drop,
-                                Drop::Ability(Ability::DreamBreaker)
-                                    | Drop::Ability(Ability::Strikebreak)
-                                    | Drop::Ability(Ability::SoulCutter)
+                                Drop::Ability(Ability::DreamBreaker, None)
+                                    | Drop::Ability(Ability::Strikebreak, None)
+                                    | Drop::Ability(Ability::SoulCutter, None)
                             )
                         })
                         .count()
@@ -122,7 +124,7 @@ fn accessible(
                         .iter()
                         .chain(case)
                         .fold(0, |acc, drop| match drop {
-                            Drop::Ability(Ability::ClingGem(count)) => acc + count,
+                            Drop::Ability(Ability::ClingGem(count), None) => acc + count,
                             _ => acc,
                         })
                         >= req
@@ -134,8 +136,8 @@ fn accessible(
                         .filter(|drop| {
                             matches!(
                                 drop,
-                                Drop::Ability(Ability::DreamBreaker)
-                                    | Drop::Ability(Ability::AscendantLight)
+                                Drop::Ability(Ability::DreamBreaker, None)
+                                    | Drop::Ability(Ability::AscendantLight, None)
                             )
                         })
                         .count()
@@ -144,11 +146,12 @@ fn accessible(
                 Ability::HeliacalPower => obtainable.iter().chain(case).any(|drop| {
                     matches!(
                         drop,
-                        Drop::Ability(Ability::HeliacalPower) | Drop::Ability(Ability::SunGreaves)
+                        Drop::Ability(Ability::HeliacalPower, None)
+                            | Drop::Ability(Ability::SunGreaves, None)
                     )
                 }),
                 ability => obtainable.iter().chain(case).any(|drop| match drop {
-                    Drop::Ability(a) => a == ability,
+                    Drop::Ability(a, _) => a == ability,
                     _ => false,
                 }),
             }
@@ -213,13 +216,15 @@ fn possible(spawn: Location, checks: &[Check], app: &crate::Rando) -> bool {
             .iter()
             .enumerate()
             .rev()
-            .filter_map(|(i, drop)| (drop == &Drop::Ability(Ability::HeliacalPower)).then_some(i))
+            .filter_map(|(i, drop)| {
+                (drop == &Drop::Ability(Ability::HeliacalPower, None)).then_some(i)
+            })
             .collect();
         if heliacals.len() == 3 {
             for i in heliacals {
                 obtainable.remove(i);
             }
-            obtainable.push(Drop::Ability(Ability::SunGreaves))
+            obtainable.push(Drop::Ability(Ability::SunGreaves, None))
         }
 
         locations_len = locations.len();
@@ -229,7 +234,8 @@ fn possible(spawn: Location, checks: &[Check], app: &crate::Rando) -> bool {
 
 pub fn randomise(app: &crate::Rando) -> Result<(), String> {
     let in_pool = |check: &Check| match &check.drop {
-        Drop::Ability(_) => app.abilities,
+        Drop::Ability(_, None) => app.abilities,
+        Drop::Ability(_, Some(_)) => app.outfits,
         Drop::SmallKey => app.small_keys,
         Drop::BigKey => app.big_keys,
         Drop::Health => app.health,
@@ -241,7 +247,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
     if app.split_greaves {
         if let Some(i) = pool
             .iter()
-            .position(|check| check.drop == Drop::Ability(Ability::SunGreaves))
+            .position(|check| check.drop == Drop::Ability(Ability::SunGreaves, None))
         {
             pool.remove(i);
         }
@@ -252,7 +258,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
                 description: "where sun greaves normally is",
                 location: Location::MainLibrary,
                 index: 1679,
-                drop: Drop::Ability(A::HeliacalPower),
+                drop: Drop::Ability(A::HeliacalPower, None),
                 locks: Any(&[
                     All(&[Powerup(A::Slide), Powerup(A::SunGreaves)]),
                     All(&[Powerup(A::Slide), Powerup(A::HeliacalPower)]),
@@ -265,7 +271,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
                 description: "where sun greaves normally is",
                 location: Location::MainLibrary,
                 index: 1685,
-                drop: Drop::Ability(A::HeliacalPower),
+                drop: Drop::Ability(A::HeliacalPower, None),
                 locks: Any(&[
                     All(&[Powerup(A::Slide), Powerup(A::SunGreaves)]),
                     All(&[Powerup(A::Slide), Powerup(A::HeliacalPower)]),
@@ -278,7 +284,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
                 description: "where sun greaves normally is",
                 location: Location::MainLibrary,
                 index: 1691,
-                drop: Drop::Ability(A::HeliacalPower),
+                drop: Drop::Ability(A::HeliacalPower, None),
                 locks: Any(&[
                     All(&[Powerup(A::Slide), Powerup(A::SunGreaves)]),
                     All(&[Powerup(A::Slide), Powerup(A::HeliacalPower)]),
@@ -292,7 +298,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
     if app.split_cling {
         if let Some(i) = pool
             .iter()
-            .position(|check| check.drop == Drop::Ability(Ability::ClingGem(6)))
+            .position(|check| check.drop == Drop::Ability(Ability::ClingGem(6), None))
         {
             pool.remove(i);
         }
@@ -303,7 +309,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
                 description: "where cling gem normally is",
                 location: Location::TowerRuinsKeep,
                 index: 853,
-                drop: Drop::Ability(A::ClingGem(2)),
+                drop: Drop::Ability(A::ClingGem(2), None),
                 locks: Any(&[
                     Powerup(A::ClingGem(2)),
                     Powerup(A::SunGreaves),
@@ -314,7 +320,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
                 description: "where cling gem normally is",
                 location: Location::TowerRuinsKeep,
                 index: 859,
-                drop: Drop::Ability(A::ClingGem(2)),
+                drop: Drop::Ability(A::ClingGem(2), None),
                 locks: Any(&[
                     Powerup(A::ClingGem(2)),
                     Powerup(A::SunGreaves),
@@ -325,7 +331,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
                 description: "where cling gem normally is",
                 location: Location::TowerRuinsKeep,
                 index: 865,
-                drop: Drop::Ability(A::ClingGem(2)),
+                drop: Drop::Ability(A::ClingGem(2), None),
                 locks: Any(&[
                     Powerup(A::ClingGem(2)),
                     Powerup(A::SunGreaves),

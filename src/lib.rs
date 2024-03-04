@@ -15,6 +15,7 @@ pub struct Rando {
     pak: std::path::PathBuf,
     pak_str: String,
     abilities: bool,
+    outfits: bool,
     small_keys: bool,
     big_keys: bool,
     health: bool,
@@ -77,6 +78,7 @@ impl Rando {
             pak,
             pak_str,
             abilities: get_bool("abilities"),
+            outfits: get_bool("outfits"),
             small_keys: get_bool("small keys"),
             big_keys: get_bool("big keys"),
             health: get_bool("health"),
@@ -214,7 +216,7 @@ impl eframe::App for Rando {
                     self.split_cling = false;
                     self.progressive = false;
                 }
-                ui[0].add_enabled(false, egui::Checkbox::new(&mut false, "Outfits"));
+                ui[0].checkbox(&mut self.outfits, "Outfits");
                 ui[0].checkbox(&mut self.health, "Health");
                 ui[0].checkbox(&mut self.goatlings, "Goatlings");
                 ui[0].add_enabled(false, egui::Checkbox::new(&mut false, "Enemies?"));
@@ -294,6 +296,7 @@ impl eframe::App for Rando {
     fn save(&mut self, storage: &mut dyn eframe::Storage) {
         storage.set_string("pak", self.pak.to_str().unwrap_or_default().to_string());
         storage.set_string("abilities", self.abilities.to_string());
+        storage.set_string("outfits", self.outfits.to_string());
         storage.set_string("small keys", self.small_keys.to_string());
         storage.set_string("big keys", self.big_keys.to_string());
         storage.set_string("health", self.health.to_string());
