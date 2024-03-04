@@ -91,14 +91,7 @@ pub fn write(
                                         true => 46,
                                         false => 5,
                                     },
-                                    Ability::HeliacalPower
-                                    | Ability::AerialFinesse
-                                    | Ability::Pilgrimage
-                                    | Ability::Empathy
-                                    | Ability::GoodGraces
-                                    | Ability::MartialProwess
-                                    | Ability::ClearMind
-                                    | Ability::Professional => 30,
+                                    _ => 30,
                                 }, false)?;
                                 let ability_name = map.add_fname(ability.as_ref());
                                 let mut names = map.get_name_map();
