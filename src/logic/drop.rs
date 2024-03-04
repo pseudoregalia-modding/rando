@@ -20,6 +20,8 @@ pub enum Ability {
     SolarWind,
     #[strum(serialize = "chargeAttack")]
     Strikebreak,
+    #[strum(serialize = "map")]
+    Memento,
     #[strum(serialize = "extraKick")]
     HeliacalPower,
     #[strum(serialize = "airRecovery")]
@@ -85,7 +87,27 @@ impl Ability {
             _ => "no icon whoopsies :p",
         };
         let path = format!("/Game/MatTex/Textures/UI/icons/{icon}");
-        if !matches!(self, A::Professional) {
+        if matches!(
+            self,
+            A::DreamBreaker
+                | A::SunGreaves
+                | A::Slide
+                | A::Sunsetter
+                | A::ClingGem(_)
+                | A::AscendantLight
+                | A::SoulCutter
+                | A::Indignation
+                | A::SolarWind
+                | A::Strikebreak
+                | A::Memento
+                | A::HeliacalPower
+                | A::AerialFinesse
+                | A::Pilgrimage
+                | A::Empathy
+                | A::GoodGraces
+                | A::MartialProwess
+                | A::ClearMind
+        ) {
             insert = -(imports.len() as i32) - 1;
             let package = unreal_asset::Import {
                 class_package: add("/Script/CoreUObject"),
@@ -158,6 +180,7 @@ impl Ability {
                             A::Indignation => "Indignation",
                             A::SolarWind => "Solar Wind",
                             A::Strikebreak => "Strikebreak",
+                            A::Memento => "Memento",
                             A::HeliacalPower => "Heliacal Power",
                             A::AerialFinesse => "Aerial Finesse",
                             A::Pilgrimage => "Pilgrimage",
@@ -212,6 +235,7 @@ impl Ability {
                         A::Indignation => "Higher Power gives you increased combat capabilities.",
                         A::SolarWind => "Jump while Sliding.",
                         A::Strikebreak => "Hold Attack until your weapon is ready, release to strike.",
+                        A::Memento => "Press D-Pad Up/Tab to see your mental map",
                         A::HeliacalPower => "Allows you to perform an additional air kick",
                         A::AerialFinesse => "Press Jump during your knockback state to regain balance.",
                         A::Pilgrimage => "You can move slowly while channeling a Heal",
@@ -268,6 +292,11 @@ Completes the technique of the slide. Cross long distances with a airy long jump
                         "#),
                         A::Strikebreak => Some(r#"
 A more powerful attack that locks you in place. Can be used to destroy heavy barriers.
+                        "#),
+                        A::Memento => Some(r#"
+To move the map, press LockOn + Move Camera while active.
+
+Rooms will be revealed to you as you enter them, allowing you to more easily chart a course through an area.
                         "#),
                         _ => None
                     },
@@ -339,7 +368,8 @@ Activation is easier when you move along walls, not directly into them.
                 Property::ObjectProperty(object_property::ObjectProperty {
                     name: display,
                     value: PackageIndex::new(match self {
-                        A::Professional
+                        A::Memento
+                        | A::Professional
                         | A::Guardian
                         | A::Soldier
                         | A::BleedingHeart

@@ -4,7 +4,7 @@ use Ability as A;
 use Location as L;
 use Lock::{All, Any, Movement as Powerup, Location as Loc};
 
-pub const CHECKS: [Check; 88] = [
+pub const CHECKS: [Check; 89] = [
     Check {
         description: "the time trial in the starting room",
         location: L::EarlyPrison,
@@ -89,6 +89,13 @@ pub const CHECKS: [Check; 88] = [
         index: 254,
         drop: Drop::SmallKey,
         locks: Powerup(A::DreamBreaker),
+    },
+    Check {
+        description: "where memento normally is",
+        location: L::CsMain,
+        index: 998,
+        drop: Drop::Ability(A::Memento, None),
+        locks: Lock::None,
     },
     Check {
         description: "the goatling who wants to lick the checkpoint",
