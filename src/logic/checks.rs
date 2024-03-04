@@ -4,8 +4,15 @@ use Ability as A;
 use Location as L;
 use Lock::{All, Any, Movement as Powerup, Location as Loc};
 
-pub const CHECKS: [Check; 80] = [
-    // dream breaker is randomised with random start
+pub const CHECKS: [Check; 88] = [
+    Check {
+        description: "the time trial in the starting room",
+        location: L::EarlyPrison,
+        index: 503,
+        drop: Drop::Ability(A::SolSister, Some(486)),
+        // not final logic
+        locks: Lock::None,
+    },
     Check {
         description: "where dream breaker normally is",
         location: L::VDreamBreaker,
@@ -134,16 +141,16 @@ pub const CHECKS: [Check; 80] = [
             Powerup(A::SolarWind),
         ]),
     },
-    // Check {
-    //     description: "where the professional normally is",
-    //     location: L::CsMain,
-    //     index: 791,
-    //     drop: Drop::Ability(A::Professional),
-    //     locks: All(&[
-    //         Lock::SmallKey,
-    //         Powerup(A::DreamBreaker)
-    //     ]),
-    // },
+    Check {
+        description: "the time trial behind a locked door",
+        location: L::CsMain,
+        index: 999,
+        drop: Drop::Ability(A::Professional, Some(969)),
+        locks: All(&[
+            Lock::SmallKey,
+            Powerup(A::DreamBreaker)
+        ]),
+    },
     Check {
         description: "tucked deep in a corner in the bouncer room",
         location: L::CsMain,
@@ -297,6 +304,14 @@ pub const CHECKS: [Check; 80] = [
         location: L::MainLibrary,
         index: 289,
         drop: Drop::Chair,
+        locks: Lock::None,
+    },
+    Check {
+        description: "the time trial amidst the books",
+        location: L::MainLibrary,
+        index: 325,
+        drop: Drop::Ability(A::Sleepytime, Some(314)),
+        // not final logic
         locks: Lock::None,
     },
     Check {
@@ -470,6 +485,33 @@ pub const CHECKS: [Check; 80] = [
         ]),
     },
     Check {
+        description: "the time trial at the end of the parkour",
+        location: L::SansaKeep,
+        index: 567,
+        drop: Drop::Ability(A::Guardian, Some(541)),
+        // only logic to get here not final
+        locks: Any(&[
+            All(&[
+                Powerup(A::AscendantLight),
+                Any(&[
+                    All(&[
+                        Powerup(A::ClingGem(4)),
+                        Any(&[Powerup(A::Sunsetter), Powerup(A::SunGreaves)]),
+                    ]),
+                    All(&[Powerup(A::Sunsetter), Powerup(A::SunGreaves)]),
+                ]),
+            ]),
+            All(&[
+                Powerup(A::DreamBreaker),
+                Powerup(A::Slide),
+                Powerup(A::SolarWind),
+                Powerup(A::Sunsetter),
+                Powerup(A::ClingGem(2)),
+                Powerup(A::SunGreaves),
+            ]),
+        ]),
+    },
+    Check {
         description: "the chair in the middle of the parkour",
         location: L::SansaKeep,
         index: 478,
@@ -553,6 +595,24 @@ pub const CHECKS: [Check; 80] = [
         location: L::EmptyBailey,
         index: 149,
         drop: Drop::Ability(A::Empathy, None),
+        locks: Any(&[
+            All(&[
+                Powerup(A::SolarWind),
+                Any(&[
+                    Powerup(A::ClingGem(6)),
+                    All(&[Powerup(A::Sunsetter), Powerup(A::HeliacalPower)]),
+                ]),
+            ]),
+            All(&[Powerup(A::Sunsetter), Powerup(A::SunGreaves)]),
+        ]),
+    },
+    Check {
+        description: "the locked up time trial",
+        location: L::EmptyBailey,
+        index: 150,
+        drop: Drop::Ability(A::Soldier, Some(128)),
+        // again just get to cheese bell not final
+        // need to hit lever up there too
         locks: Any(&[
             All(&[
                 Powerup(A::SolarWind),
@@ -648,6 +708,14 @@ pub const CHECKS: [Check; 80] = [
         ]),
     },
     Check {
+        description: "the locked up time trial",
+        location: L::MainUnderbelly,
+        index: 1045,
+        drop: Drop::Ability(A::XIX, Some(1028)),
+        // need to hit lever at top first
+        locks: Lock::None,
+    },
+    Check {
         description: "behind the locked door",
         location: L::HpSave,
         index: 1047,
@@ -715,6 +783,24 @@ pub const CHECKS: [Check; 80] = [
             ]),
         ]),
     },
+    Check {
+        description: "the time trial at the tower entrance",
+        location: L::TowerRuinsKeep,
+        index: 156,
+        drop: Drop::Ability(A::BleedingHeart, Some(129)),
+        // again again just to get to top of tower
+        // need to hit lever tho
+        locks: All(&[
+            Powerup(A::ClingGem(2)),
+            Any(&[
+                Powerup(A::SunGreaves),
+                All(&[
+                    Powerup(A::HeliacalPower),
+                    Powerup(A::Sunsetter),
+                ]),
+            ]),
+        ]),
+    },
     // Twilight Theatre
     Check {
         description: "on a beam in the corner",
@@ -728,6 +814,14 @@ pub const CHECKS: [Check; 80] = [
             ]),
             All(&[Powerup(A::SolarWind), Powerup(A::ClingGem(2))])
         ]),
+    },
+    Check {
+        description: "the locked up time trial",
+        location: L::PillarRoom,
+        index: 1232,
+        drop: Drop::Ability(A::Classy, Some(1211)),
+        // need to hit the lever first
+        locks: Lock::None,
     },
     Check {
         description: "a chair around the table",
