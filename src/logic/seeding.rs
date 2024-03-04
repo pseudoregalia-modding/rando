@@ -412,9 +412,8 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
     .into_iter()
     .map(|(key, value)| (key, value.into_iter().filter(in_pool).collect()))
     .collect();
-    let mut log = std::io::BufWriter::new(
-        std::fs::File::create("spoiler_log.txt").map_err(|e| e.to_string())?,
-    );
+    let mut log =
+        std::io::BufWriter::new(std::fs::File::create("spoiler.log").map_err(|e| e.to_string())?);
     for val in overworld.values().flatten() {
         use std::io::Write;
         log.write_fmt(format_args!("{:?}\n", val))

@@ -71,9 +71,13 @@ impl Location {
     pub const fn locks(&self) -> Lock {
         match self {
             // Prison / Dilapidated Dungeon
-            L::LatePrison => Any(&[
-                All(&[Powerup(A::DreamBreaker), Loc(L::CsMain)]),
-                All(&[Loc(L::PEntryUnderBelly), Loc(L::EarlyPrison)]),
+            L::LatePrison => All(&[
+                Powerup(A::DreamBreaker),
+                Any(&[
+                    Loc(L::CsMain),
+                    Loc(L::PEntryUnderBelly),
+                    Loc(L::EarlyPrison),
+                ]),
             ]),
             L::EarlyPrison => Any(&[
                 Loc(L::CsMain), // Drop in from castle
