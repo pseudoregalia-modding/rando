@@ -45,7 +45,7 @@ pub enum Ability {
     #[strum(serialize = "outfitPast")]
     BleedingHeart,
     #[strum(serialize = "outfitJam")]
-    XIX,
+    Xix,
     #[strum(serialize = "outfitFaith")]
     SolSister,
     #[strum(serialize = "outfitClassy")]
@@ -192,7 +192,7 @@ impl Ability {
                             A::Guardian => "a Guardian",
                             A::Soldier => "Chivalry",
                             A::BleedingHeart => "a Bleeding Heart",
-                            A::XIX => "Nostalgia",
+                            A::Xix => "Nostalgia",
                             A::SolSister => "Devotion",
                             A::Classy => "Class",
                             A::Sleepytime => "Sweater",
@@ -373,7 +373,7 @@ Activation is easier when you move along walls, not directly into them.
                         | A::Guardian
                         | A::Soldier
                         | A::BleedingHeart
-                        | A::XIX
+                        | A::Xix
                         | A::SolSister
                         | A::Classy
                         | A::Sleepytime => 0,

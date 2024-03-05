@@ -52,7 +52,7 @@ pub fn write(
                         }
                         _ => ()
                     }
-                    for Check { mut index, drop, .. } in checks {
+                    for Check { mut index, drop, trial, .. } in checks {
                         let class = map
                             .get_import(map.asset_data.exports[index].get_base_export().class_index)
                             .map(|import| import.object_name.get_owned_content())
@@ -75,7 +75,7 @@ pub fn write(
                         };
                         // we always replace here since the same blueprint can have a different appearance
                         match &drop {
-                            Drop::Ability(ability, trial) => {
+                            Drop::Ability(ability) => {
                                 replace(match ability {
                                     Ability::ClingGem(_) if app.split_cling => 59, 
                                     Ability::DreamBreaker
@@ -109,9 +109,6 @@ pub fn write(
                                 match norm.properties.iter_mut().find_map(|prop| unreal_asset::cast!(Property, StructProperty, prop)){
                                     Some(row) => *row = ability.data(names.get_mut(), &mut map.imports),
                                     None => norm.properties.push(Property::StructProperty(ability.data(names.get_mut(), &mut map.imports))),
-                                }
-                                if let Some(reward) = trial.and_then(|i| map.asset_data.exports[i].get_normal_export_mut()).and_then(|trial| trial.properties.iter_mut().find_map(|prop| unreal_asset::cast!(Property, ObjectProperty, prop).filter(|prop| prop.get_name() == "rewardRef"))) {
-                                    reward.value = unreal_asset::types::PackageIndex::new(index as i32 + 1);
                                 }
                             }
                             Drop::SmallKey => {
@@ -173,6 +170,17 @@ pub fn write(
                             Drop::Note if class != "BP_Note" => replace(52, false)?,
                             Drop::Chair if class != "BP_RestChair" => replace(67, false)?,
                             _ => ()
+                        }
+                        if let Some(trial) = trial.and_then(|i| map.asset_data.exports[i].get_normal_export_mut()) {
+                            for prop in trial.properties.iter_mut().rev() {
+                                match prop {
+                                    Property::ObjectProperty(reward) if reward.name == "rewardRef" => {
+                                        reward.value = unreal_asset::types::PackageIndex::new(index as i32 + 1);
+                                        break;
+                                    },
+                                    _ => ()
+                                }
+                            }
                         }
                     }
                     if app.split_cling {

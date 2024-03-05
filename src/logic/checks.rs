@@ -9,7 +9,8 @@ pub const CHECKS: [Check; 89] = [
         description: "the time trial in the starting room",
         location: L::EarlyPrison,
         index: 503,
-        drop: Drop::Ability(A::SolSister, Some(486)),
+        drop: Drop::Ability(A::SolSister),
+        trial: Some(486),
         // not final logic
         locks: All(&[Powerup(A::DreamBreaker), Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::ClingGem(6)), Powerup(A::Sunsetter)]),
     },
@@ -17,7 +18,8 @@ pub const CHECKS: [Check; 89] = [
         description: "where dream breaker normally is",
         location: L::VDreamBreaker,
         index: 501,
-        drop: Drop::Ability(A::DreamBreaker, None),
+        drop: Drop::Ability(A::DreamBreaker),
+        trial: None,
         locks: Powerup(A::DreamBreaker),
     },
     Check {
@@ -25,6 +27,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::EarlyPrison,
         index: 283,
         drop: Drop::Health,
+        trial: None,
         locks: Any(&[
             Any(&[
                 Powerup(A::Sunsetter),
@@ -42,7 +45,8 @@ pub const CHECKS: [Check; 89] = [
         description: "where slide normally is",
         location: L::LatePrison,
         index: 502,
-        drop: Drop::Ability(A::Slide, None),
+        drop: Drop::Ability(A::Slide),
+        trial: None,
         locks: Any(&[
             Powerup(A::Slide),
             Powerup(A::SunGreaves),
@@ -54,7 +58,8 @@ pub const CHECKS: [Check; 89] = [
         description: "black hole parkour off the beaten path",
         location: L::LatePrison,
         index: 504,
-        drop: Drop::Ability(A::GoodGraces, None),
+        drop: Drop::Ability(A::GoodGraces),
+        trial: None,
         locks: Any(&[
             Powerup(A::ClingGem(6)),
             All(&[Powerup(A::AscendantLight), Powerup(A::SunGreaves)]),
@@ -65,6 +70,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::StrongEyes,
         index: 255,
         drop: Drop::SmallKey,
+        trial: None,
         locks: Any(&[
             All(&[
                 Powerup(A::SunGreaves),
@@ -81,6 +87,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::StrongEyes,
         index: 284,
         drop: Drop::Health,
+        trial: None,
         locks: Any(&[Powerup(A::SunGreaves), Powerup(A::ClingGem(4))]),
     },
     Check {
@@ -88,13 +95,15 @@ pub const CHECKS: [Check; 89] = [
         location: L::StrongEyes,
         index: 254,
         drop: Drop::SmallKey,
+        trial: None,
         locks: Powerup(A::DreamBreaker),
     },
     Check {
         description: "where memento normally is",
         location: L::CsMain,
         index: 998,
-        drop: Drop::Ability(A::Memento, None),
+        drop: Drop::Ability(A::Memento),
+        trial: None,
         locks: Lock::None,
     },
     Check {
@@ -106,6 +115,7 @@ pub const CHECKS: [Check; 89] = [
             "They make me feel safe...",
             "I think i'm gonna lick it. I bet it's full of [#8ada1c, buoy, italics](minerals).",
         ]),
+        trial: None,
         locks: Lock::None,
     },
     Check {
@@ -113,6 +123,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::CsMain,
         index: 822,
         drop: Drop::Chair,
+        trial: None,
         locks: Lock::None,
     },
     Check {
@@ -120,6 +131,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::CsMain,
         index: 823,
         drop: Drop::Chair,
+        trial: None,
         locks: Lock::None,
     },
     Check {
@@ -127,13 +139,15 @@ pub const CHECKS: [Check; 89] = [
         location: L::CsMain,
         index: 824,
         drop: Drop::Chair,
+        trial: None,
         locks: Lock::None,
     },
     Check {
         description: "where indignation normally is",
         location: L::CsMain,
         index: 994,
-        drop: Drop::Ability(A::Indignation, None),
+        drop: Drop::Ability(A::Indignation),
+        trial: None,
         locks: Lock::None,
     },
     Check {
@@ -141,6 +155,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::CsMain,
         index: 540,
         drop: Drop::SmallKey,
+        trial: None,
         locks: Any(&[
             Powerup(A::Sunsetter),
             Powerup(A::HeliacalPower),
@@ -152,14 +167,16 @@ pub const CHECKS: [Check; 89] = [
         description: "the time trial behind a locked door",
         location: L::CsMain,
         index: 999,
-        drop: Drop::Ability(A::Professional, Some(969)),
-        locks: All(&[Lock::SmallKey, Powerup(A::DreamBreaker), Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::ClingGem(6)), Powerup(A::Sunsetter)]),
+        drop: Drop::Ability(A::Professional),
+        trial: Some(969),
+        locks: All(&[Lock::SmallKey, Powerup(A::DreamBreaker)]),
     },
     Check {
         description: "tucked deep in a corner in the bouncer room",
         location: L::CsMain,
         index: 592,
         drop: Drop::Health,
+        trial: None,
         locks: Any(&[
             Powerup(A::ClingGem(6)),
             All(&[Powerup(A::SunGreaves), Powerup(A::HeliacalPower)]),
@@ -170,6 +187,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::CsMain,
         index: 591,
         drop: Drop::Health,
+        trial: None,
         locks: Any(&[
             Powerup(A::AscendantLight),
             Powerup(A::SunGreaves),
@@ -181,6 +199,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::CsOldSoftlockRoom,
         index: 595,
         drop: Drop::Health,
+        trial: None,
         locks: Any(&[
             Powerup(A::ClingGem(6)),
             All(&[Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::HeliacalPower)]),
@@ -194,6 +213,7 @@ pub const CHECKS: [Check; 89] = [
             "Oh, thanks for breaking that wall down.",
             "Thought I was gonna have to jump into the haze..."
         ]),
+        trial: None,
         locks: Any(&[
             Powerup(A::ClingGem(6)),
             All(&[Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::HeliacalPower)]),
@@ -203,7 +223,8 @@ pub const CHECKS: [Check; 89] = [
         description: "cool moon room",
         location: L::CsTheatreEntrance,
         index: 997,
-        drop: Drop::Ability(A::ClearMind, None),
+        drop: Drop::Ability(A::ClearMind),
+        trial: None,
         locks: Any(&[
             Powerup(A::ClingGem(6)),
             All(&[Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::HeliacalPower)]),
@@ -214,6 +235,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::CsMain,
         index: 539,
         drop: Drop::SmallKey,
+        trial: None,
         locks: Any(&[Powerup(A::SunGreaves), Powerup(A::ClingGem(6))]),
     },
     Check {
@@ -221,6 +243,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::CsMain,
         index: 594,
         drop: Drop::Health,
+        trial: None,
         locks: Any(&[
             Powerup(A::HeliacalPower),
             Powerup(A::ClingGem(6)),
@@ -235,6 +258,7 @@ pub const CHECKS: [Check; 89] = [
             "I just don't really wanna touch the [#cf2525](bubbles)...",
             "What? I dont have a problem. You go touch 'em then, bubble girl."
         ]),
+        trial: None,
         locks: Any(&[
             Powerup(A::HeliacalPower),
             Powerup(A::ClingGem(4)),
@@ -246,6 +270,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::CsMain,
         index: 593,
         drop: Drop::Health,
+        trial: None,
         locks: Any(&[
             All(&[Powerup(A::SunGreaves), Powerup(A::HeliacalPower)]),
             Powerup(A::ClingGem(4)),
@@ -261,6 +286,7 @@ pub const CHECKS: [Check; 89] = [
             "But the handmaiden has run out of her special ingredient.",
             "I guess the princess doesn't really want anybody else's tea...",
         ]),
+        trial: None,
         locks: Lock::None,
     },
     Check {
@@ -268,13 +294,15 @@ pub const CHECKS: [Check; 89] = [
         location: L::CsMain,
         index: 825,
         drop: Drop::Chair,
+        trial: None,
         locks: Lock::None,
     },
     Check {
         description: "next to a bouncer in the massive room",
         location: L::CsMain,
         index: 995,
-        drop: Drop::Ability(A::Pilgrimage, None),
+        drop: Drop::Ability(A::Pilgrimage),
+        trial: None,
         locks: Any(&[
             All(&[
                 Powerup(A::AscendantLight),
@@ -299,7 +327,8 @@ pub const CHECKS: [Check; 89] = [
         description: "in the room with two other ones to each side",
         location: L::CsMain,
         index: 996,
-        drop: Drop::Ability(A::GoodGraces, None),
+        drop: Drop::Ability(A::GoodGraces),
+        trial: None,
         locks: Any(&[Powerup(A::ClingGem(6)), Powerup(A::SunGreaves)]),
     },
     // Listless Library
@@ -308,21 +337,24 @@ pub const CHECKS: [Check; 89] = [
         location: L::MainLibrary,
         index: 289,
         drop: Drop::Chair,
+        trial: None,
         locks: Lock::None,
     },
     Check {
         description: "the time trial amidst the books",
         location: L::MainLibrary,
         index: 325,
-        drop: Drop::Ability(A::Sleepytime, Some(314)),
+        drop: Drop::Ability(A::Sleepytime),
         // not final logic
+        trial: Some(314),
         locks: All(&[Powerup(A::DreamBreaker), Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::ClingGem(6)), Powerup(A::Sunsetter)]),
     },
     Check {
         description: "where sun greaves normally are",
         location: L::LibSaveNearGreaves,
         index: 324,
-        drop: Drop::Ability(A::SunGreaves, None),
+        drop: Drop::Ability(A::SunGreaves),
+        trial: None,
         locks: Powerup(A::DreamBreaker),
     },
     Check {
@@ -330,6 +362,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::LibSaveNearGreaves,
         index: 291,
         drop: Drop::Chair,
+        trial: None,
         locks: Lock::None,
     },
     Check {
@@ -337,6 +370,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::MainLibrary,
         index: 288,
         drop: Drop::Note,
+        trial: None,
         locks: Any(&[
             Powerup(A::SunGreaves),
             Powerup(A::ClingGem(4)),
@@ -348,6 +382,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::MainLibrary,
         index: 290,
         drop: Drop::Chair,
+        trial: None,
         locks: Any(&[
             Powerup(A::SunGreaves),
             Powerup(A::ClingGem(4)),
@@ -359,13 +394,15 @@ pub const CHECKS: [Check; 89] = [
         location: L::MainLibrary,
         index: 237,
         drop: Drop::Health,
+        trial: None,
         locks: Any(&[Powerup(A::SunGreaves), Powerup(A::ClingGem(4))]),
     },
     Check {
         description: "in the hay behind the locked door",
         location: L::Restricted,
         index: 326,
-        drop: Drop::Ability(A::ClearMind, None),
+        drop: Drop::Ability(A::ClearMind),
+        trial: None,
         locks: Any(&[
             Powerup(A::SolarWind),
             Powerup(A::HeliacalPower),
@@ -377,6 +414,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::Restricted,
         index: 238,
         drop: Drop::Health,
+        trial: None,
         locks: Any(&[Powerup(A::SunGreaves), Powerup(A::ClingGem(4))]),
     },
     // Sansa Keep
@@ -387,6 +425,7 @@ pub const CHECKS: [Check; 89] = [
         drop: Drop::Goatling(&[
             "They took away all my furniture."
         ]),
+        trial: None,
         locks: Lock::None,
     },
     Check {
@@ -396,6 +435,7 @@ pub const CHECKS: [Check; 89] = [
         drop: Drop::Goatling(&[
             "[6rr](.....c.....y..u...i....y.......ce....)"
         ]),
+        trial: None,
         locks: Lock::None,
     },
     Check {
@@ -403,13 +443,15 @@ pub const CHECKS: [Check; 89] = [
         location: L::SkCastleRampEntry,
         index: 477,
         drop: Drop::Chair,
+        trial: None,
         locks: Lock::None,
     },
     Check {
         description: "where strikebreak normally is",
         location: L::SansaKeep,
         index: 565,
-        drop: Drop::Ability(A::Strikebreak, None),
+        drop: Drop::Ability(A::Strikebreak),
+        trial: None,
         locks:  All(&[
             Powerup(A::Strikebreak),
             Any(&[
@@ -423,7 +465,8 @@ pub const CHECKS: [Check; 89] = [
         description: "where sunsetter normally is",
         location: L::Sunsetter,
         index: 564,
-        drop: Drop::Ability(A::Sunsetter, None),
+        drop: Drop::Ability(A::Sunsetter),
+        trial: None,
         locks: All(&[
             Powerup(A::DreamBreaker),
             Any(&[
@@ -438,6 +481,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::Sunsetter,
         index: 330,
         drop: Drop::Health,
+        trial: None,
         locks: Any(&[
             Powerup(A::Sunsetter),
             Powerup(A::SunGreaves),
@@ -449,13 +493,15 @@ pub const CHECKS: [Check; 89] = [
         location: L::SansaKeep,
         index: 304,
         drop: Drop::SmallKey,
+        trial: None,
         locks: Powerup(A::DreamBreaker),
     },
     Check {
         description: "tucked near the theatre entrance",
         location: L::SansaKeep,
         index: 566,
-        drop: Drop::Ability(A::ClearMind, None),
+        drop: Drop::Ability(A::ClearMind),
+        trial: None,
         locks: Any(&[
             Powerup(A::Sunsetter),
             Powerup(A::HeliacalPower),
@@ -467,6 +513,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::SansaKeep,
         index: 305,
         drop: Drop::BigKey,
+        trial: None,
         locks: Any(&[
             All(&[
                 Powerup(A::AscendantLight),
@@ -492,8 +539,9 @@ pub const CHECKS: [Check; 89] = [
         description: "the time trial at the end of the parkour",
         location: L::SansaKeep,
         index: 567,
-        drop: Drop::Ability(A::Guardian, Some(541)),
+        drop: Drop::Ability(A::Guardian),
         // only logic to get here not final
+        trial: Some(541),
         locks: All(&[Powerup(A::DreamBreaker), Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::ClingGem(6)), Powerup(A::Sunsetter), Powerup(A::AscendantLight)]),
     },
     Check {
@@ -501,6 +549,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::SansaKeep,
         index: 478,
         drop: Drop::Chair,
+        trial: None,
         locks:  Any(&[
             All(&[
                 Powerup(A::AscendantLight),
@@ -528,6 +577,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::EmptyBailey,
         index: 115,
         drop: Drop::Goatling(&["...i'm not here."]),
+        trial: None,
         locks: Powerup(A::Slide),
     },
     Check {
@@ -535,6 +585,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::EmptyBailey,
         index: 70,
         drop: Drop::SmallKey,
+        trial: None,
         locks: Powerup(A::Slide),
     },
     Check {
@@ -542,6 +593,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::EmptyBailey,
         index: 69,
         drop: Drop::BigKey,
+        trial: None,
         locks: Any(&[
             Powerup(A::Sunsetter),
             Powerup(A::SunGreaves),
@@ -553,7 +605,8 @@ pub const CHECKS: [Check; 89] = [
         description: "where solar wind normally is",
         location: L::EmptyBailey,
         index: 148,
-        drop: Drop::Ability(A::SolarWind, None),
+        drop: Drop::Ability(A::SolarWind),
+        trial: None,
         locks: All(&[
             Powerup(A::Slide),
             Powerup(A::DreamBreaker),
@@ -568,6 +621,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::EmptyBailey,
         index: 80,
         drop: Drop::Health,
+        trial: None,
         locks: Any(&[
             All(&[Powerup(A::Sunsetter), Powerup(A::HeliacalPower)]),
             Powerup(A::SunGreaves),
@@ -579,7 +633,8 @@ pub const CHECKS: [Check; 89] = [
         description: "under the cheese bell",
         location: L::EmptyBailey,
         index: 149,
-        drop: Drop::Ability(A::Empathy, None),
+        drop: Drop::Ability(A::Empathy),
+        trial: None,
         locks: Any(&[
             All(&[
                 Powerup(A::SolarWind),
@@ -595,7 +650,8 @@ pub const CHECKS: [Check; 89] = [
         description: "the locked up time trial",
         location: L::EmptyBailey,
         index: 150,
-        drop: Drop::Ability(A::Soldier, Some(128)),
+        drop: Drop::Ability(A::Soldier),
+        trial: Some(128),
         locks: All(&[Powerup(A::DreamBreaker), Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::ClingGem(6)), Powerup(A::Sunsetter)]),
     },
     // Underbelly
@@ -604,6 +660,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::SansaHole,
         index: 614,
         drop: Drop::Health,
+        trial: None,
         locks: Any(&[
             Powerup(A::SunGreaves),
             All(&[Powerup(A::Sunsetter), Powerup(A::HeliacalPower)]),
@@ -614,6 +671,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::SansaHole,
         index: 545,
         drop: Drop::BigKey,
+        trial: None,
         locks: All(&[
             Powerup(A::DreamBreaker),
             Powerup(A::Sunsetter),
@@ -630,8 +688,9 @@ pub const CHECKS: [Check; 89] = [
         description: "where ascendant light normally is",
         location: L::VAscendantLight,
         index: 1044,
-        drop: Drop::Ability(A::AscendantLight, None),
+        drop: Drop::Ability(A::AscendantLight),
         // you can go through the dark area and there's a passage which you can do with nothing
+        trial: None,
         locks: Powerup(A::DreamBreaker),
     },
     Check {
@@ -639,6 +698,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::VAscendantLight,
         index: 616,
         drop: Drop::Health,
+        trial: None,
         locks: Powerup(A::DreamBreaker),
     },
     Check {
@@ -646,6 +706,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::MainUnderbelly,
         index: 546,
         drop: Drop::SmallKey,
+        trial: None,
         locks: Any(&[
             Powerup(A::Sunsetter),
             Powerup(A::SolarWind),
@@ -656,6 +717,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::MainUnderbelly,
         index: 894,
         drop: Drop::Note,
+        trial: None,
         locks: All(&[
             Powerup(A::HeliacalPower),
             Powerup(A::Sunsetter),
@@ -670,7 +732,8 @@ pub const CHECKS: [Check; 89] = [
         description: "black hole parkour behind strikebreak wall",
         location: L::MainUnderbelly,
         index: 1046,
-        drop: Drop::Ability(A::MartialProwess, None),
+        drop: Drop::Ability(A::MartialProwess),
+        trial: None,
         locks: All(&[
             Powerup(A::SoulCutter),
             Powerup(A::AscendantLight),
@@ -685,15 +748,17 @@ pub const CHECKS: [Check; 89] = [
         description: "the locked up time trial",
         location: L::MainUnderbelly,
         index: 1045,
-        drop: Drop::Ability(A::XIX, Some(1028)),
+        drop: Drop::Ability(A::Xix),
         // need to hit lever at top first
+        trial: Some(1028),
         locks: All(&[Powerup(A::DreamBreaker), Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::ClingGem(6)), Powerup(A::Sunsetter)]),
     },
     Check {
         description: "behind the locked door",
         location: L::HpSave,
         index: 1047,
-        drop: Drop::Ability(A::HeliacalPower, None),
+        drop: Drop::Ability(A::HeliacalPower),
+        trial: None,
         locks: All(&[
             Lock::SmallKey,
             Powerup(A::DreamBreaker),
@@ -704,6 +769,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::HpSave,
         index: 895,
         drop: Drop::Note,
+        trial: None,
         locks: All(&[
             Lock::SmallKey,
             Powerup(A::DreamBreaker),
@@ -714,6 +780,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::BaileyHole,
         index: 896,
         drop: Drop::Note,
+        trial: None,
         locks: Any(&[
             Powerup(A::SunGreaves),
             All(&[Powerup(A::HeliacalPower), Powerup(A::Sunsetter)]),
@@ -727,6 +794,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::BaileyHole,
         index: 615,
         drop: Drop::Health,
+        trial: None,
         locks: Any(&[Powerup(A::SunGreaves), Powerup(A::Sunsetter)]),
     },
     // Tower Ruins
@@ -734,7 +802,8 @@ pub const CHECKS: [Check; 89] = [
         description: "where cling gem normally is",
         location: L::TowerRuinsKeep,
         index: 155,
-        drop: Drop::Ability(A::ClingGem(6), None),
+        drop: Drop::Ability(A::ClingGem(6)),
+        trial: None,
         locks: Any(&[
             Powerup(A::ClingGem(6)),
             Powerup(A::SunGreaves),
@@ -746,6 +815,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::TowerRuinsKeep,
         index: 77,
         drop: Drop::BigKey,
+        trial: None,
         locks: All(&[
             Powerup(A::ClingGem(2)),
             Any(&[
@@ -761,9 +831,10 @@ pub const CHECKS: [Check; 89] = [
         description: "the time trial at the tower entrance",
         location: L::TowerRuinsKeep,
         index: 156,
-        drop: Drop::Ability(A::BleedingHeart, Some(129)),
+        drop: Drop::Ability(A::BleedingHeart),
         // again again just to get to top of tower
         // need to hit lever tho
+        trial: Some(129),
         locks: All(&[Powerup(A::DreamBreaker), Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::ClingGem(6)), Powerup(A::Sunsetter)]),
     },
     // Twilight Theatre
@@ -771,7 +842,8 @@ pub const CHECKS: [Check; 89] = [
         description: "on a beam in the corner",
         location: L::PillarRoom,
         index: 1231,
-        drop: Drop::Ability(A::AerialFinesse, None),
+        drop: Drop::Ability(A::AerialFinesse),
+        trial: None,
         locks: Any(&[
             All(&[
               Powerup(A::SunGreaves),
@@ -784,8 +856,9 @@ pub const CHECKS: [Check; 89] = [
         description: "the locked up time trial",
         location: L::PillarRoom,
         index: 1232,
-        drop: Drop::Ability(A::Classy, Some(1211)),
+        drop: Drop::Ability(A::Classy),
         // need to hit the lever first
+        trial: Some(1211),
         locks: All(&[Powerup(A::DreamBreaker), Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::ClingGem(6)), Powerup(A::Sunsetter)]),
     },
     Check {
@@ -793,6 +866,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::OtherTheatrePath,
         index: 1081,
         drop: Drop::Chair,
+        trial: None,
         locks: Lock::None,
     },
     Check {
@@ -800,6 +874,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::OtherTheatrePath,
         index: 1084,
         drop: Drop::Chair,
+        trial: None,
         locks: Lock::None,
     },
     Check {
@@ -807,6 +882,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::OtherTheatrePath,
         index: 1085,
         drop: Drop::Chair,
+        trial: None,
         locks: Lock::None,
     },
     Check {
@@ -814,6 +890,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::OtherTheatrePath,
         index: 1086,
         drop: Drop::Chair,
+        trial: None,
         locks: Lock::None,
     },
     Check {
@@ -825,6 +902,7 @@ pub const CHECKS: [Check; 89] = [
             "three bean casserole? not enough for 1 man. i can eat like, [#cf2525](20 beans), at least.",
             "so get to it. [up, 10rr](please?)"
         ]),
+        trial: None,
         locks: Lock::None,
     },
     Check {
@@ -835,6 +913,7 @@ pub const CHECKS: [Check; 89] = [
             "I heard that the theatre was still in good condition...",
             "But it seems even this place has been affected."
         ]),
+        trial: None,
         locks: Lock::None,
     },
     Check {
@@ -844,6 +923,7 @@ pub const CHECKS: [Check; 89] = [
         drop: Drop::Goatling(&[
             "Ah nuts....I really wanted to see the show today."
         ]),
+        trial: None,
         locks: Lock::None,
     },
     Check {
@@ -854,6 +934,7 @@ pub const CHECKS: [Check; 89] = [
             "Sorry miss, can't let you in.",
             "Theatre's closed until all the haze is gone."
         ]),
+        trial: None,
         locks: Lock::None,
     },
     Check {
@@ -861,6 +942,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::MainTheatre,
         index: 912,
         drop: Drop::Health,
+        trial: None,
         locks: Lock::None,
     },
     Check {
@@ -871,6 +953,7 @@ pub const CHECKS: [Check; 89] = [
             "please leave me alone?",
             "i will [#cf2525](kill again)"
         ]),
+        trial: None,
         locks: Any(&[
             All(&[Powerup(A::SolarWind), Powerup(A::HeliacalPower)]),
             Powerup(A::SunGreaves),
@@ -882,6 +965,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::MainTheatre,
         index: 1082,
         drop: Drop::Chair,
+        trial: None,
         locks: Any(&[
             Powerup(A::ClingGem(4)),
             All(&[Powerup(A::SolarWind), Powerup(A::HeliacalPower), Powerup(A::SunGreaves)]),
@@ -892,6 +976,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::MainTheatre,
         index: 1083,
         drop: Drop::Chair,
+        trial: None,
         locks: All(&[
             Powerup(A::SoulCutter),
             Powerup(A::SoulCutter),
@@ -905,6 +990,7 @@ pub const CHECKS: [Check; 89] = [
         index: 871,
         drop: Drop::BigKey,
         // there's one gap in the open green room with enemies which is too big
+        trial: None,
         locks: All(&[
             Powerup(A::DreamBreaker),
             Powerup(A::SoulCutter), 
@@ -920,7 +1006,8 @@ pub const CHECKS: [Check; 89] = [
         description: "where soul cutter normally is",
         location: L::MainTheatre,
         index: 1230,
-        drop: Drop::Ability(A::SoulCutter, None),
+        drop: Drop::Ability(A::SoulCutter),
+        trial: None,
         locks: All(&[
             Powerup(A::DreamBreaker),
             Powerup(A::SoulCutter),
@@ -935,13 +1022,15 @@ pub const CHECKS: [Check; 89] = [
         location: L::MainTheatre,
         index: 913,
         drop: Drop::Health,
+        trial: None,
         locks: Any(&[Powerup(A::SunGreaves), Powerup(A::ClingGem(6))]),
     },
     Check {
         description: "behind the locked door",
         location: L::MainTheatre,
         index: 1233,
-        drop: Drop::Ability(A::Empathy, None),
+        drop: Drop::Ability(A::Empathy),
+        trial: None,
         locks: All(&[
             Lock::SmallKey,
             Powerup(A::DreamBreaker),
