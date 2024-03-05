@@ -11,7 +11,7 @@ pub const CHECKS: [Check; 89] = [
         index: 503,
         drop: Drop::Ability(A::SolSister, Some(486)),
         // not final logic
-        locks: Lock::None,
+        locks: All(&[Powerup(A::DreamBreaker), Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::ClingGem(6)), Powerup(A::Sunsetter)]),
     },
     Check {
         description: "where dream breaker normally is",
@@ -153,10 +153,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::CsMain,
         index: 999,
         drop: Drop::Ability(A::Professional, Some(969)),
-        locks: All(&[
-            Lock::SmallKey,
-            Powerup(A::DreamBreaker)
-        ]),
+        locks: All(&[Lock::SmallKey, Powerup(A::DreamBreaker), Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::ClingGem(6)), Powerup(A::Sunsetter)]),
     },
     Check {
         description: "tucked deep in a corner in the bouncer room",
@@ -319,7 +316,7 @@ pub const CHECKS: [Check; 89] = [
         index: 325,
         drop: Drop::Ability(A::Sleepytime, Some(314)),
         // not final logic
-        locks: Lock::None,
+        locks: All(&[Powerup(A::DreamBreaker), Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::ClingGem(6)), Powerup(A::Sunsetter)]),
     },
     Check {
         description: "where sun greaves normally are",
@@ -497,26 +494,7 @@ pub const CHECKS: [Check; 89] = [
         index: 567,
         drop: Drop::Ability(A::Guardian, Some(541)),
         // only logic to get here not final
-        locks: Any(&[
-            All(&[
-                Powerup(A::AscendantLight),
-                Any(&[
-                    All(&[
-                        Powerup(A::ClingGem(4)),
-                        Any(&[Powerup(A::Sunsetter), Powerup(A::SunGreaves)]),
-                    ]),
-                    All(&[Powerup(A::Sunsetter), Powerup(A::SunGreaves)]),
-                ]),
-            ]),
-            All(&[
-                Powerup(A::DreamBreaker),
-                Powerup(A::Slide),
-                Powerup(A::SolarWind),
-                Powerup(A::Sunsetter),
-                Powerup(A::ClingGem(2)),
-                Powerup(A::SunGreaves),
-            ]),
-        ]),
+        locks: All(&[Powerup(A::DreamBreaker), Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::ClingGem(6)), Powerup(A::Sunsetter), Powerup(A::AscendantLight)]),
     },
     Check {
         description: "the chair in the middle of the parkour",
@@ -618,18 +596,7 @@ pub const CHECKS: [Check; 89] = [
         location: L::EmptyBailey,
         index: 150,
         drop: Drop::Ability(A::Soldier, Some(128)),
-        // again just get to cheese bell not final
-        // need to hit lever up there too
-        locks: Any(&[
-            All(&[
-                Powerup(A::SolarWind),
-                Any(&[
-                    Powerup(A::ClingGem(6)),
-                    All(&[Powerup(A::Sunsetter), Powerup(A::HeliacalPower)]),
-                ]),
-            ]),
-            All(&[Powerup(A::Sunsetter), Powerup(A::SunGreaves)]),
-        ]),
+        locks: All(&[Powerup(A::DreamBreaker), Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::ClingGem(6)), Powerup(A::Sunsetter)]),
     },
     // Underbelly
     Check {
@@ -720,7 +687,7 @@ pub const CHECKS: [Check; 89] = [
         index: 1045,
         drop: Drop::Ability(A::XIX, Some(1028)),
         // need to hit lever at top first
-        locks: Lock::None,
+        locks: All(&[Powerup(A::DreamBreaker), Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::ClingGem(6)), Powerup(A::Sunsetter)]),
     },
     Check {
         description: "behind the locked door",
@@ -797,16 +764,7 @@ pub const CHECKS: [Check; 89] = [
         drop: Drop::Ability(A::BleedingHeart, Some(129)),
         // again again just to get to top of tower
         // need to hit lever tho
-        locks: All(&[
-            Powerup(A::ClingGem(2)),
-            Any(&[
-                Powerup(A::SunGreaves),
-                All(&[
-                    Powerup(A::HeliacalPower),
-                    Powerup(A::Sunsetter),
-                ]),
-            ]),
-        ]),
+        locks: All(&[Powerup(A::DreamBreaker), Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::ClingGem(6)), Powerup(A::Sunsetter)]),
     },
     // Twilight Theatre
     Check {
@@ -828,7 +786,7 @@ pub const CHECKS: [Check; 89] = [
         index: 1232,
         drop: Drop::Ability(A::Classy, Some(1211)),
         // need to hit the lever first
-        locks: Lock::None,
+        locks: All(&[Powerup(A::DreamBreaker), Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::ClingGem(6)), Powerup(A::Sunsetter)]),
     },
     Check {
         description: "a chair around the table",
