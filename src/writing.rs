@@ -216,7 +216,8 @@ pub fn write(
     Ok(())
 }
 
-#[link(name = "oo2core_win64", kind = "static")]
+#[cfg_attr(target_os = "linux", link(name = "oo2corelinux64", kind = "static"))]
+#[cfg_attr(target_os = "windows", link(name = "oo2core_win64", kind = "static"))]
 extern "C" {
     fn OodleLZ_Decompress(
         compBuf: *const u8,

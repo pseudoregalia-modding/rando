@@ -177,9 +177,14 @@ impl eframe::App for Rando {
                         if ui.link("rando_p.pak").clicked() {
                             notify!(
                                 self,
-                                std::process::Command::new("explorer",)
-                                    .arg(&self.pak)
-                                    .spawn(),
+                                std::process::Command::new(
+                                    #[cfg(target_os = "windows")]
+                                    "explorer",
+                                    #[cfg(target_os = "linux")]
+                                    "xdg-open",
+                                )
+                                .arg(&self.pak)
+                                .spawn(),
                                 "share and put it in the same folder"
                             )
                         }
@@ -266,9 +271,14 @@ impl eframe::App for Rando {
                     notify!(
                         self,
                         match self.pak_str.contains("steamapps") {
-                            true => std::process::Command::new("explorer")
-                                .arg("steam://rungameid/2365810")
-                                .spawn(),
+                            true => std::process::Command::new(
+                                #[cfg(target_os = "windows")]
+                                "explorer",
+                                #[cfg(target_os = "linux")]
+                                "xdg-open",
+                            )
+                            .arg("steam://rungameid/2365810")
+                            .spawn(),
                             false => std::process::Command::new(
                                 self.pak
                                     .join("../../Binaries/Win64/pseudoregalia-Win64-Shipping.exe")
