@@ -8,6 +8,8 @@ mod locations;
 pub use locations::Location;
 mod spawns;
 pub use spawns::SPAWNS;
+mod tricks;
+pub use tricks::*;
 
 #[derive(Clone, Copy, PartialEq)]
 pub enum Drop {
@@ -36,12 +38,12 @@ impl std::fmt::Debug for Drop {
 
 #[derive(Clone)]
 pub struct Check {
-    description: &'static str,
+    pub description: &'static str,
     pub location: Location,
     pub index: usize,
     pub drop: Drop,
     pub trial: Option<usize>,
-    locks: Lock,
+    pub locks: Lock,
 }
 
 impl std::fmt::Debug for Check {
@@ -60,6 +62,7 @@ pub enum Lock {
     None,
     Any(&'static [Lock]),
     All(&'static [Lock]),
+    Trick(Trick, Difficulty),
     Location(Location),
     Movement(Ability),
     SmallKey,
