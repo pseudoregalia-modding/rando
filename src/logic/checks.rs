@@ -2,7 +2,10 @@ use super::*;
 
 use Ability as A;
 use Location as L;
-use Lock::{All, Any, Movement as Powerup, Location as Loc};
+use Lock::{All, Any, Movement as Powerup, Location as Loc, Trick};
+// for some reason doesn't import properly as just Trick
+use super::Trick as T;
+use Difficulty as D;
 
 pub const CHECKS: [Check; 89] = [
     Check {
@@ -20,7 +23,18 @@ pub const CHECKS: [Check; 89] = [
         index: 501,
         drop: Drop::Ability(A::DreamBreaker),
         trial: None,
-        locks: Powerup(A::DreamBreaker),
+        locks: Any(&[Powerup(A::DreamBreaker), 
+        All(&[
+            Powerup(A::SunGreaves),
+            Trick(T::Movement, D::Expert),
+            Trick(T::OneWall, D::Advanced),
+        ]),
+        All(&[
+            Powerup(A::SunGreaves),
+            Powerup(A::SolarWind),
+            Trick(T::Movement, D::Advanced),
+            Trick(T::OneWall, D::Advanced),
+        ]),]),
     },
     Check {
         description: "where the first health piece is",
