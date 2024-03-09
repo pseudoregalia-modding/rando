@@ -10,6 +10,15 @@ fn accessible(
 ) -> bool {
     match locks {
         Lock::None => true,
+        Lock::Trick(trick, diff) => match trick {
+            Trick::Momentum => &app.tricks.momentum >= diff,
+            Trick::Movement => &app.tricks.movement >= diff,
+            Trick::ClingAbuse => &app.tricks.cling_abuse >= diff,
+            Trick::OneWall => &app.tricks.one_wall >= diff,
+            Trick::PogoAbuse => &app.tricks.pogo_abuse >= diff,
+            Trick::ReverseKick => &app.tricks.reverse_kick >= diff,
+            Trick::SunsetterAbuse => &app.tricks.sunsetter_abuse >= diff,
+        },
         Lock::Any(locks) => locks
             .iter()
             .any(|lock| accessible(lock, locations, obtainable, app, ctx)),
