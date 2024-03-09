@@ -1,17 +1,27 @@
-use eframe::egui;
+use eframe::egui::{self, ComboBox, InnerResponse, Response, ScrollArea};
+use crate::logic::*;
+use logic_view::Area;
+use strum::IntoEnumIterator;
 
 mod io;
 mod logic;
 mod map;
 mod writing;
+mod logic_view;
 
 type Asset<T> = unreal_asset::Asset<std::io::Cursor<T>>;
+
+pub struct viewer {
+    pub selected_node: Option<(Option<Location>, Option<usize>)>,
+    pub selected_area: Area,
+}
 
 pub struct Rando {
     notifs: egui_modal::Modal,
     credits: egui_modal::Modal,
     faq: egui_modal::Modal,
-    tricks: egui_modal::Modal,
+    tricks_modal: egui_modal::Modal,
+    logic_viewer: egui_modal::Modal,
     pak: std::path::PathBuf,
     pak_str: String,
     abilities: bool,
@@ -26,9 +36,43 @@ pub struct Rando {
     chairs: bool,
     split_cling: bool,
     spawn: bool,
+    tricks: logic::Tricks,
+    logic_view: viewer,
+    style: bool,
 }
 
 impl Rando {
+    pub fn toggleFont(&mut self, ctx: &eframe::egui::Context, _s: &mut eframe::Frame) {
+        use egui::*;
+        use TextStyle::*;
+        use FontFamily::{Monospace, Proportional};
+        if self.style {
+            let mut style = (*ctx.style()).clone();
+            style.text_styles = [
+                (Heading, FontId::new(30.0, Proportional)),
+                (Name("Heading2".into()), FontId::new(20.0, Proportional)),
+                (Name("Context".into()), FontId::new(18.0, Proportional)),
+                (Body, FontId::new(15.0, Proportional)),
+                (Button, FontId::new(17.0, Proportional)),
+                (Small, FontId::new(15.0, Proportional)),
+            ].into();
+            ctx.set_style(style);
+        } else {
+            let mut style = (*ctx.style()).clone();
+            style.text_styles = [
+                (Heading, FontId::new(30.0, Monospace)),
+                (Name("Heading2".into()), FontId::new(15.0, Monospace)),
+                (Name("Context".into()), FontId::new(13.0, Monospace)),
+                (Body, FontId::new(10.0, Monospace)),
+                (Button, FontId::new(12.0, Monospace)),
+                (Small, FontId::new(10.0, Monospace)),
+            ].into();
+            ctx.set_style(style);
+        }
+
+    }
+
+
     pub fn new(ctx: &eframe::CreationContext) -> Self {
         let get_bool = |key: &str| -> bool {
             ctx.storage
@@ -40,6 +84,16 @@ impl Rando {
                         .unwrap_or_default()
                 })
                 .unwrap_or_default()
+        };
+
+        let get_difficulty = |key: &str| -> logic::Difficulty {
+            use std::str::FromStr;
+            logic::Difficulty::from_str(
+                &ctx.storage
+                    .map(|storage| storage.get_string(key).unwrap_or_default())
+                    .unwrap_or_default(),
+            )
+            .unwrap_or_default()
         };
 
         let mut font = egui::FontDefinitions::default();
@@ -74,7 +128,8 @@ impl Rando {
             notifs,
             credits: egui_modal::Modal::new(&ctx.egui_ctx, "credits"),
             faq: egui_modal::Modal::new(&ctx.egui_ctx, "faq"),
-            tricks: egui_modal::Modal::new(&ctx.egui_ctx, "trick"),
+            tricks_modal: egui_modal::Modal::new(&ctx.egui_ctx, "trick"),
+            logic_viewer: egui_modal::Modal::new(&ctx.egui_ctx, "logic_viewer"),
             pak,
             pak_str,
             abilities: get_bool("abilities"),
@@ -89,6 +144,21 @@ impl Rando {
             chairs: get_bool("chairs"),
             split_cling: get_bool("split cling"),
             spawn: get_bool("spawn"),
+            tricks: logic::Tricks {
+                momentum: get_difficulty("momentum"),
+                one_wall: get_difficulty("one wall"),
+                reverse_kick: get_difficulty("reverse kick"),
+                sunsetter_abuse: get_difficulty("sunsetter abuse"),
+                pogo_abuse: get_difficulty("pogo abuse"),
+                movement: get_difficulty("movement"),
+                cling_abuse: get_difficulty("cling abuse"),
+            },
+            logic_view: viewer {
+                selected_area: Area::Dungeon,
+                selected_node: Some((Some(Location::VDreamBreaker), None)),
+
+            },
+            style: true,
         }
     }
     fn pak(&self) -> Result<std::io::BufReader<std::fs::File>, std::io::Error> {
@@ -140,7 +210,8 @@ macro_rules! notify {
 }
 
 impl eframe::App for Rando {
-    fn update(&mut self, ctx: &eframe::egui::Context, _: &mut eframe::Frame) {
+    fn update(&mut self, ctx: &eframe::egui::Context, _s: &mut eframe::Frame) {
+        self.toggleFont(ctx, _s);
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.horizontal(|ui| {
                 ui.heading(egui::RichText::new("pseudoregalia rando").size(40.0));
@@ -247,17 +318,111 @@ impl eframe::App for Rando {
             });
             ui.vertical_centered_justified(|ui| {
                 if ui
-                    .button(egui::RichText::new("trick settings").size(25.0))
+                    .button(egui::RichText::new("Logic Viewer").size(25.0))
                     .clicked()
                 {
-                    self.tricks.open()
+                    self.logic_viewer.open()
                 }
-                self.tricks.show(|ui| {
+                self.logic_viewer.show(|ui| {
+                    use logic_view::LogicRead;
+                    ui.set_max_height(500.0);
+                    ui.set_min_height(400.0);
+                    ui.set_min_width(800.0);
+                    ui.set_max_width(800.0);
+                    ui.vertical_centered(|ui| {
+                        ui.heading(format!("Selected node: {:?}", 
+                            if self.logic_view.selected_node.unwrap().0.is_some() {
+                                self.logic_view.selected_node.unwrap().0.unwrap().to_string()
+                            } else {
+                                CHECKS[self.logic_view.selected_node.unwrap().1.unwrap()].description.to_string()
+                            }
+                        ));
+                        ui.add_space(5.0);
+                        ui.horizontal_centered(|ui| {
+                            ScrollArea::vertical().id_source(999998).show(ui,|ui| {
+                                ui.vertical(|ui| {
+                                    ui.label("Node Selection:");
+                                    ComboBox::new("area_selection", "").selected_text(self.logic_view.selected_area.as_ref()).show_ui(ui, |ui| {
+                                        for area in logic_view::Area::iter() {
+                                            ui.selectable_value(&mut self.logic_view.selected_area, area, area.to_string());
+                                        }
+                                    });
+                                    ComboBox::new("node_selection", "").selected_text(
+                                            if self.logic_view.selected_node.unwrap().0.is_some() {
+                                                self.logic_view.selected_node.unwrap().0.unwrap().to_string()
+                                            } else {
+                                                CHECKS[self.logic_view.selected_node.unwrap().1.unwrap()].description.to_string()
+                                            }
+                                        
+                                        ).show_ui(ui, |ui| {
+                                        for loc in logic_view::Area::get_nodes(&self.logic_view.selected_area) {
+                                            ui.selectable_value(&mut self.logic_view.selected_node, Some((Some(*loc), None)), loc.to_string());
+                                            for i in 0..CHECKS.len() {
+                                                if CHECKS[i].location == *loc {
+                                                    ui.selectable_value(&mut self.logic_view.selected_node, Some((None, Some(i))), CHECKS[i].description);
+                                                }
+                                            }
+                                        }
+                                    });
+                                    /*for loc in Location::iter() {
+                                        let str_ = loc.to_string();
+                                        ui.radio_value(&mut self.selected_node, loc, str_);
+                                    }*/
+                                })
+                            });
+                            ScrollArea::vertical().id_source(999999).show(ui,|ui| {
+                                ui.vertical(|ui| {
+
+                                    if self.logic_view.selected_node.unwrap().1.is_some() {
+                                        let check: Check = CHECKS[self.logic_view.selected_node.unwrap().1.unwrap()].clone();
+                                        ui.label(format!("Access to: {:?}", check.location));
+                                        LogicRead::logic_node_lock_to_ui(ui, check.locks, 0);
+                                    } else {
+                                        LogicRead::logic_node_lock_to_ui(ui, Location::locks(&self.logic_view.selected_node.unwrap().0.unwrap()), 0);
+                                    }
+                                })
+                            });
+                        });
+                    });
+                    
                     ui.with_layout(
                         egui::Layout::default()
                             .with_cross_justify(true)
                             .with_cross_align(egui::Align::Center),
-                        |ui| self.tricks.button(ui, "close"),
+                        |ui| self.logic_viewer.button(ui, "close"),
+                    );
+                });
+
+
+                if ui
+                    .button(egui::RichText::new("trick settings").size(25.0))
+                    .clicked()
+                {
+                    self.tricks_modal.open()
+                }
+                self.tricks_modal.show(|ui| {
+                    let mut combobox = |label: &str, trick: &mut logic::Difficulty| {
+                        egui::ComboBox::from_label(label)
+                            .selected_text(trick.as_ref())
+                            .show_ui(ui, |ui| {
+                                use strum::IntoEnumIterator;
+                                for diff in logic::Difficulty::iter() {
+                                    ui.selectable_value(trick, diff, diff.to_string());
+                                }
+                            });
+                    };
+                    combobox("momentum conservation", &mut self.tricks.momentum);
+                    combobox("single wall wallkick", &mut self.tricks.one_wall);
+                    combobox("reverse wallkicks", &mut self.tricks.reverse_kick);
+                    combobox("sunsetter flip abuse", &mut self.tricks.sunsetter_abuse);
+                    combobox("ascendant light abuse", &mut self.tricks.pogo_abuse);
+                    combobox("movement", &mut self.tricks.movement);
+                    combobox("cling abuse", &mut self.tricks.cling_abuse);
+                    ui.with_layout(
+                        egui::Layout::default()
+                            .with_cross_justify(true)
+                            .with_cross_align(egui::Align::Center),
+                        |ui| self.tricks_modal.button(ui, "close"),
                     );
                 });
                 if ui.button("uninstall seed").clicked() {
