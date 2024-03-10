@@ -221,6 +221,9 @@ impl eframe::App for Rando {
                 if ui.button("faq").clicked() {
                     self.faq.open()
                 }
+                if ui.button("Toggle Font").clicked() {
+                    self.style = !self.style;
+                }
             });
             self.credits.show(|ui| {
                 ui.label("coding, reverse engineering and initial logic by spuds");
