@@ -11,7 +11,7 @@ pub struct Rando {
     notifs: egui_modal::Modal,
     credits: egui_modal::Modal,
     faq: egui_modal::Modal,
-    tricks_modal: egui_modal::Modal,
+    tricks: egui_modal::Modal,
     pak: std::path::PathBuf,
     pak_str: String,
     abilities: bool,
@@ -26,7 +26,13 @@ pub struct Rando {
     chairs: bool,
     split_cling: bool,
     spawn: bool,
-    tricks: logic::Tricks,
+    momentum: logic::Difficulty,
+    one_wall: logic::Difficulty,
+    reverse_kick: logic::Difficulty,
+    sunsetter_abuse: logic::Difficulty,
+    pogo_abuse: logic::Difficulty,
+    movement: logic::Difficulty,
+    cling_abuse: logic::Difficulty,
 }
 
 impl Rando {
@@ -85,7 +91,7 @@ impl Rando {
             notifs,
             credits: egui_modal::Modal::new(&ctx.egui_ctx, "credits"),
             faq: egui_modal::Modal::new(&ctx.egui_ctx, "faq"),
-            tricks_modal: egui_modal::Modal::new(&ctx.egui_ctx, "trick"),
+            tricks: egui_modal::Modal::new(&ctx.egui_ctx, "trick"),
             pak,
             pak_str,
             abilities: get_bool("abilities"),
@@ -100,15 +106,13 @@ impl Rando {
             chairs: get_bool("chairs"),
             split_cling: get_bool("split cling"),
             spawn: get_bool("spawn"),
-            tricks: logic::Tricks {
-                momentum: get_difficulty("momentum"),
-                one_wall: get_difficulty("one wall"),
-                reverse_kick: get_difficulty("reverse kick"),
-                sunsetter_abuse: get_difficulty("sunsetter abuse"),
-                pogo_abuse: get_difficulty("pogo abuse"),
-                movement: get_difficulty("movement"),
-                cling_abuse: get_difficulty("cling abuse"),
-            },
+            momentum: get_difficulty("momentum"),
+            one_wall: get_difficulty("one wall"),
+            reverse_kick: get_difficulty("reverse kick"),
+            sunsetter_abuse: get_difficulty("sunsetter abuse"),
+            pogo_abuse: get_difficulty("pogo abuse"),
+            movement: get_difficulty("movement"),
+            cling_abuse: get_difficulty("cling abuse"),
         }
     }
     fn pak(&self) -> Result<std::io::BufReader<std::fs::File>, std::io::Error> {
@@ -270,9 +274,9 @@ impl eframe::App for Rando {
                     .button(egui::RichText::new("trick settings").size(25.0))
                     .clicked()
                 {
-                    self.tricks_modal.open()
+                    self.tricks.open()
                 }
-                self.tricks_modal.show(|ui| {
+                self.tricks.show(|ui| {
                     let mut combobox = |label: &str, trick: &mut logic::Difficulty| {
                         egui::ComboBox::from_label(label)
                             .selected_text(trick.as_ref())
@@ -283,18 +287,18 @@ impl eframe::App for Rando {
                                 }
                             });
                     };
-                    combobox("momentum conservation", &mut self.tricks.momentum);
-                    combobox("single wall wallkick", &mut self.tricks.one_wall);
-                    combobox("reverse wallkicks", &mut self.tricks.reverse_kick);
-                    combobox("sunsetter flip abuse", &mut self.tricks.sunsetter_abuse);
-                    combobox("ascendant light abuse", &mut self.tricks.pogo_abuse);
-                    combobox("movement", &mut self.tricks.movement);
-                    combobox("cling abuse", &mut self.tricks.cling_abuse);
+                    combobox("momentum conservation", &mut self.momentum);
+                    combobox("single wall wallkick", &mut self.one_wall);
+                    combobox("reverse wallkicks", &mut self.reverse_kick);
+                    combobox("sunsetter flip abuse", &mut self.sunsetter_abuse);
+                    combobox("ascendant light abuse", &mut self.pogo_abuse);
+                    combobox("movement", &mut self.movement);
+                    combobox("cling abuse", &mut self.cling_abuse);
                     ui.with_layout(
                         egui::Layout::default()
                             .with_cross_justify(true)
                             .with_cross_align(egui::Align::Center),
-                        |ui| self.tricks_modal.button(ui, "close"),
+                        |ui| self.tricks.button(ui, "close"),
                     );
                 });
                 if ui.button("uninstall seed").clicked() {
@@ -342,17 +346,27 @@ impl eframe::App for Rando {
 
     fn save(&mut self, storage: &mut dyn eframe::Storage) {
         storage.set_string("pak", self.pak.to_str().unwrap_or_default().to_string());
-        storage.set_string("abilities", self.abilities.to_string());
-        storage.set_string("outfits", self.outfits.to_string());
-        storage.set_string("small keys", self.small_keys.to_string());
-        storage.set_string("big keys", self.big_keys.to_string());
-        storage.set_string("health", self.health.to_string());
-        storage.set_string("split greaves", self.split_greaves.to_string());
-        storage.set_string("progressive", self.progressive.to_string());
-        storage.set_string("goatlings", self.goatlings.to_string());
-        storage.set_string("notes", self.notes.to_string());
-        storage.set_string("chairs", self.chairs.to_string());
-        storage.set_string("split cling", self.split_cling.to_string());
-        storage.set_string("spawn", self.spawn.to_string());
+        let mut set_bool = |key: &str, value: bool| storage.set_string(key, value.to_string());
+        set_bool("abilities", self.abilities);
+        set_bool("outfits", self.outfits);
+        set_bool("small keys", self.small_keys);
+        set_bool("big keys", self.big_keys);
+        set_bool("health", self.health);
+        set_bool("split greaves", self.split_greaves);
+        set_bool("progressive", self.progressive);
+        set_bool("goatlings", self.goatlings);
+        set_bool("notes", self.notes);
+        set_bool("chairs", self.chairs);
+        set_bool("split cling", self.split_cling);
+        set_bool("spawn", self.spawn);
+        let mut set_difficulty =
+            |key: &str, value: logic::Difficulty| storage.set_string(key, value.to_string());
+        set_difficulty("momentum", self.momentum);
+        set_difficulty("one wall", self.one_wall);
+        set_difficulty("reverse kick", self.reverse_kick);
+        set_difficulty("sunsetter abuse", self.sunsetter_abuse);
+        set_difficulty("pogo abuse", self.pogo_abuse);
+        set_difficulty("movement", self.movement);
+        set_difficulty("cling abuse", self.cling_abuse);
     }
 }
