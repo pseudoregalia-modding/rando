@@ -1,4 +1,4 @@
-#[derive(PartialEq, Clone, Copy, Debug, strum::AsRefStr)]
+#[derive(PartialEq, Clone, Copy, strum::AsRefStr)]
 pub enum Ability {
     #[strum(serialize = "attack")]
     DreamBreaker,
@@ -52,6 +52,39 @@ pub enum Ability {
     Classy,
     #[strum(serialize = "outfitSweater")]
     Sleepytime,
+}
+
+impl std::fmt::Debug for Ability {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            A::DreamBreaker => f.write_str("Dream Breaker"),
+            A::SunGreaves => f.write_str("Sun Greaves"),
+            A::Slide => f.write_str("Slide"),
+            A::Sunsetter => f.write_str("Sunsetter"),
+            A::ClingGem(num) => f.write_fmt(format_args!("{num} Cling Gems")),
+            A::AscendantLight => f.write_str("Ascendant Light"),
+            A::SoulCutter => f.write_str("Soul Cutter"),
+            A::Indignation => f.write_str("Indignation"),
+            A::SolarWind => f.write_str("Solar Wind"),
+            A::Strikebreak => f.write_str("Strikebreak"),
+            A::Memento => f.write_str("Memento"),
+            A::HeliacalPower => f.write_str("Heliacal Power"),
+            A::AerialFinesse => f.write_str("Aerial Finesse"),
+            A::Pilgrimage => f.write_str("Pilgrimage"),
+            A::Empathy => f.write_str("Empathy"),
+            A::GoodGraces => f.write_str("Good Graces"),
+            A::MartialProwess => f.write_str("Martial Prowess"),
+            A::ClearMind => f.write_str("Clear Mind"),
+            A::Professional => f.write_str("Professional"),
+            A::Guardian => f.write_str("Guardian"),
+            A::Soldier => f.write_str("Soldier"),
+            A::BleedingHeart => f.write_str("Bleeding Heart"),
+            A::Xix => f.write_str("XIX"),
+            A::SolSister => f.write_str("Sol Sister"),
+            A::Classy => f.write_str("Classy"),
+            A::Sleepytime => f.write_str("Sleepytime"),
+        }
+    }
 }
 
 use unreal_asset::types::PackageIndex;
