@@ -36,7 +36,7 @@ impl std::fmt::Debug for Drop {
     }
 }
 
-#[derive(Clone)]
+#[derive(Clone, PartialEq)]
 pub struct Check {
     pub description: &'static str,
     pub location: Location,
@@ -57,7 +57,7 @@ impl std::fmt::Debug for Check {
     }
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Lock {
     None,
     Any(&'static [Lock]),
