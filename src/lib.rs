@@ -7,11 +7,18 @@ mod writing;
 
 type Asset<T> = unreal_asset::Asset<std::io::Cursor<T>>;
 
+#[derive(PartialEq)]
+enum Node {
+    Location(logic::Location),
+    Check(logic::Check),
+}
+
 pub struct Rando {
     notifs: egui_modal::Modal,
     credits: egui_modal::Modal,
     faq: egui_modal::Modal,
     tricks: egui_modal::Modal,
+    viewer: egui_modal::Modal,
     pak: std::path::PathBuf,
     pak_str: String,
     abilities: bool,
@@ -33,6 +40,7 @@ pub struct Rando {
     pogo_abuse: logic::Difficulty,
     movement: logic::Difficulty,
     cling_abuse: logic::Difficulty,
+    selected: Node,
 }
 
 impl Rando {
@@ -92,6 +100,7 @@ impl Rando {
             credits: egui_modal::Modal::new(&ctx.egui_ctx, "credits"),
             faq: egui_modal::Modal::new(&ctx.egui_ctx, "faq"),
             tricks: egui_modal::Modal::new(&ctx.egui_ctx, "trick"),
+            viewer: egui_modal::Modal::new(&ctx.egui_ctx, "viewer"),
             pak,
             pak_str,
             abilities: get_bool("abilities"),
@@ -113,6 +122,7 @@ impl Rando {
             pogo_abuse: get_difficulty("pogo abuse"),
             movement: get_difficulty("movement"),
             cling_abuse: get_difficulty("cling abuse"),
+            selected: Node::Location(logic::Location::EarlyPrison),
         }
     }
     fn pak(&self) -> Result<std::io::BufReader<std::fs::File>, std::io::Error> {
@@ -270,6 +280,107 @@ impl eframe::App for Rando {
                 ui[2].add_enabled(false, egui::Checkbox::new(&mut false, "Transitions?"));
             });
             ui.vertical_centered_justified(|ui| {
+                if ui
+                    .button(egui::RichText::new("logic viewer").size(25.0))
+                    .clicked()
+                {
+                    self.viewer.open()
+                }
+                self.viewer.show(|ui| {
+                    egui::ComboBox::from_id_source("selection")
+                        .selected_text(match &self.selected {
+                            Node::Location(loc) => format!("{loc:?}"),
+                            Node::Check(check) => check.description.into(),
+                        })
+                        .show_ui(ui, |ui| {
+                            use strum::IntoEnumIterator;
+                            for loc in logic::Location::iter() {
+                                ui.selectable_value(
+                                    &mut self.selected,
+                                    Node::Location(loc),
+                                    format!("{loc:?}"),
+                                );
+                            }
+                            // use own version of selectable value to prevent unnecessary clones
+                            for check in logic::CHECKS.iter() {
+                                let equal = match &self.selected {
+                                    Node::Location(_) => false,
+                                    Node::Check(sel) => sel == check,
+                                };
+                                if ui.selectable_label(equal, check.description).clicked() && !equal
+                                {
+                                    self.selected = Node::Check(check.clone())
+                                }
+                            }
+                        });
+                    fn collapsing(ui: &mut egui::Ui, text: &str, locks: &[logic::Lock], id: usize) {
+                        egui::CollapsingHeader::new(text)
+                            .id_source(id)
+                            .show(ui, |ui| {
+                                for (id, lock) in locks.iter().enumerate() {
+                                    show(ui, lock, id)
+                                }
+                            });
+                    }
+                    fn show(ui: &mut egui::Ui, locks: &logic::Lock, id: usize) {
+                        match locks {
+                            logic::Lock::None => (),
+                            logic::Lock::Any(locks) => collapsing(ui, "any of", locks, id),
+                            logic::Lock::All(locks) => collapsing(ui, "all of", locks, id),
+                            logic::Lock::Trick(trick, diff) => {
+                                ui.label(match trick {
+                                    logic::Trick::Momentum => {
+                                        format!("{:?} momentum conservation", diff)
+                                    }
+                                    logic::Trick::Movement => format!("{:?} movement", diff),
+                                    logic::Trick::ClingAbuse => {
+                                        format!("{:?} cling abuse", diff)
+                                    }
+                                    logic::Trick::OneWall => {
+                                        format!("{:?} single wall wallkicks", diff)
+                                    }
+                                    logic::Trick::PogoAbuse => {
+                                        format!("{:?} ascendant light abuse", diff)
+                                    }
+                                    logic::Trick::ReverseKick => {
+                                        format!("{:?} reverse wallkicks", diff)
+                                    }
+                                    logic::Trick::SunsetterAbuse => {
+                                        format!("{:?} sunsetter backflip abuse", diff)
+                                    }
+                                });
+                            }
+                            logic::Lock::Location(loc) => {
+                                ui.label(format!("access to: {:?}", loc));
+                            }
+                            logic::Lock::Movement(ability) => {
+                                ui.label(format!("{:?}", ability));
+                            }
+                            logic::Lock::SmallKey => {
+                                ui.label("small Key");
+                            }
+                            logic::Lock::Ending => {
+                                ui.label("four big keys");
+                            }
+                        }
+                    }
+                    ui.vertical(|ui| {
+                        egui::ScrollArea::both()
+                            .id_source("locks")
+                            .auto_shrink([false; 2])
+                            .max_height(ui.available_width() / 2.0)
+                            .show(ui, |ui| match &self.selected {
+                                Node::Location(loc) => show(ui, &loc.locks(), 0),
+                                Node::Check(check) => show(ui, &check.locks, 0),
+                            })
+                    });
+                    ui.with_layout(
+                        egui::Layout::default()
+                            .with_cross_justify(true)
+                            .with_cross_align(egui::Align::Center),
+                        |ui| self.viewer.button(ui, "close"),
+                    );
+                });
                 if ui
                     .button(egui::RichText::new("trick settings").size(25.0))
                     .clicked()
