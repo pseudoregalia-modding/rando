@@ -120,7 +120,7 @@ impl Rando {
             movement: get_difficulty("movement"),
             cling_abuse: get_difficulty("cling abuse"),
             knowledge: get_difficulty("knowledge"),
-            selected: viewer::Node::Location(logic::Location::EarlyPrison),
+            selected: viewer::Node::Location(logic::Location::VDreamBreaker),
             area: viewer::Area::Dungeon,
         }
     }
@@ -292,7 +292,13 @@ impl eframe::App for Rando {
                             .show_ui(ui, |ui| {
                                 use strum::IntoEnumIterator;
                                 for diff in viewer::Area::iter() {
-                                    ui.selectable_value(&mut self.area, diff, diff.to_string());
+                                    if ui
+                                        .selectable_value(&mut self.area, diff, diff.to_string())
+                                        .clicked()
+                                    {
+                                        self.selected =
+                                            viewer::Node::Location(self.area.rooms()[0]);
+                                    }
                                 }
                             });
                         egui::ComboBox::from_id_source("node")
