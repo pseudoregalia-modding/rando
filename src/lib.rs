@@ -3,15 +3,10 @@ use eframe::egui;
 mod io;
 mod logic;
 mod map;
+mod viewer;
 mod writing;
 
 type Asset<T> = unreal_asset::Asset<std::io::Cursor<T>>;
-
-#[derive(PartialEq)]
-enum Node {
-    Location(logic::Location),
-    Check(logic::Check),
-}
 
 pub struct Rando {
     notifs: egui_modal::Modal,
@@ -40,7 +35,8 @@ pub struct Rando {
     pogo_abuse: logic::Difficulty,
     movement: logic::Difficulty,
     cling_abuse: logic::Difficulty,
-    selected: Node,
+    selected: viewer::Node,
+    area: viewer::Area,
 }
 
 impl Rando {
@@ -122,7 +118,8 @@ impl Rando {
             pogo_abuse: get_difficulty("pogo abuse"),
             movement: get_difficulty("movement"),
             cling_abuse: get_difficulty("cling abuse"),
-            selected: Node::Location(logic::Location::EarlyPrison),
+            selected: viewer::Node::Location(logic::Location::EarlyPrison),
+            area: viewer::Area::Dungeon,
         }
     }
     fn pak(&self) -> Result<std::io::BufReader<std::fs::File>, std::io::Error> {
@@ -287,32 +284,46 @@ impl eframe::App for Rando {
                     self.viewer.open()
                 }
                 self.viewer.show(|ui| {
-                    egui::ComboBox::from_id_source("selection")
-                        .selected_text(match &self.selected {
-                            Node::Location(loc) => format!("{loc:?}"),
-                            Node::Check(check) => check.description.into(),
-                        })
-                        .show_ui(ui, |ui| {
-                            use strum::IntoEnumIterator;
-                            for loc in logic::Location::iter() {
-                                ui.selectable_value(
-                                    &mut self.selected,
-                                    Node::Location(loc),
-                                    format!("{loc:?}"),
-                                );
-                            }
-                            // use own version of selectable value to prevent unnecessary clones
-                            for check in logic::CHECKS.iter() {
-                                let equal = match &self.selected {
-                                    Node::Location(_) => false,
-                                    Node::Check(sel) => sel == check,
-                                };
-                                if ui.selectable_label(equal, check.description).clicked() && !equal
-                                {
-                                    self.selected = Node::Check(check.clone())
+                    ui.horizontal(|ui| {
+                        egui::ComboBox::from_id_source("area")
+                            .selected_text(self.area.as_ref())
+                            .show_ui(ui, |ui| {
+                                use strum::IntoEnumIterator;
+                                for diff in viewer::Area::iter() {
+                                    ui.selectable_value(&mut self.area, diff, diff.to_string());
                                 }
-                            }
-                        });
+                            });
+                        egui::ComboBox::from_id_source("node")
+                            .selected_text(match &self.selected {
+                                viewer::Node::Location(loc) => format!("{loc:?}"),
+                                viewer::Node::Check(check) => check.description.into(),
+                            })
+                            .show_ui(ui, |ui| {
+                                let rooms = self.area.rooms();
+                                for loc in rooms.iter() {
+                                    ui.selectable_value(
+                                        &mut self.selected,
+                                        viewer::Node::Location(*loc),
+                                        format!("{loc:?}"),
+                                    );
+                                }
+                                // use own version of selectable value to prevent unnecessary clones
+                                for check in logic::CHECKS
+                                    .iter()
+                                    .filter(|check| rooms.contains(&check.location))
+                                {
+                                    let equal = match &self.selected {
+                                        viewer::Node::Location(_) => false,
+                                        viewer::Node::Check(sel) => sel == check,
+                                    };
+                                    if ui.selectable_label(equal, check.description).clicked()
+                                        && !equal
+                                    {
+                                        self.selected = viewer::Node::Check(check.clone())
+                                    }
+                                }
+                            });
+                    });
                     fn collapsing(ui: &mut egui::Ui, text: &str, locks: &[logic::Lock], id: usize) {
                         egui::CollapsingHeader::new(text)
                             .id_source(id)
@@ -370,8 +381,8 @@ impl eframe::App for Rando {
                             .auto_shrink([false; 2])
                             .max_height(ui.available_width() / 2.0)
                             .show(ui, |ui| match &self.selected {
-                                Node::Location(loc) => show(ui, &loc.locks(), 0),
-                                Node::Check(check) => show(ui, &check.locks, 0),
+                                viewer::Node::Location(loc) => show(ui, &loc.locks(), 0),
+                                viewer::Node::Check(check) => show(ui, &check.locks, 0),
                             })
                     });
                     ui.with_layout(
