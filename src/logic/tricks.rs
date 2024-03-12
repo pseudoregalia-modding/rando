@@ -30,13 +30,3 @@ pub enum Difficulty {
     Expert,
     Insane,
 }
-
-pub struct Tricks {
-    pub momentum: Difficulty,        // Momentum conservation
-    pub one_wall: Difficulty,        // Single Wall wall-kicks
-    pub reverse_kick: Difficulty,    // Reverse wall kicks
-    pub sunsetter_abuse: Difficulty, // Abuse the backflip
-    pub pogo_abuse: Difficulty,      // Ascendant Light
-    pub movement: Difficulty,        // General movement such as backflips
-    pub cling_abuse: Difficulty,     // Abuse of cling to climb corners
-}
