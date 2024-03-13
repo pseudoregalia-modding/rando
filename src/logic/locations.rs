@@ -101,7 +101,15 @@ impl Location {
                         ]),
                     ]),
                     Any(&[
-                        All(&[Loc(L::StrongEyes), Lock::SmallKey]), // From Strong Eyes
+                        All(&[Loc(L::StrongEyes), Any(&[
+                            Lock::SmallKey, // Open the door
+                            All(&[ // Go through the little shortcut thing
+                                Powerup(A::Sunsetter),
+                                Powerup(A::DreamBreaker),
+                                Trick(T::Knowledge, D::Normal)
+                                ]),
+                            ])
+                        ]), // From Strong Eyes
                         Loc(L::VDreamBreaker), // Breaking wall from DB item check
                         Loc(L::LatePrison),    // Breaking wall from late.
                     ]),
@@ -140,7 +148,16 @@ impl Location {
             L::VDreamBreaker => Loc(L::EarlyPrison),
             L::StrongEyes => Any(&[
                 All(&[Loc(L::LatePrison), Powerup(A::Slide)]),
-                All(&[Loc(L::CsMain), Lock::SmallKey]),
+                All(&[Loc(L::CsMain), 
+                    Any(&[
+                        Lock::SmallKey, // Open the door
+                        All(&[ // Go through the little shortcut thing
+                            Powerup(A::Sunsetter),
+                            Powerup(A::DreamBreaker),
+                            Trick(T::Knowledge, D::Normal)
+                            ]),
+                        ]),
+                ]),
             ]),
             L::PEntryCastle => Any(&[
                 Loc(L::CsPrisonEntry),
