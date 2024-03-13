@@ -1006,11 +1006,31 @@ pub const CHECKS: [Check; 89] = [
         index: 1083,
         drop: Drop::Chair,
         trial: None,
-        locks: All(&[
-            Powerup(A::SoulCutter),
-            Powerup(A::SoulCutter),
-            Powerup(A::DreamBreaker),
-            Any(&[Powerup(A::SunGreaves), Powerup(A::ClingGem(4))]),
+        locks:  All(&[
+            Powerup(A::Strikebreak), 
+            Powerup(A::ClingGem(6)),
+            Any(&[
+                // Logic for soul cutter route w/o soulcutter
+                All(&[
+                    Powerup(A::Strikebreak),
+                    Powerup(A::SolarWind),
+                    Powerup(A::HeliacalPower),
+                    Powerup(A::SunGreaves),
+                    Powerup(A::Sunsetter),
+                    Trick(T::ClingAbuse, D::Expert),
+                    Trick(T::OneWall, D::Expert),
+                    Trick(T::Movement, D::Insane),
+                    Trick(T::Momentum, D::Expert),
+                ]),
+                //with soul cutter.
+                All(&[
+                    Powerup(A::SoulCutter),
+                    Any(&[
+                        Powerup(A::HeliacalPower),
+                        Powerup(A::SolarWind)
+                    ]),
+                ]),
+            ]),
         ]),
     },
     Check {
@@ -1021,13 +1041,12 @@ pub const CHECKS: [Check; 89] = [
         // there's one gap in the open green room with enemies which is too big
         trial: None,
         locks: All(&[
-            Powerup(A::DreamBreaker), 
+            Powerup(A::Strikebreak), 
             Powerup(A::ClingGem(6)),
             Any(&[
-                // Needed for soul cutter route.
-                Powerup(A::SoulCutter),
                 // Logic for soul cutter route
                 All(&[
+                    Powerup(A::Strikebreak),
                     Powerup(A::SolarWind),
                     Powerup(A::HeliacalPower),
                     Powerup(A::SunGreaves),
@@ -1037,8 +1056,13 @@ pub const CHECKS: [Check; 89] = [
                     Trick(T::Movement, D::Insane),
                     Trick(T::Momentum, D::Expert),
                 ]),
-                Powerup(A::HeliacalPower),
-                Powerup(A::SolarWind)
+                All(&[
+                    Powerup(A::SoulCutter),
+                    Any(&[
+                        Powerup(A::HeliacalPower),
+                        Powerup(A::SolarWind)
+                    ]),
+                ]),
             ]),
         ]),
     },
@@ -1049,11 +1073,41 @@ pub const CHECKS: [Check; 89] = [
         drop: Drop::Ability(A::SoulCutter),
         trial: None,
         locks: All(&[
-            Powerup(A::DreamBreaker),
-            Powerup(A::SoulCutter),
+            //Absolutely neccassary 
+            Powerup(A::Strikebreak),
+            
             Any(&[
-                Powerup(A::ClingGem(6)),
-                Powerup(A::SunGreaves),
+                //Trick for leaving same way as came in.
+                All(&[                    
+                    Powerup(A::SolarWind),
+                    Trick(T::Movement, D::Expert), // Go under the gate as it closes to drop back down. then use abilities to scale shafts.
+                    Powerup(A::SunGreaves),
+                    Powerup(A::HeliacalPower),
+                    Powerup(A::ClingGem(6)),
+                    Powerup(A::Sunsetter),
+                    Trick(T::OneWall, D::Expert),
+                    Trick(T::Knowledge, D::Advanced), // for going under gate from soulcutter and knowing not being locked and needing to climb.
+                ]),
+                // Go the soul cutter route out to lever without Soulcutter.
+                All(&[
+                    Powerup(A::Strikebreak),
+                    Powerup(A::SolarWind),
+                    Powerup(A::HeliacalPower),
+                    Powerup(A::SunGreaves),
+                    Powerup(A::Sunsetter),
+                    Trick(T::ClingAbuse, D::Expert),
+                    Trick(T::OneWall, D::Expert),
+                    Trick(T::Movement, D::Insane),
+                    Trick(T::Momentum, D::Expert),
+                ]),
+                // Go out the lever route WITH soul cutter.
+                All(&[
+                    Powerup(A::SoulCutter),
+                    Any(&[
+                        Powerup(A::HeliacalPower),
+                        Powerup(A::SolarWind)
+                    ]),
+                ]),
             ]),
         ]),
     },
