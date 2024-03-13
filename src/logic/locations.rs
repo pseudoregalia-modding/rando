@@ -81,7 +81,10 @@ impl Location {
         match self {
             // Prison / Dilapidated Dungeon
             L::LatePrison => All(&[
-                Powerup(A::DreamBreaker),
+                Any(&[Powerup(A::DreamBreaker), All(&[
+                    Trick(T::Knowledge, D::Normal),
+                    Powerup(A::Sunsetter),
+                ])]),
                 Any(&[
                     Loc(L::CsMain),
                     Loc(L::PEntryUnderBelly),
@@ -91,7 +94,12 @@ impl Location {
             L::EarlyPrison => Any(&[
                 Loc(L::CsMain), // Drop in from castle
                 All(&[
-                    Powerup(A::DreamBreaker),
+                    Any(&[Powerup(A::DreamBreaker),
+                        All(&[
+                            Powerup(A::Sunsetter),
+                            Trick(T::Knowledge, D::Normal),
+                        ]),
+                    ]),
                     Any(&[
                         All(&[Loc(L::StrongEyes), Lock::SmallKey]), // From Strong Eyes
                         Loc(L::VDreamBreaker), // Breaking wall from DB item check
@@ -112,11 +120,21 @@ impl Location {
                             Trick(T::Movement, D::Advanced),
                             Trick(T::OneWall, D::Advanced),
                         ]),
+                        All(&[
+                            Powerup(A::Sunsetter),
+                            Trick(T::Knowledge, D::Expert), // This wall sucks
+                        ])
                     ]),
                 ])
             ]),
             L::PEntryUnderBelly => Any(&[
-                All(&[Loc(L::LatePrison), Powerup(A::DreamBreaker)]),
+                All(&[Loc(L::LatePrison), Any(&[
+                    Powerup(A::DreamBreaker),
+                    All(&[
+                        Powerup(A::Sunsetter),
+                        Trick(T::Knowledge, D::Expert), // This wall also sucks lol
+                    ])
+                    ])]),
                 All(&[Loc(L::PrisonHole), Powerup(A::AscendantLight)]),
             ]),
             L::VDreamBreaker => Loc(L::EarlyPrison),
@@ -416,7 +434,7 @@ impl Location {
                         All(&[Powerup(A::SunGreaves), Trick(T::Movement, D::Expert)]),
                         All(&[Powerup(A::SolarWind), Powerup(A::AscendantLight), Trick(T::Movement, D::Normal)]),
                         //All(&[Powerup(A::Sunsetter), Powerup(A::HeliacalPower), Trick(T::Movement, D::Expert)]), // needs 2 kicks but Sungreaves already has its own
-                        All(&[Powerup(A::Sunsetter), Powerup(A::HeliacalPower), Trick(T::Movement, D::Expert), Trick(T::ClingAbuse, D::Advanced)]),
+                        All(&[Powerup(A::Sunsetter), Powerup(A::HeliacalPower), Trick(T::Movement, D::Expert), Trick(T::ClingAbuse, D::Advanced), Powerup(A::ClingGem(2))]),
                         All(&[Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::Sunsetter)]), // Intended route
                     ]),
                 ]),
@@ -615,7 +633,7 @@ impl Location {
             // Final Boss
             L::FinalBoss => Any(&[
                 All(&[
-                    Loc(L::TowerRuinsEntrance),
+                    Loc(L::TowerRuinsKeep),
                     Powerup(A::ClingGem(2)),
                     Any(&[
                         Powerup(A::SunGreaves),

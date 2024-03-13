@@ -18,6 +18,7 @@ fn accessible(
             Trick::PogoAbuse => &app.pogo_abuse >= diff,
             Trick::ReverseKick => &app.reverse_kick >= diff,
             Trick::SunsetterAbuse => &app.sunsetter_abuse >= diff,
+            Trick::Knowledge => &app.knowledge >= diff,
         },
         Lock::Any(locks) => locks
             .iter()
@@ -163,7 +164,12 @@ fn accessible(
             }
         }
         // need to decrement small keys :p
-        Lock::SmallKey => obtainable.contains(&Drop::SmallKey),
+        Lock::SmallKey => {
+            obtainable.contains(&Drop::SmallKey) && (
+                (&app.knowledge >= &Difficulty::Normal) && obtainable.contains(&Drop::Ability(Ability::Sunsetter))
+                || obtainable.contains(&Drop::Ability(Ability::DreamBreaker))
+            )
+        },
         Lock::Ending => {
             obtainable
                 .iter()

@@ -361,7 +361,22 @@ pub const CHECKS: [Check; 89] = [
         drop: Drop::Ability(A::Sleepytime),
         // not final logic
         trial: Some(314),
-        locks: All(&[Powerup(A::DreamBreaker), Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::ClingGem(6)), Powerup(A::Sunsetter)]),
+        locks: All(&[
+                Any(&[
+                    Powerup(A::DreamBreaker),
+                    All(&[
+                        Powerup(A::Sunsetter),
+                        Trick(T::Knowledge, D::Normal)
+                    ])
+                ]),
+                Any(&[
+                    All(&[Powerup(A::Sunsetter), Trick(T::Movement, D::Advanced)]),
+                    All(&[Powerup(A::SunGreaves), Trick(T::Movement, D::Normal)]),
+                    All(&[Powerup(A::SolarWind), Trick(T::Movement,D::Normal)]),
+                    All(&[Powerup(A::ClingGem(6)), Trick(T::Movement, D::Advanced), Trick(T::ClingAbuse, D::Normal)]),
+                    All(&[Powerup(A::Sunsetter), Powerup(A::HeliacalPower), Powerup(A::SolarWind)]),
+                ]),
+            ]),
     },
     Check {
         description: "where sun greaves normally are",
@@ -1006,11 +1021,22 @@ pub const CHECKS: [Check; 89] = [
         // there's one gap in the open green room with enemies which is too big
         trial: None,
         locks: All(&[
-            Powerup(A::DreamBreaker),
-            Powerup(A::SoulCutter), 
-            Powerup(A::SoulCutter), 
+            Powerup(A::DreamBreaker), 
             Powerup(A::ClingGem(6)),
             Any(&[
+                // Needed for soul cutter route.
+                Powerup(A::SoulCutter),
+                // Logic for soul cutter route
+                All(&[
+                    Powerup(A::SolarWind),
+                    Powerup(A::HeliacalPower),
+                    Powerup(A::SunGreaves),
+                    Powerup(A::Sunsetter),
+                    Trick(T::ClingAbuse, D::Expert),
+                    Trick(T::OneWall, D::Expert),
+                    Trick(T::Movement, D::Insane),
+                    Trick(T::Momentum, D::Expert),
+                ]),
                 Powerup(A::HeliacalPower),
                 Powerup(A::SolarWind)
             ]),

@@ -7,6 +7,7 @@ pub enum Trick {
     PogoAbuse,      // Ascendant Light
     Movement,       // General movement such as backflips
     ClingAbuse,     // Abuse of cling to climb corners
+    Knowledge, // Things like enabling levers/breaking walls with sunsetter
 }
 
 #[derive(
