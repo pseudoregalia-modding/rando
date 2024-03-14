@@ -572,7 +572,7 @@ pub const CHECKS: [Check; 89] = [
         locks:  All(&[
             Powerup(A::Strikebreak),
             Any(&[
-                Powerup(A::HeliacalPower),
+                All(&[Powerup(A::HeliacalPower), Trick(T::Movement, D::Advanced)]), // Only at advanced bc of the forward backflip that is harder on controller.
                 Powerup(A::ClingGem(4)),
                 Powerup(A::SolarWind),
             ]),
@@ -588,8 +588,8 @@ pub const CHECKS: [Check; 89] = [
             Powerup(A::DreamBreaker),
             Any(&[
                 Powerup(A::Sunsetter),
-                Powerup(A::HeliacalPower),
-                Powerup(A::ClingGem(2))
+                All(&[Powerup(A::HeliacalPower), Trick(T::Movement, D::Advanced)]), // Only at advanced bc of the forward backflip that is harder on controller.
+                All(&[Powerup(A::ClingGem(2)), Trick(T::ClingAbuse, D::Normal)]),
             ]),
         ]),
     },
@@ -603,6 +603,7 @@ pub const CHECKS: [Check; 89] = [
             Powerup(A::Sunsetter),
             Powerup(A::SunGreaves),
             Powerup(A::SolarWind),
+            Trick(T::Movement, D::Normal), // Can legit get this sphere 0 with nothing.
         ]),
     },
     Check {
@@ -611,7 +612,10 @@ pub const CHECKS: [Check; 89] = [
         index: 304,
         drop: Drop::SmallKey,
         trial: None,
-        locks: Powerup(A::DreamBreaker),
+        locks: Any(&[
+            All(&[Powerup(A::Sunsetter), Trick(T::Knowledge, D::Normal)]),
+            Powerup(A::DreamBreaker),
+        ]),
     },
     Check {
         description: "tucked near the theatre entrance",
