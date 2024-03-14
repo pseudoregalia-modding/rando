@@ -442,7 +442,22 @@ pub const CHECKS: [Check; 89] = [
         drop: Drop::Ability(A::Sleepytime),
         // not final logic
         trial: Some(314),
-        locks: All(&[Powerup(A::DreamBreaker), Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::ClingGem(6)), Powerup(A::Sunsetter)]),
+        locks: All(&[
+            Any(&[
+                Powerup(A::DreamBreaker),
+                All(&[
+                    Powerup(A::Sunsetter),
+                    Trick(T::Knowledge, D::Normal)
+                ])
+            ]),
+            Any(&[
+                All(&[Powerup(A::Sunsetter), Trick(T::Movement, D::Advanced)]),
+                All(&[Powerup(A::SunGreaves), Trick(T::Movement, D::Normal)]),
+                All(&[Powerup(A::SolarWind), Trick(T::Movement,D::Normal)]),
+                All(&[Powerup(A::ClingGem(6)), Trick(T::Movement, D::Advanced), Trick(T::ClingAbuse, D::Normal)]),
+                All(&[Powerup(A::Sunsetter), Powerup(A::HeliacalPower), Powerup(A::SolarWind)]),
+            ]),
+        ]),
     },
     Check {
         description: "where sun greaves normally are",
@@ -450,7 +465,10 @@ pub const CHECKS: [Check; 89] = [
         index: 324,
         drop: Drop::Ability(A::SunGreaves),
         trial: None,
-        locks: Powerup(A::DreamBreaker),
+        locks: Any(&[
+            Powerup(A::DreamBreaker),
+            All(&[Trick(T::Knowledge, D::Advanced), Powerup(A::Sunsetter)]),
+        ]),
     },
     Check {
         description: "the chair after the normal sun greaves location",
@@ -500,7 +518,7 @@ pub const CHECKS: [Check; 89] = [
         trial: None,
         locks: Any(&[
             Powerup(A::SolarWind),
-            Powerup(A::HeliacalPower),
+            All(&[Powerup(A::HeliacalPower), Trick(T::Movement, D::Expert)]),
             Powerup(A::ClingGem(4)),
         ]),
     },
@@ -510,7 +528,11 @@ pub const CHECKS: [Check; 89] = [
         index: 238,
         drop: Drop::Health,
         trial: None,
-        locks: Any(&[Powerup(A::SunGreaves), Powerup(A::ClingGem(4))]),
+        locks: Any(&[
+            Powerup(A::SolarWind),
+            All(&[Powerup(A::HeliacalPower), Trick(T::Movement, D::Expert)]),
+            Powerup(A::ClingGem(4)),
+        ]),
     },
     // Sansa Keep
     Check {
