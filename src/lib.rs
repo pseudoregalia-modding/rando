@@ -33,6 +33,7 @@ pub struct Rando {
     pogo_abuse: logic::Difficulty,
     movement: logic::Difficulty,
     cling_abuse: logic::Difficulty,
+    knowledge: logic::Difficulty,
 }
 
 impl Rando {
@@ -113,6 +114,7 @@ impl Rando {
             pogo_abuse: get_difficulty("pogo abuse"),
             movement: get_difficulty("movement"),
             cling_abuse: get_difficulty("cling abuse"),
+            knowledge: get_difficulty("knowledge"),
         }
     }
     fn pak(&self) -> Result<std::io::BufReader<std::fs::File>, std::io::Error> {
@@ -294,6 +296,7 @@ impl eframe::App for Rando {
                     combobox("ascendant light abuse", &mut self.pogo_abuse);
                     combobox("movement", &mut self.movement);
                     combobox("cling abuse", &mut self.cling_abuse);
+                    combobox("knowledge", &mut self.knowledge);
                     ui.with_layout(
                         egui::Layout::default()
                             .with_cross_justify(true)
@@ -368,5 +371,6 @@ impl eframe::App for Rando {
         set_difficulty("pogo abuse", self.pogo_abuse);
         set_difficulty("movement", self.movement);
         set_difficulty("cling abuse", self.cling_abuse);
+        set_difficulty("knowledge", self.knowledge);
     }
 }

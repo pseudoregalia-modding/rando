@@ -23,18 +23,24 @@ pub const CHECKS: [Check; 89] = [
         index: 501,
         drop: Drop::Ability(A::DreamBreaker),
         trial: None,
-        locks: Any(&[Powerup(A::DreamBreaker), 
-        All(&[
-            Powerup(A::SunGreaves),
-            Trick(T::Movement, D::Expert),
-            Trick(T::OneWall, D::Advanced),
+        locks: Any(&[
+            Powerup(A::DreamBreaker), 
+            All(&[
+                Trick(T::Knowledge, D::Advanced),
+                Powerup(A::Sunsetter),
+            ]),
+            All(&[
+                Powerup(A::SunGreaves),
+                Trick(T::Movement, D::Expert),
+                Trick(T::OneWall, D::Advanced),
+            ]),
+            All(&[
+                Powerup(A::SunGreaves),
+                Powerup(A::SolarWind),
+                Trick(T::Movement, D::Advanced),
+                Trick(T::OneWall, D::Advanced),
+            ]),
         ]),
-        All(&[
-            Powerup(A::SunGreaves),
-            Powerup(A::SolarWind),
-            Trick(T::Movement, D::Advanced),
-            Trick(T::OneWall, D::Advanced),
-        ]),]),
     },
     Check {
         description: "where the first health piece is",

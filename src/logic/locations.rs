@@ -122,11 +122,11 @@ impl Location {
             L::VDreamBreaker => Loc(L::EarlyPrison),
             L::StrongEyes => Any(&[
                 All(&[Loc(L::LatePrison), Powerup(A::Slide)]),
-                All(&[Loc(L::CsMain), Lock::SmallKey, Powerup(A::DreamBreaker)]),
+                All(&[Loc(L::CsMain), Lock::SmallKey]),
             ]),
             L::PEntryCastle => Any(&[
                 Loc(L::CsPrisonEntry),
-                All(&[Loc(L::StrongEyes), Lock::SmallKey, Powerup(A::DreamBreaker)]),
+                All(&[Loc(L::StrongEyes), Lock::SmallKey]),
                 All(&[
                     Loc(L::EarlyPrison),
                     Powerup(A::SolarWind),
@@ -286,8 +286,7 @@ impl Location {
             ]),
             L::Restricted => All(&[
                 Loc(L::MainLibrary),
-                Lock::SmallKey,
-                Powerup(A::DreamBreaker),
+                Lock::SmallKey
             ]),
             // Sansa Keep
             L::SkCastleClimbEntry => Loc(L::CsKeepClimbEntrance),
@@ -352,7 +351,7 @@ impl Location {
             L::Sunsetter => All(&[
                 Loc(L::SansaKeep),
                 Any(&[
-                    All(&[Lock::SmallKey, Powerup(A::DreamBreaker)]),
+                    Lock::SmallKey, 
                     Powerup(A::SunGreaves),
                     Powerup(A::ClingGem(2)),
                     Powerup(A::Sunsetter),
