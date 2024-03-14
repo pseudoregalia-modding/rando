@@ -832,7 +832,13 @@ pub const CHECKS: [Check; 89] = [
         drop: Drop::Ability(A::AscendantLight),
         // you can go through the dark area and there's a passage which you can do with nothing
         trial: None,
-        locks: Powerup(A::DreamBreaker),
+        locks: Any(&[
+            Powerup(A::DreamBreaker),
+            All(&[
+                Powerup(A::Sunsetter),
+                Trick(T::Knowledge, D::Expert), // this is at expert bc of fighting the statue...
+            ])
+        ]),
     },
     Check {
         description: "in an alcove behind some pillars",
@@ -840,7 +846,10 @@ pub const CHECKS: [Check; 89] = [
         index: 616,
         drop: Drop::Health,
         trial: None,
-        locks: Powerup(A::DreamBreaker),
+        locks: Any(&[
+            All(&[Powerup(A::Sunsetter), Trick(T::Knowledge, D::Normal)]), // normal route into AL 
+            Powerup(A::DreamBreaker)
+        ]),
     },
     Check {
         description: "on a missable ledge in the centre",
@@ -848,7 +857,7 @@ pub const CHECKS: [Check; 89] = [
         index: 546,
         drop: Drop::SmallKey,
         trial: None,
-        locks: Any(&[
+        locks: Any(&[ // Leaving as is for now.
             Powerup(A::Sunsetter),
             Powerup(A::SolarWind),
         ]),
@@ -859,7 +868,7 @@ pub const CHECKS: [Check; 89] = [
         index: 894,
         drop: Drop::Note,
         trial: None,
-        locks: All(&[
+        locks: All(&[ // Leaving as is for now.
             Powerup(A::HeliacalPower),
             Powerup(A::Sunsetter),
             Any(&[
@@ -875,13 +884,14 @@ pub const CHECKS: [Check; 89] = [
         index: 1046,
         drop: Drop::Ability(A::MartialProwess),
         trial: None,
-        locks: All(&[
-            Powerup(A::SoulCutter),
+        locks: All(&[// Leaving this one out of tricks for now since theres a ton of ways to do it
+            Powerup(A::Strikebreak), // Dont know why this one was SoulCutter before...
             Powerup(A::AscendantLight),
             Any(&[
                 Powerup(A::HeliacalPower),
                 Powerup(A::Sunsetter),
                 Powerup(A::SolarWind),
+                Powerup(A::ClingGem(2)),
             ]),
         ]),
     },
@@ -900,10 +910,7 @@ pub const CHECKS: [Check; 89] = [
         index: 1047,
         drop: Drop::Ability(A::HeliacalPower),
         trial: None,
-        locks: All(&[
-            Lock::SmallKey,
-            Powerup(A::DreamBreaker),
-        ]),
+        locks: Lock::SmallKey,
     },
     Check {
         description: "the note behind the locked door",
@@ -911,10 +918,7 @@ pub const CHECKS: [Check; 89] = [
         index: 895,
         drop: Drop::Note,
         trial: None,
-        locks: All(&[
-            Lock::SmallKey,
-            Powerup(A::DreamBreaker),
-        ]),
+        locks: Lock::SmallKey,
     },
     Check {
         description: "the note near the empty bailey entrance",
@@ -927,7 +931,9 @@ pub const CHECKS: [Check; 89] = [
             All(&[Powerup(A::HeliacalPower), Powerup(A::Sunsetter)]),
             Powerup(A::ClingGem(6)),
             Powerup(A::AscendantLight),
-            Powerup(A::SolarWind)
+            Powerup(A::SolarWind),
+            All(&[Powerup(A::HeliacalPower), Trick(T::ReverseKick, D::Normal)]),
+            All(&[Powerup(A::Sunsetter), Trick(T::Movement, D::Normal)]),
         ]),
     },
     Check {
@@ -936,7 +942,11 @@ pub const CHECKS: [Check; 89] = [
         index: 615,
         drop: Drop::Health,
         trial: None,
-        locks: Any(&[Powerup(A::SunGreaves), Powerup(A::Sunsetter)]),
+        locks: Any(&[
+            Powerup(A::SunGreaves),
+            Powerup(A::Sunsetter),
+            Powerup(A::SolarWind),
+        ]),
     },
     // Tower Ruins
     Check {
