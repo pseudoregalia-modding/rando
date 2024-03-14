@@ -1008,7 +1008,8 @@ pub const CHECKS: [Check; 89] = [
               Powerup(A::SunGreaves),
               Any(&[Powerup(A::ClingGem(2)), Powerup(A::SolarWind), Powerup(A::Sunsetter)])
             ]),
-            All(&[Powerup(A::SolarWind), Powerup(A::ClingGem(2))])
+            All(&[Powerup(A::SolarWind), Powerup(A::ClingGem(2))]),
+            All(&[Powerup(A::Sunsetter), Powerup(A::SunGreaves), Trick(T::SunsetterAbuse, D::Normal), Trick(T::Movement, D::Advanced), Trick(T::OneWall, D::Normal)]),
         ]),
     },
     Check {
