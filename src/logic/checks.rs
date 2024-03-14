@@ -699,7 +699,7 @@ pub const CHECKS: [Check; 89] = [
         index: 115,
         drop: Drop::Goatling(&["...i'm not here."]),
         trial: None,
-        locks: Powerup(A::Slide),
+        locks: Powerup(A::Slide), // Theres another way to get TO the item, not putting it in since its a one way unless it is slide though...
     },
     Check {
         description: "in the building you slide into",
@@ -720,6 +720,10 @@ pub const CHECKS: [Check; 89] = [
             Powerup(A::SunGreaves),
             Powerup(A::ClingGem(4)),
             Powerup(A::SolarWind),
+            All(&[
+                Loc(L::EbEntryUnderBelly),
+                Trick(T::Movement, D::Advanced), // Can just jump to it from above.
+            ]),
         ]),
     },
     Check {
@@ -730,10 +734,16 @@ pub const CHECKS: [Check; 89] = [
         trial: None,
         locks: All(&[
             Powerup(A::Slide),
-            Powerup(A::DreamBreaker),
+            Any(&[
+                Powerup(A::DreamBreaker),
+                All(&[
+                    Powerup(A::Sunsetter),
+                    Trick(T::Knowledge, D::Normal),
+                ])
+            ]),
             Any(&[
                 Powerup(A::SolarWind),
-                Powerup(A::HeliacalPower),
+                All(&[Powerup(A::HeliacalPower), Trick(T::Movement, D::Advanced)]),
             ]),
         ]),
     },
@@ -744,10 +754,19 @@ pub const CHECKS: [Check; 89] = [
         drop: Drop::Health,
         trial: None,
         locks: Any(&[
-            All(&[Powerup(A::Sunsetter), Powerup(A::HeliacalPower)]),
-            Powerup(A::SunGreaves),
+            Powerup(A::Sunsetter),
+            All(&[Powerup(A::HeliacalPower), Trick(T::ReverseKick, D::Advanced)]),
+            All(&[Powerup(A::SunGreaves), Trick(T::OneWall, D::Normal)]),
             // you can jump down from cheese bell
-            All(&[Powerup(A::SolarWind), Powerup(A::ClingGem(6))]),
+            All(&[
+                Powerup(A::SolarWind), 
+                Any(&[
+                    Powerup(A::ClingGem(6)),
+                    All(&[Powerup(A::Sunsetter), Powerup(A::HeliacalPower), Trick(T::Movement, D::Advanced)]),
+                    All(&[Trick(T::Movement, D::Advanced),Powerup(A::Sunsetter), Powerup(A::SunGreaves)]),
+                    All(&[Powerup(A::ClingGem(4)), Powerup(A::Sunsetter), Powerup(A::SunGreaves)]),
+                ]),
+            ]),
         ]),
     },
     Check {
@@ -761,10 +780,11 @@ pub const CHECKS: [Check; 89] = [
                 Powerup(A::SolarWind),
                 Any(&[
                     Powerup(A::ClingGem(6)),
-                    All(&[Powerup(A::Sunsetter), Powerup(A::HeliacalPower)]),
+                    All(&[Powerup(A::Sunsetter), Powerup(A::HeliacalPower), Trick(T::Movement, D::Advanced)]),
                 ]),
             ]),
-            All(&[Powerup(A::Sunsetter), Powerup(A::SunGreaves)]),
+            All(&[Trick(T::Movement, D::Advanced),Powerup(A::Sunsetter), Powerup(A::SunGreaves)]),
+            All(&[Powerup(A::ClingGem(4)), Powerup(A::Sunsetter), Powerup(A::SunGreaves)]),
         ]),
     },
     Check {
