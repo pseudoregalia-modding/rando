@@ -958,7 +958,7 @@ pub const CHECKS: [Check; 89] = [
         locks: Any(&[
             Powerup(A::ClingGem(6)),
             Powerup(A::SunGreaves),
-            All(&[Powerup(A::HeliacalPower), Powerup(A::Sunsetter)]),
+            All(&[Powerup(A::HeliacalPower), Powerup(A::Sunsetter), Trick(T::Movement, D::Normal)]),
         ]),
     },
     Check {
@@ -967,15 +967,23 @@ pub const CHECKS: [Check; 89] = [
         index: 77,
         drop: Drop::BigKey,
         trial: None,
-        locks: All(&[
-            Powerup(A::ClingGem(2)),
-            Any(&[
-                Powerup(A::SunGreaves),
-                All(&[
-                    Powerup(A::HeliacalPower),
-                    Powerup(A::Sunsetter),
+        locks: Any(&[
+            All(&[
+                Powerup(A::ClingGem(2)),
+                Any(&[
+                    Powerup(A::SunGreaves),
+                    All(&[
+                        Powerup(A::HeliacalPower),
+                        Powerup(A::Sunsetter),
+                    ]),
                 ]),
             ]),
+            All(&[
+                Powerup(A::SunGreaves),
+                Powerup(A::SolarWind),
+                Trick(T::Movement, D::Expert),
+                Trick(T::OneWall, D::Advanced),
+            ])
         ]),
     },
     Check {
