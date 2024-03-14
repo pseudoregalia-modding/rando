@@ -190,8 +190,8 @@ pub const CHECKS: [Check; 89] = [
         trial: None,
         locks: Any(&[
             Powerup(A::Sunsetter),
-            Powerup(A::HeliacalPower),
-            Powerup(A::ClingGem(2)),
+            All(&[Powerup(A::HeliacalPower), Trick(T::Movement, D::Advanced)]),
+            All(&[Powerup(A::ClingGem(2)), Trick(T::ClingAbuse, D::Normal)]),
             Powerup(A::SolarWind),
         ]),
     },
@@ -201,7 +201,7 @@ pub const CHECKS: [Check; 89] = [
         index: 999,
         drop: Drop::Ability(A::Professional),
         trial: Some(969),
-        locks: All(&[Lock::SmallKey, Powerup(A::DreamBreaker)]),
+        locks: Lock::SmallKey, // You can easily do this with nothing but ability to hit the crystal.
     },
     Check {
         description: "tucked deep in a corner in the bouncer room",
@@ -211,7 +211,7 @@ pub const CHECKS: [Check; 89] = [
         trial: None,
         locks: Any(&[
             Powerup(A::ClingGem(6)),
-            All(&[Powerup(A::SunGreaves), Powerup(A::HeliacalPower)]),
+            All(&[Powerup(A::SunGreaves), Powerup(A::HeliacalPower), Trick(T::Movement, D::Advanced)]),
         ]),
     },
     Check {
@@ -222,7 +222,7 @@ pub const CHECKS: [Check; 89] = [
         trial: None,
         locks: Any(&[
             Powerup(A::AscendantLight),
-            Powerup(A::SunGreaves),
+            All(&[Powerup(A::SunGreaves), Trick(T::OneWall, D::Normal)]),
             Powerup(A::ClingGem(2)),
         ]),
     },
@@ -233,8 +233,10 @@ pub const CHECKS: [Check; 89] = [
         drop: Drop::Health,
         trial: None,
         locks: Any(&[
-            Powerup(A::ClingGem(6)),
-            All(&[Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::HeliacalPower)]),
+            All(&[Powerup(A::ClingGem(6)), Trick(T::ClingAbuse, D::Expert), Trick(T::Movement, D::Advanced)]),
+            All(&[Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::HeliacalPower), Powerup(A::AscendantLight)]), // Intended way
+            All(&[Powerup(A::SolarWind), Powerup(A::HeliacalPower), Trick(T::Movement, D::Advanced)]),
+            All(&[Powerup(A::SunGreaves), Powerup(A::Sunsetter), Trick(T::OneWall, D::Advanced), Trick(T::SunsetterAbuse, D::Advanced)])
         ]),
     },
     Check {
@@ -246,9 +248,12 @@ pub const CHECKS: [Check; 89] = [
             "Thought I was gonna have to jump into the haze..."
         ]),
         trial: None,
-        locks: Any(&[
-            Powerup(A::ClingGem(6)),
-            All(&[Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::HeliacalPower)]),
+        locks: Any(&[ // Just need to break the wall.. nothing new
+            Powerup(A::DreamBreaker),
+            All(&[
+                Powerup(A::Sunsetter),
+                Trick(T::Knowledge, D::Normal),
+            ])
         ]),
     },
     Check {
@@ -257,9 +262,12 @@ pub const CHECKS: [Check; 89] = [
         index: 997,
         drop: Drop::Ability(A::ClearMind),
         trial: None,
-        locks: Any(&[
-            Powerup(A::ClingGem(6)),
-            All(&[Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::HeliacalPower)]),
+        locks: Any(&[ // Cross gap then climb the room
+            All(&[Powerup(A::ClingGem(6)), Trick(T::ClingAbuse, D::Normal)]),
+            All(&[Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::HeliacalPower), Trick(T::Movement, D::Advanced)]),
+            All(&[Powerup(A::Sunsetter), Powerup(A::ClingGem(4)), Trick(T::ClingAbuse, D::Normal)]),
+            All(&[Powerup(A::Sunsetter), Powerup(A::SunGreaves), Powerup(A::ClingGem(2))]),
+            All(&[Powerup(A::SolarWind), Powerup(A::ClingGem(2)), Powerup(A::SunGreaves)]),
         ]),
     },
     Check {
@@ -268,22 +276,65 @@ pub const CHECKS: [Check; 89] = [
         index: 539,
         drop: Drop::SmallKey,
         trial: None,
-        locks: Any(&[Powerup(A::SunGreaves), Powerup(A::ClingGem(6))]),
+        locks: All(&[
+            Any(&[// Activate the switch OR skip it
+                Powerup(A::DreamBreaker),
+                All(&[Powerup(A::Sunsetter), Trick(T::Knowledge, D::Normal)]),
+                All(&[
+                    Powerup(A::SunGreaves),
+                    Powerup(A::HeliacalPower),
+                    Trick(T::OneWall, D::Normal),
+                ]),
+                All(&[
+                    Powerup(A::SolarWind),
+                    Powerup(A::HeliacalPower),
+                    Trick(T::Movement, D::Normal)
+                ]),
+                All(&[
+                    Powerup(A::SolarWind),
+                    Trick(T::Movement, D::Advanced)
+                ]),
+            ]),
+            Any(&[ // Getting here is not an issue really.
+                Powerup(A::SunGreaves), Powerup(A::ClingGem(6)),
+                All(&[
+                    Powerup(A::SunGreaves),
+                    Powerup(A::SolarWind),
+                    Trick(T::Movement, D::Normal),
+                    Trick(T::OneWall, D::Normal),
+                ]),
+                All(&[
+                    Powerup(A::ClingGem(2)),
+                    Powerup(A::SolarWind)
+                ]),
+                All(&[
+                    Powerup(A::ClingGem(2)),
+                    Powerup(A::SunGreaves)
+                ]),
+                All(&[
+                    Powerup(A::ClingGem(2)),
+                    Powerup(A::HeliacalPower),
+                    Trick(T::Movement, D::Advanced),
+                    Trick(T::OneWall, D::Normal),
+
+                ])
+            ]),
+        ]),
     },
     Check {
         description: "in the pit next to the dungeon entrance",
-        location: L::CsMain,
+        location: L::CsTheatreEntryNearPrison, // Change Node so that we can infer the logic for getting to said node
         index: 594,
         drop: Drop::Health,
         trial: None,
         locks: Any(&[
+            Powerup(A::ClingGem(4)),
             Powerup(A::HeliacalPower),
-            Powerup(A::ClingGem(6)),
         ]),
     },
     Check {
         description: "the goatling that calls you bubble girl",
-        location: L::CsMain,
+        location: L::CsTheatreEntryNearPrison, // Same as above, lower logic requirements that way
         index: 816,
         drop: Drop::Goatling(&[
             "I was supposed to go help in the [#cf2525](theatre), but I can't really get through here.",
@@ -294,7 +345,6 @@ pub const CHECKS: [Check; 89] = [
         locks: Any(&[
             Powerup(A::HeliacalPower),
             Powerup(A::ClingGem(4)),
-            All(&[Powerup(A::Slide), Powerup(A::SunGreaves)])
         ]),
     },
     Check {
@@ -303,8 +353,8 @@ pub const CHECKS: [Check; 89] = [
         index: 593,
         drop: Drop::Health,
         trial: None,
-        locks: Any(&[
-            All(&[Powerup(A::SunGreaves), Powerup(A::HeliacalPower)]),
+        locks: Any(&[ // Not much to add here really
+            All(&[Powerup(A::SunGreaves), Powerup(A::HeliacalPower), Trick(T::Movement, D::Normal)]),
             Powerup(A::ClingGem(4)),
             All(&[Powerup(A::SolarWind), Powerup(A::HeliacalPower)]),
         ]),
@@ -338,19 +388,20 @@ pub const CHECKS: [Check; 89] = [
         locks: Any(&[
             All(&[
                 Powerup(A::AscendantLight),
+                Trick(T::Movement, D::Normal),
                 Any(&[
-                    Powerup(A::Sunsetter),
                     Powerup(A::SunGreaves),
                     Powerup(A::SolarWind),
                 ]),
             ]),
-            All(&[Powerup(A::SunGreaves), Powerup(A::HeliacalPower)]),
+            All(&[Powerup(A::SunGreaves), Powerup(A::HeliacalPower), Trick(T::OneWall, D::Advanced)]),
             All(&[
                 Powerup(A::ClingGem(6)), 
                 Any(&[
                     Powerup(A::HeliacalPower),
                     Powerup(A::Sunsetter),
                     Powerup(A::SolarWind),
+                    Powerup(A::AscendantLight),
                 ]),
             ]),
         ]),
@@ -361,7 +412,19 @@ pub const CHECKS: [Check; 89] = [
         index: 996,
         drop: Drop::Ability(A::GoodGraces),
         trial: None,
-        locks: Any(&[Powerup(A::ClingGem(6)), Powerup(A::SunGreaves)]),
+        locks: Any(&[
+            All(&[
+                Powerup(A::ClingGem(6)),
+                Any(&[
+                    Powerup(A::Sunsetter),
+                    Powerup(A::HeliacalPower),
+                    Trick(T::ClingAbuse, D::Normal),
+                ]),
+            ]),
+            Powerup(A::SunGreaves),
+            All(&[Powerup(A::HeliacalPower), Trick(T::Movement, D::Advanced)]),
+            All(&[Powerup(A::SolarWind), Trick(T::Movement, D::Normal)]),
+        ]),
     },
     // Listless Library
     Check {
