@@ -165,11 +165,11 @@ fn accessible(
         }
         // need to decrement small keys :p
         Lock::SmallKey => {
-            obtainable.contains(&Drop::SmallKey) && (
-                (&app.knowledge >= &Difficulty::Normal) && obtainable.contains(&Drop::Ability(Ability::Sunsetter))
-                || obtainable.contains(&Drop::Ability(Ability::DreamBreaker))
-            )
-        },
+            obtainable.contains(&Drop::SmallKey)
+                && (app.knowledge >= Difficulty::Normal
+                    && obtainable.contains(&Drop::Ability(Ability::Sunsetter))
+                    || obtainable.contains(&Drop::Ability(Ability::DreamBreaker)))
+        }
         Lock::Ending => {
             obtainable
                 .iter()

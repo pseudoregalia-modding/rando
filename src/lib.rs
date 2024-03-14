@@ -367,6 +367,9 @@ impl eframe::App for Rando {
                                     logic::Trick::SunsetterAbuse => {
                                         format!("{:?} sunsetter backflip abuse", diff)
                                     }
+                                    logic::Trick::Knowledge => {
+                                        format!("{:?} knowledge", diff)
+                                    }
                                 });
                             }
                             logic::Lock::Location(loc) => {
