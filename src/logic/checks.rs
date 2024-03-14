@@ -53,8 +53,8 @@ pub const CHECKS: [Check; 89] = [
                 Powerup(A::Sunsetter),
                 Powerup(A::AscendantLight),
                 // just enough space to do this
-                Powerup(A::SolarWind),
-                Powerup(A::ClingGem(4)),
+                All(&[Powerup(A::SolarWind), Trick(T::Movement, D::Normal)]),
+                All(&[Powerup(A::ClingGem(4)), Trick(T::ClingAbuse, D::Normal)]),
                 Powerup(A::HeliacalPower),
             ]),
             // you can drop down from the entrance
@@ -72,6 +72,8 @@ pub const CHECKS: [Check; 89] = [
             Powerup(A::SunGreaves),
             All(&[Powerup(A::Sunsetter), Powerup(A::HeliacalPower)]),
             Powerup(A::ClingGem(2)),
+            All(&[Powerup(A::HeliacalPower), Trick(T::Movement, D::Advanced)]),
+            All(&[Powerup(A::Sunsetter), Trick(T::Movement, D::Advanced)]),
         ]),
     },
     Check {
@@ -83,6 +85,7 @@ pub const CHECKS: [Check; 89] = [
         locks: Any(&[
             Powerup(A::ClingGem(6)),
             All(&[Powerup(A::AscendantLight), Powerup(A::SunGreaves)]),
+            All(&[Powerup(A::SunGreaves), Powerup(A::SolarWind), Trick(T::Movement, D::Advanced), Trick(T::OneWall, D::Advanced)]),
         ]),
     },
     Check {
@@ -99,7 +102,7 @@ pub const CHECKS: [Check; 89] = [
                     Powerup(A::SolarWind)
                 ]),
             ]),
-            Powerup(A::ClingGem(4)),
+            All(&[Powerup(A::ClingGem(4)), Trick(T::ClingAbuse, D::Advanced)]),
         ]),
     },
     Check {
@@ -108,7 +111,16 @@ pub const CHECKS: [Check; 89] = [
         index: 284,
         drop: Drop::Health,
         trial: None,
-        locks: Any(&[Powerup(A::SunGreaves), Powerup(A::ClingGem(4))]),
+        locks: All(&[
+            Any(&[
+                Powerup(A::DreamBreaker),
+                All(&[Powerup(A::Sunsetter), Trick(T::Knowledge, D::Normal)]),
+            ]),
+            Any(&[
+                All(&[Powerup(A::SunGreaves)]), 
+                Powerup(A::ClingGem(4))
+            ]),
+        ]),
     },
     Check {
         description: "strong eyes' lair",
@@ -116,7 +128,7 @@ pub const CHECKS: [Check; 89] = [
         index: 254,
         drop: Drop::SmallKey,
         trial: None,
-        locks: Powerup(A::DreamBreaker),
+        locks: Powerup(A::DreamBreaker), // not changing, fighting without DB sucks
     },
     Check {
         description: "where memento normally is",
