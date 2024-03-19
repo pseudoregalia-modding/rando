@@ -5,6 +5,7 @@ repository = "https://github.com/pseudoregalia-modding/pseudoregalia-rando"
 version = "1.7.3"
 authors = ["spuds"]
 edition = "2021"
+license = "MIT OR Apache-2.0"
 
 [dependencies]
 eframe = { version = "0.26", default-features = false, features = ["default_fonts", "glow", "persistence"] }
