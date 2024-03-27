@@ -254,7 +254,14 @@ impl eframe::App for Rando {
                     self.split_cling = false;
                     self.progressive = false;
                 }
-                ui[0].checkbox(&mut self.outfits, "Outfits");
+                if ui[0].checkbox(&mut self.outfits, "Outfits").clicked() && self.outfits {
+                    self.notifs
+                        .dialog()
+                        .with_title("little bug")
+                        .with_body("currently there's a bug where goatlings don't spawn on time trial completion\nannoying but not game-breaking\nsorry for the inconvenience")
+                        .with_icon(egui_modal::Icon::Warning)
+                        .open();
+                }
                 ui[0].checkbox(&mut self.health, "Health");
                 ui[0].checkbox(&mut self.goatlings, "Goatlings");
                 ui[0].add_enabled(false, egui::Checkbox::new(&mut false, "Enemies?"));
