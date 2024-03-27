@@ -7,7 +7,18 @@ use Lock::{All, Any, Movement as Powerup, Location as Loc, Trick};
 use super::Trick as T;
 use Difficulty as D;
 
-pub const CHECKS: [Check; 89] = [
+pub const CHECKS: [Check; 92] = [
+    Check {
+        description: "the goatling who fell out his cage",
+        location: L::EarlyPrison,
+        index: 433,
+        drop: Drop::Goatling(&[
+            "Oh[3rr](...)sorry, I didn't mean to[3rr](...)fall out of my cage[3rr](...)",
+            "I hope[3rr](...)the [#cf2525](princess) won't be upset with me[3rr](...)"
+        ]),
+        trial: None,
+        locks: Lock::None,
+    },
     Check {
         description: "the time trial in the starting room",
         location: L::EarlyPrison,
@@ -131,6 +142,14 @@ pub const CHECKS: [Check; 89] = [
         locks: Powerup(A::DreamBreaker), // not changing, fighting without DB sucks
     },
     Check {
+        description: "the goatling lamenting the skill issue of players who need a map",
+        location: L::CsMain,
+        index: 820,
+        drop: Drop::Goatling(&["So many of have been trapped in the dungeon, and for what?"]),
+        trial: None,
+        locks: Lock::None,
+    },
+    Check {
         description: "where memento normally is",
         location: L::CsMain,
         index: 998,
@@ -194,6 +213,18 @@ pub const CHECKS: [Check; 89] = [
             All(&[Powerup(A::ClingGem(2)), Trick(T::ClingAbuse, D::Normal)]),
             Powerup(A::SolarWind),
         ]),
+    },
+    Check {
+        description: "the goatling who wanted to see the armour display",
+        location: L::CsMain,
+        index: 821,
+        drop: Drop::Goatling(&[
+            "There was supposed to be a [#ffdb6b](new armor display) in the [#cf2525](library) I wanted to see.",
+            "But with the state of the castle,  I can't find the entrance anywhere!",
+            "I miss that [#ba7f27](comfy hay)..."
+        ]),
+        trial: None,
+        locks: Lock::None,
     },
     Check {
         description: "the time trial behind a locked door",
@@ -460,7 +491,7 @@ pub const CHECKS: [Check; 89] = [
         ]),
     },
     Check {
-        description: "where sun greaves normally are",
+        description: "where sun greaves normally is",
         location: L::LibSaveNearGreaves,
         index: 324,
         drop: Drop::Ability(A::SunGreaves),

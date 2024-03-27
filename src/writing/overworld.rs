@@ -151,7 +151,7 @@ pub fn write(
                                     duplication_index: 0,
                                 })).collect();
                                 let mut names = map.get_name_map();
-                                let Some(norm) = map.asset_data.exports[index].get_normal_export_mut() else {continue};
+                                let Some(norm) = map.asset_data.exports[index].get_normal_export_mut() else { continue };
                                 match norm.properties.iter_mut().find_map(|prop|  unreal_asset::cast!(Property, ArrayProperty, prop)){
                                     Some(text) => text.value = dialogue,
                                     None => {

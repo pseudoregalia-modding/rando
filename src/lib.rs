@@ -185,8 +185,8 @@ impl eframe::App for Rando {
                 }
             });
             self.credits.show(|ui| {
-                ui.label("coding, reverse engineering and initial logic by spuds");
-                ui.label("logic overhaul and trick levels by MeriKatt");
+                ui.label("coding, reverse engineering, initial logic and logic viewer by spuds");
+                ui.label("trick levels and logic overhauls by MeriKatt");
                 ui.with_layout(
                     egui::Layout::default()
                         .with_cross_justify(true)
