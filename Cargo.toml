@@ -8,7 +8,7 @@ edition = "2021"
 license = "MIT OR Apache-2.0"
 
 [dependencies]
-eframe = { version = "0.26", default-features = false, features = ["default_fonts", "glow", "persistence"] }
+eframe = { version = "0.27", default-features = false, features = ["default_fonts", "glow", "persistence"] }
 unreal_asset = { git = "https://github.com/astrotechies/unrealmodding", rev = "b64d3f4" }
 repak = { git = "https://github.com/trumank/repak", rev = "abda6da", features = ["oodle"] }
 strum = { version = "0.25", features = ["derive"] }
