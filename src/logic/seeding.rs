@@ -182,7 +182,8 @@ fn accessible(
     }
 }
 
-fn possible(spawn: Location, checks: &[Check], app: &crate::Rando) -> bool {
+fn possible(spawn: Location, checks: &[Check], app: &crate::Rando) -> Option<String> {
+    let mut seeding = String::new();
     let mut checks = checks.to_vec();
     let mut locations: Vec<Location> = Vec::with_capacity(Location::COUNT);
     locations.push(spawn);
@@ -194,6 +195,7 @@ fn possible(spawn: Location, checks: &[Check], app: &crate::Rando) -> bool {
             if !locations.contains(&loc)
                 && accessible(&loc.locks(), &locations, &obtainable, app, None)
             {
+                seeding.push_str(&format!("{loc:?}\n"));
                 locations.push(loc)
             }
         }
@@ -214,15 +216,16 @@ fn possible(spawn: Location, checks: &[Check], app: &crate::Rando) -> bool {
             })
             .collect();
         for i in slated {
+            seeding.push_str(&format!("{:?}\n", checks[i]));
             obtainable.push(checks.remove(i).drop)
         }
         // if all locations accessible then possible
         if locations.len() == Location::COUNT {
-            break true;
+            break Some(seeding);
         }
         // if no change in location or drop count then impossible
         if locations.len() == locations_len && obtainable.len() == obtainable_len {
-            break false;
+            break None;
         }
         let heliacals: Vec<_> = obtainable
             .iter()
@@ -239,6 +242,7 @@ fn possible(spawn: Location, checks: &[Check], app: &crate::Rando) -> bool {
 
         locations_len = locations.len();
         obtainable_len = obtainable.len();
+        seeding.push_str("\n");
     }
 }
 
@@ -407,7 +411,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
 
     let mut rng = rand::thread_rng();
     let mut spawn;
-    let overworld: std::collections::BTreeMap<_, _> = loop {
+    let (seeding, overworld) = loop {
         use rand::{seq::SliceRandom, Rng};
         spawn = SPAWNS[match app.spawn {
             true => rng.gen_range(0..SPAWNS.len()),
@@ -420,7 +424,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
             check.drop = drop
         }
         checks.extend_from_slice(&unrandomised);
-        if possible(spawn.1, &checks, app) {
+        if let Some(seeding) = possible(spawn.1, &checks, app) {
             let mut overworld = std::collections::BTreeMap::<_, Vec<_>>::new();
             for check in checks {
                 match overworld.get_mut(check.location.file()) {
@@ -430,17 +434,20 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
                     }
                 }
             }
-            break overworld;
+            break (seeding, overworld);
         }
-    }
-    .into_iter()
-    .map(|(key, value)| (key, value.into_iter().filter(in_pool).collect()))
-    .collect();
-    let mut log =
+    };
+    let overworld: std::collections::BTreeMap<_, _> = overworld
+        .into_iter()
+        .map(|(key, value)| (key, value.into_iter().filter(in_pool).collect()))
+        .collect();
+    std::fs::write("seeding.log", seeding).map_err(|e| e.to_string())?;
+    let mut spoiler =
         std::io::BufWriter::new(std::fs::File::create("spoiler.log").map_err(|e| e.to_string())?);
     for val in overworld.values().flatten() {
         use std::io::Write;
-        log.write_fmt(format_args!("{:?}\n", val))
+        spoiler
+            .write_fmt(format_args!("{:?}\n", val))
             .map_err(|e| e.to_string())?
     }
     crate::writing::write(spawn, overworld, app).map_err(|e| e.to_string())
