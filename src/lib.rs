@@ -241,7 +241,7 @@ impl eframe::App for Rando {
                     } else {
                         self.notifs
                             .dialog()
-                            .with_title(":/")
+                            .with_title("owo")
                             .with_body("that isn't a valid pseudoregalia install location")
                             .with_icon(egui_modal::Icon::Warning)
                             .open();
