@@ -1,9 +1,4 @@
-use unreal_asset::{
-    exports::*,
-    properties::*,
-    types::{fname::FName, *},
-    *,
-};
+use unreal_asset::{exports::*, properties::*, types::*, *};
 
 mod delete;
 pub use delete::delete;

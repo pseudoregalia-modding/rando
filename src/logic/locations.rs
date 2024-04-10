@@ -9,7 +9,6 @@ i.e. split Late prison into the save crystal's, In the rafters room, and after t
 #[derive(Debug, Clone, Copy, PartialEq, strum::EnumIter, strum::EnumCount, strum::Display)]
 pub enum Location {
     // Prison
-    VDreamBreaker,
     EarlyPrison,
     LatePrison,
     StrongEyes,
@@ -90,49 +89,26 @@ impl Location {
                     Loc(L::EarlyPrison),
                 ]),
             ]),
-            L::EarlyPrison => Any(&[
-                Loc(L::CsMain), // Drop in from castle
-                All(&[
-                    Any(&[
-                        Powerup(A::DreamBreaker),
-                        All(&[Powerup(A::Sunsetter), Trick(T::Knowledge, D::Normal)]),
-                    ]),
-                    Any(&[
-                        All(&[
-                            Loc(L::StrongEyes),
-                            Any(&[
-                                Lock::SmallKey, // Open the door
-                                All(&[
-                                    // Go through the little shortcut thing
-                                    Powerup(A::Sunsetter),
-                                    Powerup(A::DreamBreaker),
-                                    Trick(T::Knowledge, D::Normal),
-                                ]),
-                            ]),
-                        ]), // From Strong Eyes
-                        Loc(L::VDreamBreaker), // Breaking wall from DB item check
-                        Loc(L::LatePrison),    // Breaking wall from late.
-                    ]),
+            L::EarlyPrison => All(&[
+                Any(&[
+                    Powerup(A::DreamBreaker),
+                    All(&[Powerup(A::Sunsetter), Trick(T::Knowledge, D::Normal)]),
                 ]),
-                All(&[
-                    Loc(L::VDreamBreaker),
-                    Any(&[
-                        All(&[
-                            Powerup(A::SunGreaves),
-                            Trick(T::Movement, D::Expert),
-                            Trick(T::OneWall, D::Advanced),
+                Any(&[
+                    All(&[
+                        Loc(L::StrongEyes),
+                        Any(&[
+                            Lock::SmallKey, // Open the door
+                            All(&[
+                                // Go through the little shortcut thing
+                                Powerup(A::Sunsetter),
+                                Powerup(A::DreamBreaker),
+                                Trick(T::Knowledge, D::Normal),
+                            ]),
                         ]),
-                        All(&[
-                            Powerup(A::SunGreaves),
-                            Powerup(A::SolarWind),
-                            Trick(T::Movement, D::Advanced),
-                            Trick(T::OneWall, D::Advanced),
-                        ]),
-                        All(&[
-                            Powerup(A::Sunsetter),
-                            Trick(T::Knowledge, D::Expert), // This wall sucks
-                        ]),
-                    ]),
+                    ]), // From Strong Eyes
+                    Loc(L::CsMain),     // Drop in from castle
+                    Loc(L::LatePrison), // Breaking wall from late.
                 ]),
             ]),
             L::PEntryUnderBelly => Any(&[
@@ -148,7 +124,6 @@ impl Location {
                 ]),
                 All(&[Loc(L::PrisonHole), Powerup(A::AscendantLight)]),
             ]),
-            L::VDreamBreaker => Loc(L::EarlyPrison),
             L::StrongEyes => Any(&[
                 All(&[Loc(L::LatePrison), Powerup(A::Slide)]),
                 All(&[
@@ -707,7 +682,6 @@ impl Location {
             | L::PEntryCastle
             | L::PEntryUnderBelly
             | L::LatePrison
-            | L::VDreamBreaker
             | L::EarlyPrison
             | L::StrongEyes => "ZONE_Dungeon",
             L::CsBaileyEntry
@@ -758,7 +732,6 @@ impl Location {
             | L::PEntryCastle
             | L::PEntryUnderBelly
             | L::LatePrison
-            | L::VDreamBreaker
             | L::EarlyPrison
             | L::StrongEyes => "Dilapidated Dungeon",
             L::CsBaileyEntry

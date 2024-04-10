@@ -242,7 +242,7 @@ fn possible(spawn: Location, checks: &[Check], app: &crate::Rando) -> Option<Str
 
         locations_len = locations.len();
         obtainable_len = obtainable.len();
-        seeding.push_str("\n");
+        seeding.push('\n');
     }
 }
 

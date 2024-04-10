@@ -30,16 +30,12 @@ pub const CHECKS: [Check; 92] = [
     },
     Check {
         description: "where dream breaker normally is",
-        location: L::VDreamBreaker,
+        location: L::EarlyPrison,
         index: 501,
         drop: Drop::Ability(A::DreamBreaker),
         trial: None,
         locks: Any(&[
             Powerup(A::DreamBreaker), 
-            All(&[
-                Trick(T::Knowledge, D::Advanced),
-                Powerup(A::Sunsetter),
-            ]),
             All(&[
                 Powerup(A::SunGreaves),
                 Trick(T::Movement, D::Expert),
@@ -50,6 +46,10 @@ pub const CHECKS: [Check; 92] = [
                 Powerup(A::SolarWind),
                 Trick(T::Movement, D::Advanced),
                 Trick(T::OneWall, D::Advanced),
+            ]),
+            All(&[
+                Powerup(A::Sunsetter),
+                Trick(T::Knowledge, D::Expert), // This wall sucks
             ]),
         ]),
     },

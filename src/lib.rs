@@ -120,7 +120,7 @@ impl Rando {
             movement: get_difficulty("movement"),
             cling_abuse: get_difficulty("cling abuse"),
             knowledge: get_difficulty("knowledge"),
-            selected: viewer::Node::Location(logic::Location::VDreamBreaker),
+            selected: viewer::Node::Location(logic::Location::EarlyPrison),
             area: viewer::Area::Dungeon,
         }
     }

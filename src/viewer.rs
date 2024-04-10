@@ -32,7 +32,6 @@ impl Area {
     pub const fn rooms(&self) -> &[L] {
         match self {
             Area::Dungeon => &[
-                L::VDreamBreaker,
                 L::EarlyPrison,
                 L::LatePrison,
                 L::StrongEyes,
