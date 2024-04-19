@@ -248,9 +248,33 @@ fn possible(spawn: Location, checks: &[Check], app: &crate::Rando) -> Option<Str
 
 pub fn randomise(app: &crate::Rando) -> Result<(), String> {
     let in_pool = |check: &Check| match &check.drop {
-        Drop::Ability(_) => match check.trial {
-            Some(_) => app.outfits,
-            None => app.abilities,
+        Drop::Ability(ability) => match ability {
+            Ability::DreamBreaker
+            | Ability::SunGreaves
+            | Ability::Slide
+            | Ability::Sunsetter
+            | Ability::ClingGem(_)
+            | Ability::AscendantLight
+            | Ability::SoulCutter
+            | Ability::Indignation
+            | Ability::SolarWind
+            | Ability::Strikebreak
+            | Ability::Memento => app.abilities,
+            Ability::HeliacalPower
+            | Ability::AerialFinesse
+            | Ability::Pilgrimage
+            | Ability::Empathy
+            | Ability::GoodGraces
+            | Ability::MartialProwess
+            | Ability::ClearMind => app.aspects,
+            Ability::Professional
+            | Ability::Guardian
+            | Ability::Soldier
+            | Ability::BleedingHeart
+            | Ability::Xix
+            | Ability::SolSister
+            | Ability::Classy
+            | Ability::Sleepytime => app.outfits,
         },
         Drop::SmallKey => app.small_keys,
         Drop::BigKey => app.big_keys,
@@ -364,6 +388,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
     }
     if pool.len() <= 1
         || (!app.abilities
+            && !app.aspects
             && app.small_keys
             && !app.big_keys
             && !app.health
@@ -371,6 +396,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
             && !app.notes
             && !app.chairs)
         || (!app.abilities
+            && !app.aspects
             && !app.small_keys
             && app.big_keys
             && !app.health
@@ -378,6 +404,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
             && !app.notes
             && !app.chairs)
         || (!app.abilities
+            && !app.aspects
             && !app.small_keys
             && !app.big_keys
             && app.health
@@ -385,6 +412,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
             && !app.notes
             && !app.chairs)
         || (!app.abilities
+            && !app.aspects
             && !app.small_keys
             && !app.big_keys
             && !app.health
@@ -392,6 +420,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
             && !app.notes
             && !app.chairs)
         || (!app.abilities
+            && !app.aspects
             && !app.small_keys
             && !app.big_keys
             && !app.health
@@ -399,6 +428,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
             && app.notes
             && !app.chairs)
         || (!app.abilities
+            && !app.aspects
             && !app.small_keys
             && !app.big_keys
             && !app.health

@@ -17,6 +17,7 @@ pub struct Rando {
     pak: std::path::PathBuf,
     pak_str: String,
     abilities: bool,
+    aspects: bool,
     outfits: bool,
     small_keys: bool,
     big_keys: bool,
@@ -101,6 +102,7 @@ impl Rando {
             pak,
             pak_str,
             abilities: get_bool("abilities"),
+            aspects: get_bool("aspects"),
             outfits: get_bool("outfits"),
             small_keys: get_bool("small keys"),
             big_keys: get_bool("big keys"),
@@ -248,42 +250,46 @@ impl eframe::App for Rando {
                     }
                 }
             });
-            ui.columns(3, |ui| {
+            ui.columns(4, |ui| {
                 if ui[0].checkbox(&mut self.abilities, "Abilities").changed() && !self.abilities {
                     self.split_greaves = false;
                     self.split_cling = false;
                     self.progressive = false;
                 }
-                if ui[0].checkbox(&mut self.outfits, "Outfits").clicked() && self.outfits {
+                ui[0].checkbox(&mut self.aspects, "Aspects");
+                ui[0].checkbox(&mut self.small_keys, "Small keys");
+                ui[0].checkbox(&mut self.big_keys, "Big keys");
+                
+                if ui[1].checkbox(&mut self.outfits, "Outfits").clicked() && self.outfits {
                     self.notifs
                         .dialog()
                         .with_title("little bug")
-                        .with_body("currently there's a bug where goatlings don't spawn on time trial completion\nannoying but not game-breaking\nsorry for the inconvenience")
+                        .with_body("currently goatlings don't spawn on time trial completion\nannoying but not game-breaking\nsorry for the inconvenience")
                         .with_icon(egui_modal::Icon::Warning)
                         .open();
                 }
-                ui[0].checkbox(&mut self.health, "Health");
-                ui[0].checkbox(&mut self.goatlings, "Goatlings");
-                ui[0].add_enabled(false, egui::Checkbox::new(&mut false, "Enemies?"));
-                ui[1].checkbox(&mut self.small_keys, "Small keys");
-                ui[1].checkbox(&mut self.big_keys, "Big keys");
-                ui[1].checkbox(&mut self.notes, "Notes");
-                ui[1].checkbox(&mut self.chairs, "Chairs");
-                ui[1].add_enabled(false, egui::Checkbox::new(&mut false, "Levers?"));
-                ui[2].add_enabled(
+                ui[1].checkbox(&mut self.health, "Health");
+                ui[1].checkbox(&mut self.goatlings, "Goatlings");
+                ui[1].checkbox(&mut self.spawn, "Spawn");
+                
+                ui[2].checkbox(&mut self.notes, "Notes");
+                ui[2].checkbox(&mut self.chairs, "Chairs");
+                ui[2].add_enabled(false, egui::Checkbox::new(&mut false, "Enemies?"));
+                ui[2].add_enabled(false, egui::Checkbox::new(&mut false, "Levers?"));
+                
+                ui[3].add_enabled(
                     self.abilities,
                     egui::Checkbox::new(&mut self.split_greaves, "Split greaves"),
                 );
-                ui[2].add_enabled(
+                ui[3].add_enabled(
                     self.abilities,
                     egui::Checkbox::new(&mut self.split_cling, "Split cling"),
                 );
-                ui[2].add_enabled(
+                ui[3].add_enabled(
                     self.abilities,
                     egui::Checkbox::new(&mut self.progressive, "Progressive items"),
                 );
-                ui[2].checkbox(&mut self.spawn, "Spawn");
-                ui[2].add_enabled(false, egui::Checkbox::new(&mut false, "Transitions?"));
+                ui[3].add_enabled(false, egui::Checkbox::new(&mut false, "Transitions?"));
             });
             ui.vertical_centered_justified(|ui| {
                 if ui
@@ -442,6 +448,16 @@ impl eframe::App for Rando {
                         |ui| self.tricks.button(ui, "close"),
                     );
                 });
+                if ui
+                    .button(egui::RichText::new("generate and install seed").size(33.0))
+                    .clicked()
+                {
+                    notify!(
+                        self,
+                        logic::randomise(self),
+                        "seed has been generated, written and installed"
+                    )
+                }
                 if ui.button("uninstall seed").clicked() {
                     notify!(
                         self,
@@ -470,16 +486,6 @@ impl eframe::App for Rando {
                         "game found and launched successfully"
                     )
                 }
-                if ui
-                    .button(egui::RichText::new("generate and install seed").size(33.0))
-                    .clicked()
-                {
-                    notify!(
-                        self,
-                        logic::randomise(self),
-                        "seed has been generated, written and installed"
-                    )
-                }
             });
             self.notifs.show_dialog();
         });
@@ -489,6 +495,7 @@ impl eframe::App for Rando {
         storage.set_string("pak", self.pak.to_str().unwrap_or_default().to_string());
         let mut set_bool = |key: &str, value: bool| storage.set_string(key, value.to_string());
         set_bool("abilities", self.abilities);
+        set_bool("aspects", self.aspects);
         set_bool("outfits", self.outfits);
         set_bool("small keys", self.small_keys);
         set_bool("big keys", self.big_keys);
