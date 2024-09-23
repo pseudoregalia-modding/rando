@@ -29,6 +29,7 @@ pub struct Rando {
     chairs: bool,
     split_cling: bool,
     spawn: bool,
+    music: bool,
     momentum: logic::Difficulty,
     one_wall: logic::Difficulty,
     reverse_kick: logic::Difficulty,
@@ -114,6 +115,7 @@ impl Rando {
             chairs: get_bool("chairs"),
             split_cling: get_bool("split cling"),
             spawn: get_bool("spawn"),
+            music: get_bool("music"),
             momentum: get_difficulty("momentum"),
             one_wall: get_difficulty("one wall"),
             reverse_kick: get_difficulty("reverse kick"),
@@ -276,6 +278,7 @@ impl eframe::App for Rando {
                 ui[2].checkbox(&mut self.chairs, "Chairs");
                 ui[2].add_enabled(false, egui::Checkbox::new(&mut false, "Enemies?"));
                 ui[2].add_enabled(false, egui::Checkbox::new(&mut false, "Levers?"));
+                ui[2].checkbox(&mut self.music, "Music");
                 
                 ui[3].add_enabled(
                     self.abilities,
@@ -507,6 +510,7 @@ impl eframe::App for Rando {
         set_bool("chairs", self.chairs);
         set_bool("split cling", self.split_cling);
         set_bool("spawn", self.spawn);
+        set_bool("music", self.music);
         let mut set_difficulty =
             |key: &str, value: logic::Difficulty| storage.set_string(key, value.to_string());
         set_difficulty("momentum", self.momentum);

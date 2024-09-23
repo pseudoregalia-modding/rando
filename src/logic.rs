@@ -10,6 +10,8 @@ mod spawns;
 pub use spawns::SPAWNS;
 mod tricks;
 pub use tricks::*;
+mod music;
+pub use music::*;
 
 #[derive(Clone, Copy, PartialEq)]
 pub enum Drop {

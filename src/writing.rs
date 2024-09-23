@@ -2,6 +2,7 @@ use super::logic::*;
 use crate::{io::*, map::*};
 use unreal_asset::{exports::*, properties::*};
 
+mod music;
 mod overworld;
 
 #[derive(thiserror::Error, Debug)]
@@ -28,8 +29,6 @@ impl From<Box<dyn std::any::Any + Send + 'static>> for Error {
 
 pub const MOD: &str = "pseudoregalia/Content/";
 
-const PREFIX: &str = "Maps/";
-
 fn extract(
     app: &crate::Rando,
     pak: &repak::PakReader,
@@ -50,6 +49,7 @@ fn extract(
 pub fn write(
     (tag, spawn): (&'static str, Location),
     checks: std::collections::BTreeMap<&'static str, Vec<Check>>,
+    music: Option<std::iter::Zip<std::array::IntoIter<Music, 10>, std::array::IntoIter<Music, 10>>>,
     app: &crate::Rando,
 ) -> Result<(), Error> {
     let mut sync = app.pak()?;
@@ -85,6 +85,9 @@ pub fn write(
             None,
         );
     overworld::write(checks, app, &pak, &mut mod_pak)?;
+    if let Some(music) = music {
+        music::write(app, music, &pak, &mut mod_pak)?;
+    }
     let mut asset = std::io::Cursor::new(vec![]);
     let mut bulk = std::io::Cursor::new(vec![]);
     let mut orig = extract(app, &pak, "Blueprints/LevelActors/BP_SavePoint.uasset")?;

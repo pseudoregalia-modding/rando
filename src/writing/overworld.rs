@@ -2,6 +2,8 @@ use unreal_asset::reader::ArchiveTrait;
 
 use super::*;
 
+const PREFIX: &str = "Maps/";
+
 pub fn write(
     checks: std::collections::BTreeMap<&'static str, Vec<Check>>,
     app: &crate::Rando,
@@ -198,7 +200,7 @@ pub fn write(
             let (path, asset, bulk) = thread?.join()??;
             mod_pak.write_file(&path, asset.into_inner())?;
             mod_pak.write_file(
-                &path.replace(".uasset", ".uexp").replace(".umap", ".uexp"),
+                &path.replace(".umap", ".uexp"),
                 bulk.into_inner(),
             )?;
         }

@@ -439,10 +439,10 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
         return Err("you haven't picked enough checks for anything to be random - include more checks in the pool".to_string());
     }
 
+    use rand::{seq::SliceRandom, Rng};
     let mut rng = rand::thread_rng();
     let mut spawn;
     let (seeding, overworld) = loop {
-        use rand::{seq::SliceRandom, Rng};
         spawn = SPAWNS[match app.spawn {
             true => rng.gen_range(0..SPAWNS.len()),
             false => 0,
@@ -467,6 +467,23 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
             break (seeding, overworld);
         }
     };
+    let music = app.music.then(|| {
+        let base = [
+            Music::Title,
+            Music::DilapidatedDungeon,
+            Music::StrongEyes,
+            Music::CastleSansa,
+            Music::SansaKeep,
+            Music::EmptyBailey,
+            Music::TowerRuins,
+            Music::Underbelly,
+            Music::TwilightTheatre,
+            Music::Princess,
+        ];
+        let mut new = base.clone();
+        new.shuffle(&mut rng);
+        base.into_iter().zip(new.into_iter())
+    });
     let overworld: std::collections::BTreeMap<_, _> = overworld
         .into_iter()
         .map(|(key, value)| (key, value.into_iter().filter(in_pool).collect()))
@@ -480,5 +497,5 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
             .write_fmt(format_args!("{:?}\n", val))
             .map_err(|e| e.to_string())?
     }
-    crate::writing::write(spawn, overworld, app).map_err(|e| e.to_string())
+    crate::writing::write(spawn, overworld, music, app).map_err(|e| e.to_string())
 }
