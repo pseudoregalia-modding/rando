@@ -4,7 +4,7 @@ const PREFIX: &str = "Audio/Music/";
 
 pub fn write(
     app: &crate::Rando,
-    music: std::iter::Zip<std::array::IntoIter<Music, 10>, std::array::IntoIter<Music, 10>>,
+    music: std::iter::Zip<std::array::IntoIter<Music, 9>, std::array::IntoIter<Music, 9>>,
     pak: &repak::PakReader,
     mod_pak: &mut repak::PakWriter<std::io::BufWriter<std::fs::File>>,
 ) -> Result<(), Error> {

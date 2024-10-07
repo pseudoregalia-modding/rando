@@ -1,6 +1,5 @@
 #[derive(Clone)]
 pub enum Music {
-    Title,
     DilapidatedDungeon,
     StrongEyes,
     CastleSansa,
@@ -17,7 +16,6 @@ use Music as M;
 impl Music {
     pub const fn track(&self) -> &'static str {
         match self {
-            M::Title => "BGM_Title",
             M::DilapidatedDungeon => "BGM_Dungeon",
             M::StrongEyes => "BGM_Boss1",
             M::CastleSansa => "BGM_LowerCastle",
@@ -31,7 +29,6 @@ impl Music {
     }
     pub const fn source(&self) -> &'static str {
         match self {
-            M::Title => "Pseudoregalia_TitleScreen",
             M::DilapidatedDungeon => "gg_exterior",
             M::StrongEyes => "final_boss_theme_in_game",
             M::CastleSansa => "gg_lower_castle",
@@ -45,7 +42,6 @@ impl Music {
     }
     pub const fn volume(&self) -> f32 {
         match self {
-            M::Title => 0.4,
             M::DilapidatedDungeon => 1.0,
             M::StrongEyes => 1.4,
             M::CastleSansa => 0.3,

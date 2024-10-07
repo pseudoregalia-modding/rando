@@ -469,7 +469,6 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
     };
     let music = app.music.then(|| {
         let base = [
-            Music::Title,
             Music::DilapidatedDungeon,
             Music::StrongEyes,
             Music::CastleSansa,
