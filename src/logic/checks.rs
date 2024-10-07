@@ -16,6 +16,7 @@ pub const CHECKS: [Check; 92] = [
             "Oh[3rr](...)sorry, I didn't mean to[3rr](...)fall out of my cage[3rr](...)",
             "I hope[3rr](...)the [#cf2525](princess) won't be upset with me[3rr](...)"
         ]),
+        key_index: None,
         trial: None,
         locks: Lock::None,
     },
@@ -24,6 +25,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::EarlyPrison,
         index: 503,
         drop: Drop::Ability(A::SolSister),
+        key_index: None,
         trial: Some(486),
         // not final logic
         locks: All(&[Powerup(A::DreamBreaker), Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::ClingGem(6)), Powerup(A::Sunsetter)]),
@@ -33,9 +35,10 @@ pub const CHECKS: [Check; 92] = [
         location: L::EarlyPrison,
         index: 501,
         drop: Drop::Ability(A::DreamBreaker),
+        key_index: None,
         trial: None,
         locks: Any(&[
-            Powerup(A::DreamBreaker), 
+            Powerup(A::DreamBreaker),
             All(&[
                 Powerup(A::SunGreaves),
                 Trick(T::Movement, D::Expert),
@@ -47,10 +50,6 @@ pub const CHECKS: [Check; 92] = [
                 Trick(T::Movement, D::Advanced),
                 Trick(T::OneWall, D::Advanced),
             ]),
-            All(&[
-                Powerup(A::Sunsetter),
-                Trick(T::Knowledge, D::Expert), // This wall sucks
-            ]),
         ]),
     },
     Check {
@@ -58,6 +57,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::EarlyPrison,
         index: 283,
         drop: Drop::Health,
+        key_index: None,
         trial: None,
         locks: Any(&[
             Any(&[
@@ -77,6 +77,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::LatePrison,
         index: 502,
         drop: Drop::Ability(A::Slide),
+        key_index: None,
         trial: None,
         locks: Any(&[
             Powerup(A::Slide),
@@ -92,6 +93,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::LatePrison,
         index: 504,
         drop: Drop::Ability(A::GoodGraces),
+        key_index: None,
         trial: None,
         locks: Any(&[
             Powerup(A::ClingGem(6)),
@@ -104,6 +106,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::StrongEyes,
         index: 255,
         drop: Drop::SmallKey,
+        key_index: None,
         trial: None,
         locks: Any(&[
             All(&[
@@ -121,6 +124,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::StrongEyes,
         index: 284,
         drop: Drop::Health,
+        key_index: None,
         trial: None,
         locks: All(&[
             Any(&[
@@ -138,6 +142,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::StrongEyes,
         index: 254,
         drop: Drop::SmallKey,
+        key_index: None,
         trial: None,
         locks: Powerup(A::DreamBreaker), // not changing, fighting without DB sucks
     },
@@ -146,6 +151,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::CsMain,
         index: 820,
         drop: Drop::Goatling(&["So many of have been trapped in the dungeon, and for what?"]),
+        key_index: None,
         trial: None,
         locks: Lock::None,
     },
@@ -154,6 +160,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::CsMain,
         index: 998,
         drop: Drop::Ability(A::Memento),
+        key_index: None,
         trial: None,
         locks: Lock::None,
     },
@@ -166,6 +173,7 @@ pub const CHECKS: [Check; 92] = [
             "They make me feel safe...",
             "I think i'm gonna lick it. I bet it's full of [#8ada1c, buoy, italics](minerals).",
         ]),
+        key_index: None,
         trial: None,
         locks: Lock::None,
     },
@@ -174,6 +182,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::CsMain,
         index: 822,
         drop: Drop::Chair,
+        key_index: None,
         trial: None,
         locks: Lock::None,
     },
@@ -182,6 +191,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::CsMain,
         index: 823,
         drop: Drop::Chair,
+        key_index: None,
         trial: None,
         locks: Lock::None,
     },
@@ -190,6 +200,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::CsMain,
         index: 824,
         drop: Drop::Chair,
+        key_index: None,
         trial: None,
         locks: Lock::None,
     },
@@ -198,6 +209,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::CsMain,
         index: 994,
         drop: Drop::Ability(A::Indignation),
+        key_index: None,
         trial: None,
         locks: Lock::None,
     },
@@ -206,6 +218,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::CsMain,
         index: 540,
         drop: Drop::SmallKey,
+        key_index: None,
         trial: None,
         locks: Any(&[
             Powerup(A::Sunsetter),
@@ -223,6 +236,7 @@ pub const CHECKS: [Check; 92] = [
             "But with the state of the castle,  I can't find the entrance anywhere!",
             "I miss that [#ba7f27](comfy hay)..."
         ]),
+        key_index: None,
         trial: None,
         locks: Lock::None,
     },
@@ -231,6 +245,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::CsMain,
         index: 999,
         drop: Drop::Ability(A::Professional),
+        key_index: None,
         trial: Some(969),
         locks: Lock::SmallKey, // You can easily do this with nothing but ability to hit the crystal.
     },
@@ -239,6 +254,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::CsMain,
         index: 592,
         drop: Drop::Health,
+        key_index: None,
         trial: None,
         locks: Any(&[
             Powerup(A::ClingGem(6)),
@@ -250,6 +266,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::CsMain,
         index: 591,
         drop: Drop::Health,
+        key_index: None,
         trial: None,
         locks: Any(&[
             Powerup(A::AscendantLight),
@@ -262,6 +279,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::CsOldSoftlockRoom,
         index: 595,
         drop: Drop::Health,
+        key_index: None,
         trial: None,
         locks: Any(&[
             All(&[Powerup(A::ClingGem(6)), Trick(T::ClingAbuse, D::Expert), Trick(T::Movement, D::Advanced)]),
@@ -278,6 +296,7 @@ pub const CHECKS: [Check; 92] = [
             "Oh, thanks for breaking that wall down.",
             "Thought I was gonna have to jump into the haze..."
         ]),
+        key_index: None,
         trial: None,
         locks: Any(&[ // Just need to break the wall.. nothing new
             Powerup(A::DreamBreaker),
@@ -292,6 +311,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::CsTheatreEntrance,
         index: 997,
         drop: Drop::Ability(A::ClearMind),
+        key_index: None,
         trial: None,
         locks: Any(&[ // Cross gap then climb the room
             All(&[Powerup(A::ClingGem(6)), Trick(T::ClingAbuse, D::Normal)]),
@@ -306,6 +326,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::CsMain,
         index: 539,
         drop: Drop::SmallKey,
+        key_index: None,
         trial: None,
         locks: All(&[
             Any(&[// Activate the switch OR skip it
@@ -357,6 +378,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::CsTheatreEntryNearPrison, // Change Node so that we can infer the logic for getting to said node
         index: 594,
         drop: Drop::Health,
+        key_index: None,
         trial: None,
         locks: Any(&[
             Powerup(A::ClingGem(4)),
@@ -372,6 +394,7 @@ pub const CHECKS: [Check; 92] = [
             "I just don't really wanna touch the [#cf2525](bubbles)...",
             "What? I dont have a problem. You go touch 'em then, bubble girl."
         ]),
+        key_index: None,
         trial: None,
         locks: Any(&[
             Powerup(A::HeliacalPower),
@@ -383,6 +406,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::CsMain,
         index: 593,
         drop: Drop::Health,
+        key_index: None,
         trial: None,
         locks: Any(&[ // Not much to add here really
             All(&[Powerup(A::SunGreaves), Powerup(A::HeliacalPower), Trick(T::Movement, D::Normal)]),
@@ -399,6 +423,7 @@ pub const CHECKS: [Check; 92] = [
             "But the handmaiden has run out of her special ingredient.",
             "I guess the princess doesn't really want anybody else's tea...",
         ]),
+        key_index: None,
         trial: None,
         locks: Lock::None,
     },
@@ -407,6 +432,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::CsMain,
         index: 825,
         drop: Drop::Chair,
+        key_index: None,
         trial: None,
         locks: Lock::None,
     },
@@ -415,6 +441,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::CsMain,
         index: 995,
         drop: Drop::Ability(A::Pilgrimage),
+        key_index: None,
         trial: None,
         locks: Any(&[
             All(&[
@@ -442,6 +469,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::CsMain,
         index: 996,
         drop: Drop::Ability(A::GoodGraces),
+        key_index: None,
         trial: None,
         locks: Any(&[
             All(&[
@@ -463,6 +491,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::MainLibrary,
         index: 289,
         drop: Drop::Chair,
+        key_index: None,
         trial: None,
         locks: Lock::None,
     },
@@ -471,6 +500,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::MainLibrary,
         index: 325,
         drop: Drop::Ability(A::Sleepytime),
+        key_index: None,
         // not final logic
         trial: Some(314),
         locks: All(&[
@@ -495,6 +525,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::LibSaveNearGreaves,
         index: 324,
         drop: Drop::Ability(A::SunGreaves),
+        key_index: None,
         trial: None,
         locks: Any(&[
             Powerup(A::DreamBreaker),
@@ -506,6 +537,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::LibSaveNearGreaves,
         index: 291,
         drop: Drop::Chair,
+        key_index: None,
         trial: None,
         locks: Lock::None,
     },
@@ -514,6 +546,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::MainLibrary,
         index: 288,
         drop: Drop::Note,
+        key_index: None,
         trial: None,
         locks: Any(&[
             Powerup(A::SunGreaves),
@@ -526,6 +559,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::MainLibrary,
         index: 290,
         drop: Drop::Chair,
+        key_index: None,
         trial: None,
         locks: Any(&[
             Powerup(A::SunGreaves),
@@ -538,6 +572,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::MainLibrary,
         index: 237,
         drop: Drop::Health,
+        key_index: None,
         trial: None,
         locks: Any(&[Powerup(A::SunGreaves), Powerup(A::ClingGem(4))]),
     },
@@ -546,6 +581,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::Restricted,
         index: 326,
         drop: Drop::Ability(A::ClearMind),
+        key_index: None,
         trial: None,
         locks: Any(&[
             Powerup(A::SolarWind),
@@ -558,6 +594,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::Restricted,
         index: 238,
         drop: Drop::Health,
+        key_index: None,
         trial: None,
         locks: Any(&[
             Powerup(A::SolarWind),
@@ -573,6 +610,7 @@ pub const CHECKS: [Check; 92] = [
         drop: Drop::Goatling(&[
             "They took away all my furniture."
         ]),
+        key_index: None,
         trial: None,
         locks: Lock::None,
     },
@@ -583,6 +621,7 @@ pub const CHECKS: [Check; 92] = [
         drop: Drop::Goatling(&[
             "[6rr](.....c.....y..u...i....y.......ce....)"
         ]),
+        key_index: None,
         trial: None,
         locks: Lock::None,
     },
@@ -591,6 +630,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::SkCastleRampEntry,
         index: 477,
         drop: Drop::Chair,
+        key_index: None,
         trial: None,
         locks: Lock::None,
     },
@@ -599,6 +639,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::SansaKeep,
         index: 565,
         drop: Drop::Ability(A::Strikebreak),
+        key_index: None,
         trial: None,
         locks:  All(&[
             Powerup(A::Strikebreak),
@@ -614,6 +655,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::Sunsetter,
         index: 564,
         drop: Drop::Ability(A::Sunsetter),
+        key_index: None,
         trial: None,
         locks: All(&[
             Powerup(A::DreamBreaker),
@@ -629,6 +671,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::Sunsetter,
         index: 330,
         drop: Drop::Health,
+        key_index: None,
         trial: None,
         locks: Any(&[
             Powerup(A::Sunsetter),
@@ -642,6 +685,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::SansaKeep,
         index: 304,
         drop: Drop::SmallKey,
+        key_index: None,
         trial: None,
         locks: Any(&[
             All(&[Powerup(A::Sunsetter), Trick(T::Knowledge, D::Normal)]),
@@ -653,6 +697,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::SansaKeep,
         index: 566,
         drop: Drop::Ability(A::ClearMind),
+        key_index: None,
         trial: None,
         locks: Any(&[
             Powerup(A::Sunsetter),
@@ -665,6 +710,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::SansaKeep,
         index: 305,
         drop: Drop::BigKey,
+        key_index: Some(4),
         trial: None,
         locks: Any(&[
             All(&[
@@ -692,6 +738,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::SansaKeep,
         index: 567,
         drop: Drop::Ability(A::Guardian),
+        key_index: None,
         // only logic to get here not final
         trial: Some(541),
         locks: All(&[Powerup(A::DreamBreaker), Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::ClingGem(6)), Powerup(A::Sunsetter), Powerup(A::AscendantLight)]),
@@ -701,6 +748,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::SansaKeep,
         index: 478,
         drop: Drop::Chair,
+        key_index: None,
         trial: None,
         locks:  Any(&[
             All(&[
@@ -729,6 +777,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::EmptyBailey,
         index: 115,
         drop: Drop::Goatling(&["...i'm not here."]),
+        key_index: None,
         trial: None,
         locks: Powerup(A::Slide), // Theres another way to get TO the item, not putting it in since its a one way unless it is slide though...
     },
@@ -737,6 +786,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::EmptyBailey,
         index: 70,
         drop: Drop::SmallKey,
+        key_index: None,
         trial: None,
         locks: Powerup(A::Slide),
     },
@@ -745,6 +795,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::EmptyBailey,
         index: 69,
         drop: Drop::BigKey,
+        key_index: Some(1),
         trial: None,
         locks: Any(&[
             Powerup(A::Sunsetter),
@@ -762,6 +813,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::EmptyBailey,
         index: 148,
         drop: Drop::Ability(A::SolarWind),
+        key_index: None,
         trial: None,
         locks: All(&[
             Powerup(A::Slide),
@@ -783,6 +835,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::EmptyBailey,
         index: 80,
         drop: Drop::Health,
+        key_index: None,
         trial: None,
         locks: Any(&[
             Powerup(A::Sunsetter),
@@ -805,6 +858,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::EmptyBailey,
         index: 149,
         drop: Drop::Ability(A::Empathy),
+        key_index: None,
         trial: None,
         locks: Any(&[
             All(&[
@@ -823,6 +877,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::EmptyBailey,
         index: 150,
         drop: Drop::Ability(A::Soldier),
+        key_index: None,
         trial: Some(128),
         locks: All(&[Powerup(A::DreamBreaker), Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::ClingGem(6)), Powerup(A::Sunsetter)]),
     },
@@ -832,6 +887,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::SansaHole,
         index: 614,
         drop: Drop::Health,
+        key_index: None,
         trial: None,
         locks: Any(&[
             Powerup(A::SunGreaves),
@@ -843,6 +899,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::SansaHole,
         index: 545,
         drop: Drop::BigKey,
+        key_index: Some(2),
         trial: None,
         locks: All(&[
             Powerup(A::DreamBreaker),
@@ -861,6 +918,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::VAscendantLight,
         index: 1044,
         drop: Drop::Ability(A::AscendantLight),
+        key_index: None,
         // you can go through the dark area and there's a passage which you can do with nothing
         trial: None,
         locks: Any(&[
@@ -876,6 +934,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::VAscendantLight,
         index: 616,
         drop: Drop::Health,
+        key_index: None,
         trial: None,
         locks: Any(&[
             All(&[Powerup(A::Sunsetter), Trick(T::Knowledge, D::Normal)]), // normal route into AL 
@@ -887,6 +946,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::MainUnderbelly,
         index: 546,
         drop: Drop::SmallKey,
+        key_index: None,
         trial: None,
         locks: Any(&[ // Leaving as is for now.
             Powerup(A::Sunsetter),
@@ -898,6 +958,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::MainUnderbelly,
         index: 894,
         drop: Drop::Note,
+        key_index: None,
         trial: None,
         locks: All(&[ // Leaving as is for now.
             Powerup(A::HeliacalPower),
@@ -914,6 +975,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::MainUnderbelly,
         index: 1046,
         drop: Drop::Ability(A::MartialProwess),
+        key_index: None,
         trial: None,
         locks: All(&[// Leaving this one out of tricks for now since theres a ton of ways to do it
             Powerup(A::Strikebreak), // Dont know why this one was SoulCutter before...
@@ -931,6 +993,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::MainUnderbelly,
         index: 1045,
         drop: Drop::Ability(A::Xix),
+        key_index: None,
         // need to hit lever at top first
         trial: Some(1028),
         locks: All(&[Powerup(A::DreamBreaker), Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::ClingGem(6)), Powerup(A::Sunsetter)]),
@@ -940,6 +1003,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::HpSave,
         index: 1047,
         drop: Drop::Ability(A::HeliacalPower),
+        key_index: None,
         trial: None,
         locks: Lock::SmallKey,
     },
@@ -948,6 +1012,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::HpSave,
         index: 895,
         drop: Drop::Note,
+        key_index: None,
         trial: None,
         locks: Lock::SmallKey,
     },
@@ -956,6 +1021,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::BaileyHole,
         index: 896,
         drop: Drop::Note,
+        key_index: None,
         trial: None,
         locks: Any(&[
             Powerup(A::SunGreaves),
@@ -972,6 +1038,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::BaileyHole,
         index: 615,
         drop: Drop::Health,
+        key_index: None,
         trial: None,
         locks: Any(&[
             Powerup(A::SunGreaves),
@@ -985,6 +1052,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::TowerRuinsKeep,
         index: 155,
         drop: Drop::Ability(A::ClingGem(6)),
+        key_index: None,
         trial: None,
         locks: Any(&[
             Powerup(A::ClingGem(6)),
@@ -997,6 +1065,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::TowerRuinsKeep,
         index: 77,
         drop: Drop::BigKey,
+        key_index: Some(3),
         trial: None,
         locks: Any(&[
             All(&[
@@ -1022,6 +1091,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::TowerRuinsKeep,
         index: 156,
         drop: Drop::Ability(A::BleedingHeart),
+        key_index: None,
         // again again just to get to top of tower
         // need to hit lever tho
         trial: Some(129),
@@ -1033,6 +1103,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::PillarRoom,
         index: 1231,
         drop: Drop::Ability(A::AerialFinesse),
+        key_index: None,
         trial: None,
         locks: Any(&[
             All(&[
@@ -1048,6 +1119,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::PillarRoom,
         index: 1232,
         drop: Drop::Ability(A::Classy),
+        key_index: None,
         // need to hit the lever first
         trial: Some(1211),
         locks: All(&[Powerup(A::DreamBreaker), Powerup(A::SolarWind), Powerup(A::SunGreaves), Powerup(A::ClingGem(6)), Powerup(A::Sunsetter)]),
@@ -1057,6 +1129,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::OtherTheatrePath,
         index: 1081,
         drop: Drop::Chair,
+        key_index: None,
         trial: None,
         locks: Lock::None,
     },
@@ -1065,6 +1138,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::OtherTheatrePath,
         index: 1084,
         drop: Drop::Chair,
+        key_index: None,
         trial: None,
         locks: Lock::None,
     },
@@ -1073,6 +1147,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::OtherTheatrePath,
         index: 1085,
         drop: Drop::Chair,
+        key_index: None,
         trial: None,
         locks: Lock::None,
     },
@@ -1081,6 +1156,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::OtherTheatrePath,
         index: 1086,
         drop: Drop::Chair,
+        key_index: None,
         trial: None,
         locks: Lock::None,
     },
@@ -1093,6 +1169,7 @@ pub const CHECKS: [Check; 92] = [
             "three bean casserole? not enough for 1 man. i can eat like, [#cf2525](20 beans), at least.",
             "so get to it. [up, 10rr](please?)"
         ]),
+        key_index: None,
         trial: None,
         locks: Lock::None,
     },
@@ -1104,6 +1181,7 @@ pub const CHECKS: [Check; 92] = [
             "I heard that the theatre was still in good condition...",
             "But it seems even this place has been affected."
         ]),
+        key_index: None,
         trial: None,
         locks: Lock::None,
     },
@@ -1114,6 +1192,7 @@ pub const CHECKS: [Check; 92] = [
         drop: Drop::Goatling(&[
             "Ah nuts....I really wanted to see the show today."
         ]),
+        key_index: None,
         trial: None,
         locks: Lock::None,
     },
@@ -1125,6 +1204,7 @@ pub const CHECKS: [Check; 92] = [
             "Sorry miss, can't let you in.",
             "Theatre's closed until all the haze is gone."
         ]),
+        key_index: None,
         trial: None,
         locks: Lock::None,
     },
@@ -1133,6 +1213,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::MainTheatre,
         index: 912,
         drop: Drop::Health,
+        key_index: None,
         trial: None,
         locks: Lock::None,
     },
@@ -1144,6 +1225,7 @@ pub const CHECKS: [Check; 92] = [
             "please leave me alone?",
             "i will [#cf2525](kill again)"
         ]),
+        key_index: None,
         trial: None,
         locks: Any(&[
             All(&[Powerup(A::SolarWind), Powerup(A::HeliacalPower)]),
@@ -1156,6 +1238,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::MainTheatre,
         index: 1082,
         drop: Drop::Chair,
+        key_index: None,
         trial: None,
         locks: Any(&[
             Powerup(A::ClingGem(4)),
@@ -1167,6 +1250,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::MainTheatre,
         index: 1083,
         drop: Drop::Chair,
+        key_index: None,
         trial: None,
         locks:  All(&[
             Powerup(A::Strikebreak), 
@@ -1200,6 +1284,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::MainTheatre,
         index: 871,
         drop: Drop::BigKey,
+        key_index: Some(5),
         // there's one gap in the open green room with enemies which is too big
         trial: None,
         locks: All(&[
@@ -1233,6 +1318,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::MainTheatre,
         index: 1230,
         drop: Drop::Ability(A::SoulCutter),
+        key_index: None,
         trial: None,
         locks: All(&[
             //Absolutely neccassary 
@@ -1278,6 +1364,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::MainTheatre,
         index: 913,
         drop: Drop::Health,
+        key_index: None,
         trial: None,
         locks: Any(&[Powerup(A::SunGreaves), Powerup(A::ClingGem(6))]),
     },
@@ -1286,6 +1373,7 @@ pub const CHECKS: [Check; 92] = [
         location: L::MainTheatre,
         index: 1233,
         drop: Drop::Ability(A::Empathy),
+        key_index: None,
         trial: None,
         locks: All(&[
             Lock::SmallKey,

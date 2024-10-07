@@ -1,4 +1,5 @@
 use super::logic::*;
+use eframe::egui::ahash::HashMap;
 use crate::{io::*, map::*};
 use unreal_asset::{exports::*, properties::*};
 
@@ -49,6 +50,7 @@ fn extract(
 pub fn write(
     (tag, spawn): (&'static str, Location),
     checks: std::collections::BTreeMap<&'static str, Vec<Check>>,
+    major_key_hints: HashMap<String, String>,
     music: Option<std::iter::Zip<std::array::IntoIter<Music, 10>, std::array::IntoIter<Music, 10>>>,
     app: &crate::Rando,
 ) -> Result<(), Error> {
@@ -84,7 +86,7 @@ pub fn write(
             "../../../".to_string(),
             None,
         );
-    overworld::write(checks, app, &pak, &mut mod_pak)?;
+    overworld::write(checks, &major_key_hints, app, &pak, &mut mod_pak)?;
     if let Some(music) = music {
         music::write(app, music, &pak, &mut mod_pak)?;
     }

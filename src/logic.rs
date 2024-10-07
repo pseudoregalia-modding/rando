@@ -44,6 +44,7 @@ pub struct Check {
     pub location: Location,
     pub index: usize,
     pub drop: Drop,
+    pub key_index: Option<i32>,
     pub trial: Option<usize>,
     pub locks: Lock,
 }

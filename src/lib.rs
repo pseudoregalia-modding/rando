@@ -1,4 +1,5 @@
 use eframe::egui;
+use phf::{Map, phf_map};
 
 mod io;
 mod logic;
@@ -7,6 +8,23 @@ mod viewer;
 mod writing;
 
 type Asset<T> = unreal_asset::Asset<std::io::Cursor<T>>;
+
+pub static MAJOR_KEY_NAME_TO_IDX: Map<&'static str, i32> = phf_map!
+{
+    "Major Key - Empty Bailey" => 1,
+    "Major Key - The Underbelly" => 2,
+    "Major Key - Tower Remains" => 3,
+    "Major Key - Sansa Keep" => 4,
+    "Major Key - Twilight Theatre" => 5,
+};
+
+pub const MAJOR_KEY_IDX_TO_NAME: [&'static str; 5] = [
+    "Major Key - Empty Bailey",
+    "Major Key - The Underbelly",
+    "Major Key - Tower Remains",
+    "Major Key - Sansa Keep",
+    "Major Key - Twilight Theatre",
+];
 
 pub struct Rando {
     notifs: egui_modal::Modal,

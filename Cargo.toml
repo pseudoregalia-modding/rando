@@ -14,6 +14,7 @@ repak = { git = "https://github.com/trumank/repak", rev = "abda6da", features = 
 strum = { version = "0.25", features = ["derive"] }
 rand = "0.8"
 egui-modal = "0.3"
+phf = { version = "0.11.2", features = ["macros"] }
 rfd = "0.11"
 thiserror = "1.0"
 

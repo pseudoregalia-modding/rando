@@ -1,11 +1,13 @@
 use unreal_asset::reader::ArchiveTrait;
 
+use crate::MAJOR_KEY_NAME_TO_IDX;
 use super::*;
 
 const PREFIX: &str = "Maps/";
 
 pub fn write(
     checks: std::collections::BTreeMap<&'static str, Vec<Check>>,
+    major_key_hints: &HashMap<String, String>,
     app: &crate::Rando,
     pak: &repak::PakReader,
     mod_pak: &mut repak::PakWriter<std::io::BufWriter<std::fs::File>>,
@@ -39,18 +41,49 @@ pub fn write(
                             place(Vector::new(-4650.0, 9200.0, -250.0))?;
                             place(Vector::new(-3650.0, 9200.0, -250.0))?;
                         },
-                        "Zone_Tower" if app.split_cling => {
-                            use unreal_asset::types::vector::Vector;
-                            delete(155, &mut map);
-                            let mut place = |location: Vector<f64>| -> Result<(),Error>{
-                                let insert = map.asset_data.exports.len();
-                                transplant(59, &mut map, &donor)?;
-                                set_location(insert, &mut map, location);
-                                Ok(())
-                            };
-                            place(Vector::new(13350.0, 5750.0, 4150.0))?;
-                            place(Vector::new(13350.0, 5250.0, 4150.0))?;
-                            place(Vector::new(13350.0, 4750.0, 4150.0))?;
+                        "Zone_Tower" => {
+                            // set hints of tombstones on top of the tower
+                            for (name, hint) in major_key_hints {
+                                let idx = MAJOR_KEY_NAME_TO_IDX[&*name];
+                                let norm = map.asset_data.exports[(71 + idx) as usize].get_normal_export_mut().unwrap();
+                                match norm.properties.iter_mut().find_map(|prop| if prop.get_name().get_owned_content() == "textWindows" {
+                                    unreal_asset::cast!(Property, ArrayProperty, prop)
+                                } else {
+                                    None
+                                }) {
+                                    Some(s) => {
+                                        s.value = vec![
+                                            Property::TextProperty(str_property::TextProperty {
+                                                name: FName::new_dummy(idx.to_string(), 0),
+                                                property_guid: Some(Default::default()),
+                                                culture_invariant_string: Some(String::from(&*hint)),
+                                                namespace: Some(String::new()),
+                                                table_id: None,
+                                                flags: 0,
+                                                history_type: str_property::TextHistoryType::None,
+                                                value: None,
+                                                ancestry: Ancestry { ancestry: vec![] },
+                                                duplication_index: 0,
+                                            })
+                                        ]
+                                    },
+                                    None => ()
+                                }
+                            }
+                            if app.split_cling {
+                                use unreal_asset::types::vector::Vector;
+                                delete(155, &mut map);
+                                let mut place = |location: Vector<f64>| -> Result<(),Error>{
+                                    let insert = map.asset_data.exports.len();
+                                    transplant(59, &mut map, &donor)?;
+                                    set_location(insert, &mut map, location);
+                                    Ok(())
+                                };
+                                place(Vector::new(13350.0, 5750.0, 4150.0))?;
+                                place(Vector::new(13350.0, 5250.0, 4150.0))?;
+                                place(Vector::new(13350.0, 4750.0, 4150.0))?;
+                            }
+                            ()
                         }
                         _ => ()
                     }

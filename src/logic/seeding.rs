@@ -1,5 +1,7 @@
+use eframe::egui::ahash::{HashMap, HashMapExt};
 use super::*;
 use strum::{EnumCount, IntoEnumIterator};
+use crate::MAJOR_KEY_IDX_TO_NAME;
 
 fn accessible(
     locks: &Lock,
@@ -299,6 +301,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
                 location: Location::MainLibrary,
                 index: 1679,
                 drop: Drop::Ability(A::HeliacalPower),
+                key_index: None,
                 trial: None,
                 locks: Any(&[
                     All(&[Powerup(A::Slide), Powerup(A::SunGreaves)]),
@@ -313,6 +316,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
                 location: Location::MainLibrary,
                 index: 1685,
                 drop: Drop::Ability(A::HeliacalPower),
+                key_index: None,
                 trial: None,
                 locks: Any(&[
                     All(&[Powerup(A::Slide), Powerup(A::SunGreaves)]),
@@ -327,6 +331,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
                 location: Location::MainLibrary,
                 index: 1691,
                 drop: Drop::Ability(A::HeliacalPower),
+                key_index: None,
                 trial: None,
                 locks: Any(&[
                     All(&[Powerup(A::Slide), Powerup(A::SunGreaves)]),
@@ -353,6 +358,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
                 location: Location::TowerRuinsKeep,
                 index: 853,
                 drop: Drop::Ability(A::ClingGem(2)),
+                key_index: None,
                 trial: None,
                 locks: Any(&[
                     Powerup(A::ClingGem(2)),
@@ -365,6 +371,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
                 location: Location::TowerRuinsKeep,
                 index: 859,
                 drop: Drop::Ability(A::ClingGem(2)),
+                key_index: None,
                 trial: None,
                 locks: Any(&[
                     Powerup(A::ClingGem(2)),
@@ -377,6 +384,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
                 location: Location::TowerRuinsKeep,
                 index: 865,
                 drop: Drop::Ability(A::ClingGem(2)),
+                key_index: None,
                 trial: None,
                 locks: Any(&[
                     Powerup(A::ClingGem(2)),
@@ -442,6 +450,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
     use rand::{seq::SliceRandom, Rng};
     let mut rng = rand::thread_rng();
     let mut spawn;
+    let mut major_key_hints = HashMap::new();
     let (seeding, overworld) = loop {
         spawn = SPAWNS[match app.spawn {
             true => rng.gen_range(0..SPAWNS.len()),
@@ -451,6 +460,17 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
         let mut drops: Vec<Drop> = checks.iter().map(|check| check.drop).collect();
         drops.shuffle(&mut rng);
         for (check, drop) in checks.iter_mut().zip(drops.into_iter()) {
+            match drop
+            {
+                Drop::BigKey => match check.key_index {
+                    Some(idx) => {
+                        let key_name = MAJOR_KEY_IDX_TO_NAME[(idx-1) as usize].to_string();
+                        major_key_hints.insert(key_name.clone(), format!("[#c300ff]({}) can be found at :\n[#89a1ff]({})", key_name, check.description))
+                    },
+                    _ => panic!("Cannot add hint of a Major Key without index!"),
+                },
+                _ => None,
+            };
             check.drop = drop
         }
         checks.extend_from_slice(&unrandomised);
@@ -497,5 +517,5 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
             .write_fmt(format_args!("{:?}\n", val))
             .map_err(|e| e.to_string())?
     }
-    crate::writing::write(spawn, overworld, music, app).map_err(|e| e.to_string())
+    crate::writing::write(spawn, overworld, major_key_hints, music, app).map_err(|e| e.to_string())
 }
