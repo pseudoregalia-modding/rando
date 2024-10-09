@@ -8,6 +8,14 @@ mod writing;
 
 type Asset<T> = unreal_asset::Asset<std::io::Cursor<T>>;
 
+#[derive(strum::EnumString, strum::AsRefStr, strum::EnumIter, strum::Display, Default, PartialEq, Clone, Copy)]
+enum Hints {
+    #[default]
+    None,
+    Location,
+    Description
+}
+
 pub struct Rando {
     notifs: egui_modal::Modal,
     credits: egui_modal::Modal,
@@ -30,6 +38,7 @@ pub struct Rando {
     split_cling: bool,
     spawn: bool,
     music: bool,
+    hints: Hints,
     momentum: logic::Difficulty,
     one_wall: logic::Difficulty,
     reverse_kick: logic::Difficulty,
@@ -116,6 +125,15 @@ impl Rando {
             split_cling: get_bool("split cling"),
             spawn: get_bool("spawn"),
             music: get_bool("music"),
+            hints: {
+                use std::str::FromStr;
+                Hints::from_str(
+                    &ctx.storage
+                        .map(|storage| storage.get_string("hints").unwrap_or_default())
+                        .unwrap_or_default(),
+                )
+                .unwrap_or_default()
+            },
             momentum: get_difficulty("momentum"),
             one_wall: get_difficulty("one wall"),
             reverse_kick: get_difficulty("reverse kick"),
@@ -261,6 +279,14 @@ impl eframe::App for Rando {
                 ui[0].checkbox(&mut self.aspects, "Aspects");
                 ui[0].checkbox(&mut self.small_keys, "Small keys");
                 ui[0].checkbox(&mut self.big_keys, "Big keys");
+                egui::ComboBox::from_id_source("hints")
+                    .selected_text(self.hints.as_ref())
+                    .show_ui(&mut ui[0], |ui| {
+                        use strum::IntoEnumIterator;
+                        for hint in Hints::iter() {
+                            ui.selectable_value(&mut self.hints, hint, hint.to_string());
+                        }
+                    });
                 
                 if ui[1].checkbox(&mut self.outfits, "Outfits").clicked() && self.outfits {
                     self.notifs
@@ -273,6 +299,7 @@ impl eframe::App for Rando {
                 ui[1].checkbox(&mut self.health, "Health");
                 ui[1].checkbox(&mut self.goatlings, "Goatlings");
                 ui[1].checkbox(&mut self.spawn, "Spawn");
+                ui[1].label(egui::RichText::new("Major Key Hints").color(ui[1].style().visuals.widgets.inactive.text_color()));
                 
                 ui[2].checkbox(&mut self.notes, "Notes");
                 ui[2].checkbox(&mut self.chairs, "Chairs");
@@ -511,6 +538,7 @@ impl eframe::App for Rando {
         set_bool("split cling", self.split_cling);
         set_bool("spawn", self.spawn);
         set_bool("music", self.music);
+        storage.set_string("hints", self.hints.to_string());
         let mut set_difficulty =
             |key: &str, value: logic::Difficulty| storage.set_string(key, value.to_string());
         set_difficulty("momentum", self.momentum);

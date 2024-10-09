@@ -173,7 +173,7 @@ fn accessible(
         Lock::Ending => {
             obtainable
                 .iter()
-                .fold(0, |acc, drop| match matches!(drop, Drop::BigKey) {
+                .fold(0, |acc, drop| match matches!(drop, Drop::BigKey(_)) {
                     true => acc + 1,
                     false => acc,
                 })
@@ -277,7 +277,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
             | Ability::Sleepytime => app.outfits,
         },
         Drop::SmallKey => app.small_keys,
-        Drop::BigKey => app.big_keys,
+        Drop::BigKey(_) => app.big_keys,
         Drop::Health => app.health,
         Drop::Goatling(_) => app.goatlings,
         Drop::Note => app.notes,
@@ -442,6 +442,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
     use rand::{seq::SliceRandom, Rng};
     let mut rng = rand::thread_rng();
     let mut spawn;
+    let mut hints = [("", Location::EarlyPrison); 5];
     let (seeding, overworld) = loop {
         spawn = SPAWNS[match app.spawn {
             true => rng.gen_range(0..SPAWNS.len()),
@@ -457,6 +458,9 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
         if let Some(seeding) = possible(spawn.1, &checks, app) {
             let mut overworld = std::collections::BTreeMap::<_, Vec<_>>::new();
             for check in checks {
+                if let Drop::BigKey(i) = check.drop {
+                    hints[i as usize - 1] = (check.description, check.location);
+                }
                 match overworld.get_mut(check.location.file()) {
                     Some(checks) => checks.push(check),
                     None => {
@@ -481,7 +485,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
         ];
         let mut new = base.clone();
         new.shuffle(&mut rng);
-        base.into_iter().zip(new.into_iter())
+        base.into_iter().zip(new)
     });
     let overworld: std::collections::BTreeMap<_, _> = overworld
         .into_iter()
@@ -496,5 +500,5 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
             .write_fmt(format_args!("{:?}\n", val))
             .map_err(|e| e.to_string())?
     }
-    crate::writing::write(spawn, overworld, music, app).map_err(|e| e.to_string())
+    crate::writing::write(spawn, overworld, hints, music, app).map_err(|e| e.to_string())
 }

@@ -664,7 +664,7 @@ pub const CHECKS: [Check; 92] = [
         description: "at the end of the parkour",
         location: L::SansaKeep,
         index: 305,
-        drop: Drop::BigKey,
+        drop: Drop::BigKey(4),
         trial: None,
         locks: Any(&[
             All(&[
@@ -744,7 +744,7 @@ pub const CHECKS: [Check; 92] = [
         description: "guarded by the hand and soldier",
         location: L::EmptyBailey,
         index: 69,
-        drop: Drop::BigKey,
+        drop: Drop::BigKey(1),
         trial: None,
         locks: Any(&[
             Powerup(A::Sunsetter),
@@ -842,7 +842,7 @@ pub const CHECKS: [Check; 92] = [
         description: "the soul cutter lever room",
         location: L::SansaHole,
         index: 545,
-        drop: Drop::BigKey,
+        drop: Drop::BigKey(2),
         trial: None,
         locks: All(&[
             Powerup(A::DreamBreaker),
@@ -996,7 +996,7 @@ pub const CHECKS: [Check; 92] = [
         description: "atop the tower",
         location: L::TowerRuinsKeep,
         index: 77,
-        drop: Drop::BigKey,
+        drop: Drop::BigKey(3),
         trial: None,
         locks: Any(&[
             All(&[
@@ -1199,7 +1199,7 @@ pub const CHECKS: [Check; 92] = [
         description: "behind three maximum security cages",
         location: L::MainTheatre,
         index: 871,
-        drop: Drop::BigKey,
+        drop: Drop::BigKey(5),
         // there's one gap in the open green room with enemies which is too big
         trial: None,
         locks: All(&[

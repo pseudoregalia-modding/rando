@@ -6,12 +6,11 @@ const PREFIX: &str = "Maps/";
 
 pub fn write(
     checks: std::collections::BTreeMap<&'static str, Vec<Check>>,
+    hints: [(&str, Location); 5],
     app: &crate::Rando,
     pak: &repak::PakReader,
     mod_pak: &mut repak::PakWriter<std::io::BufWriter<std::fs::File>>,
 ) -> Result<(), Error> {
-    // reference so it isn't moved
-    let big_keys = &std::sync::atomic::AtomicI32::new(1);
     std::thread::scope(|thread| -> Result<(), Error> {
         let threads: Vec<_> = checks.into_iter().map(
             |(location, checks)| -> Result<std::thread::ScopedJoinHandle<Result<_, Error>>, Error> {
@@ -39,18 +38,46 @@ pub fn write(
                             place(Vector::new(-4650.0, 9200.0, -250.0))?;
                             place(Vector::new(-3650.0, 9200.0, -250.0))?;
                         }
-                        "Zone_Tower" if app.split_cling => {
-                            use unreal_asset::types::vector::Vector;
-                            delete(155, &mut map);
-                            let mut place = |location: Vector<f64>| -> Result<(), Error> {
-                                let insert = map.asset_data.exports.len();
-                                transplant(59, &mut map, &donor)?;
-                                set_location(insert, &mut map, location);
-                                Ok(())
-                            };
-                            place(Vector::new(13350.0, 5750.0, 4150.0))?;
-                            place(Vector::new(13350.0, 5250.0, 4150.0))?;
-                            place(Vector::new(13350.0, 4750.0, 4150.0))?;
+                        "Zone_Tower" => {
+                            if app.split_cling {
+                                use unreal_asset::types::vector::Vector;
+                                delete(155, &mut map);
+                                let mut place = |location: Vector<f64>| -> Result<(), Error> {
+                                    let insert = map.asset_data.exports.len();
+                                    transplant(59, &mut map, &donor)?;
+                                    set_location(insert, &mut map, location);
+                                    Ok(())
+                                };
+                                place(Vector::new(13350.0, 5750.0, 4150.0))?;
+                                place(Vector::new(13350.0, 5250.0, 4150.0))?;
+                                place(Vector::new(13350.0, 4750.0, 4150.0))?;
+                            }
+                            if !matches!(app.hints, crate::Hints::None) {
+                                for (i, (desc, loc)) in hints.into_iter().enumerate() {
+                                    let Some(text) = map.asset_data.exports[i + 72]
+                                        .get_normal_export_mut()
+                                        .and_then(|norm| {
+                                            unreal_asset::cast!(
+                                                Property,
+                                                ArrayProperty,
+                                                &mut norm.properties[6]
+                                            )
+                                        })
+                                        .and_then(|arr| {
+                                            unreal_asset::cast!(Property, TextProperty, &mut arr.value[0])
+                                        })
+                                    else {
+                                        continue;
+                                    };
+                                    text.culture_invariant_string = Some(match app.hints {
+                                        crate::Hints::None => break,
+                                        crate::Hints::Location => format!("in [#c300ff]({})", loc.name()),
+                                        crate::Hints::Description => {
+                                            format!("[#89a1ff]({desc}) in [#c300ff]({})", loc.name())
+                                        }
+                                    })
+                                }
+                            }
                         }
                         _ => (),
                     }
@@ -77,8 +104,8 @@ pub fn write(
                             index = insert;
                             Ok(())
                         };
-                        // we always replace here since the same blueprint can have a different appearance
                         match &drop {
+                            // we always replace here since the same blueprint can have a different appearance
                             Drop::Ability(ability) => {
                                 replace(
                                     match ability {
@@ -145,7 +172,7 @@ pub fn write(
                                     norm.properties.remove(i);
                                 }
                             }
-                            Drop::BigKey => {
+                            Drop::BigKey(i) => {
                                 replace(18, false)?;
                                 let mut names = map.get_name_map();
                                 let Some(norm) = map.asset_data.exports[index].get_normal_export_mut() else {
@@ -156,18 +183,17 @@ pub fn write(
                                     .iter_mut()
                                     .find_map(|prop| unreal_asset::cast!(Property, IntProperty, prop))
                                 {
-                                    Some(id) => id.value = big_keys.load(std::sync::atomic::Ordering::Relaxed),
+                                    Some(id) => id.value = *i,
                                     None => {
                                         norm.properties
                                             .push(Property::IntProperty(int_property::IntProperty {
                                                 name: names.get_mut().add_fname("keyID"),
                                                 property_guid: Some(Default::default()),
-                                                value: big_keys.load(std::sync::atomic::Ordering::Relaxed),
+                                                value: *i,
                                                 ..Default::default()
                                             }))
                                     }
                                 }
-                                big_keys.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
                             }
                             Drop::Health if class != "BP_HealthPiece_C" => replace(11, false)?,
                             Drop::Goatling(dialogue) => {

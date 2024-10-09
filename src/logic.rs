@@ -17,7 +17,7 @@ pub use music::*;
 pub enum Drop {
     Ability(Ability),
     SmallKey,
-    BigKey,
+    BigKey(i32),
     Health,
     Goatling(&'static [&'static str]),
     Note,
@@ -29,7 +29,7 @@ impl std::fmt::Debug for Drop {
         match self {
             Drop::Ability(a) => f.write_fmt(format_args!("{:?}", a)),
             Drop::SmallKey => f.write_str("Small Key"),
-            Drop::BigKey => f.write_str("Big Key"),
+            Drop::BigKey(_) => f.write_str("Big Key"),
             Drop::Health => f.write_str("Health"),
             Drop::Goatling(_) => f.write_str("Goatling"),
             Drop::Note => f.write_str("Note"),
