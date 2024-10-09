@@ -442,7 +442,7 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
     use rand::{seq::SliceRandom, Rng};
     let mut rng = rand::thread_rng();
     let mut spawn;
-    let mut hints = [("", Location::EarlyPrison); 5];
+    let mut hints = [const { String::new() }; 5];
     let (seeding, overworld) = loop {
         spawn = SPAWNS[match app.spawn {
             true => rng.gen_range(0..SPAWNS.len()),
@@ -459,7 +459,20 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
             let mut overworld = std::collections::BTreeMap::<_, Vec<_>>::new();
             for check in checks {
                 if let Drop::BigKey(i) = check.drop {
-                    hints[i as usize - 1] = (check.description, check.location);
+                    match app.hints {
+                        crate::Hints::None => (),
+                        crate::Hints::Location => {
+                            hints[i as usize - 1] =
+                                format!("in [#c300ff]({})", check.location.name())
+                        }
+                        crate::Hints::Description => {
+                            hints[i as usize - 1] = format!(
+                                "[#89a1ff]({}) in [#c300ff]({})",
+                                check.description,
+                                check.location.name()
+                            )
+                        }
+                    };
                 }
                 match overworld.get_mut(check.location.file()) {
                     Some(checks) => checks.push(check),
@@ -500,5 +513,5 @@ pub fn randomise(app: &crate::Rando) -> Result<(), String> {
             .write_fmt(format_args!("{:?}\n", val))
             .map_err(|e| e.to_string())?
     }
-    crate::writing::write(spawn, overworld, hints, music, app).map_err(|e| e.to_string())
+    crate::writing::write(spawn, overworld, &hints, music, app).map_err(|e| e.to_string())
 }

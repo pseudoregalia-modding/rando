@@ -49,7 +49,7 @@ fn extract(
 pub fn write(
     (tag, spawn): (&'static str, Location),
     checks: std::collections::BTreeMap<&'static str, Vec<Check>>,
-    hints: [(&str, Location); 5],
+    hints: &[String; 5],
     music: Option<std::iter::Zip<std::array::IntoIter<Music, 9>, std::array::IntoIter<Music, 9>>>,
     app: &crate::Rando,
 ) -> Result<(), Error> {

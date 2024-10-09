@@ -6,7 +6,7 @@ const PREFIX: &str = "Maps/";
 
 pub fn write(
     checks: std::collections::BTreeMap<&'static str, Vec<Check>>,
-    hints: [(&str, Location); 5],
+    hints: &[String; 5],
     app: &crate::Rando,
     pak: &repak::PakReader,
     mod_pak: &mut repak::PakWriter<std::io::BufWriter<std::fs::File>>,
@@ -53,7 +53,7 @@ pub fn write(
                                 place(Vector::new(13350.0, 4750.0, 4150.0))?;
                             }
                             if !matches!(app.hints, crate::Hints::None) {
-                                for (i, (desc, loc)) in hints.into_iter().enumerate() {
+                                for (i, hint) in hints.iter().enumerate() {
                                     let Some(text) = map.asset_data.exports[i + 72]
                                         .get_normal_export_mut()
                                         .and_then(|norm| {
@@ -69,13 +69,7 @@ pub fn write(
                                     else {
                                         continue;
                                     };
-                                    text.culture_invariant_string = Some(match app.hints {
-                                        crate::Hints::None => break,
-                                        crate::Hints::Location => format!("in [#c300ff]({})", loc.name()),
-                                        crate::Hints::Description => {
-                                            format!("[#89a1ff]({desc}) in [#c300ff]({})", loc.name())
-                                        }
-                                    })
+                                    text.culture_invariant_string = Some(hint.clone())
                                 }
                             }
                         }
