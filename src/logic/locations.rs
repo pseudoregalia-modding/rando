@@ -257,7 +257,6 @@ impl Location {
                 ]),
             ]),
             L::CsTheatreEntrance => Any(&[
-                Loc(L::ThCastleEntryMain),
                 All(&[
                     Loc(L::CsOldSoftlockRoom),
                     Powerup(A::Sunsetter),
@@ -265,16 +264,17 @@ impl Location {
                     Powerup(A::HeliacalPower),
                 ]),
                 All(&[
-                    Powerup(A::SolarWind),
+                    Loc(L::ThCastleEntryMain),
                     Powerup(A::SunGreaves),
-                    Trick(T::Movement, D::Advanced),
-                ]),
-                All(&[
-                    Powerup(A::ClingGem(2)),
-                    Powerup(A::SunGreaves),
-                    Powerup(A::Sunsetter),
-                    Trick(T::OneWall, D::Advanced),
-                    Trick(T::Movement, D::Advanced),
+                    Any(&[
+                        All(&[Powerup(A::SolarWind), Trick(T::Movement, D::Advanced)]),
+                        All(&[
+                            Powerup(A::ClingGem(2)),
+                            Powerup(A::Sunsetter),
+                            Trick(T::OneWall, D::Advanced),
+                            Trick(T::Movement, D::Advanced),
+                        ]),
+                    ]),
                 ]),
             ]),
             // Library
@@ -663,14 +663,12 @@ impl Location {
                 ]),
             ]),
             // Final Boss
-            L::FinalBoss => Any(&[
-                All(&[
-                    Loc(L::TowerRuinsKeep),
-                    Powerup(A::ClingGem(2)),
-                    Any(&[
-                        Powerup(A::SunGreaves),
-                        All(&[Powerup(A::HeliacalPower), Powerup(A::Sunsetter)]),
-                    ]),
+            L::FinalBoss => All(&[
+                Loc(L::TowerRuinsKeep),
+                Powerup(A::ClingGem(2)),
+                Any(&[
+                    Powerup(A::SunGreaves),
+                    All(&[Powerup(A::HeliacalPower), Powerup(A::Sunsetter)]),
                 ]),
                 Lock::Ending,
             ]),
