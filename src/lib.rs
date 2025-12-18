@@ -157,7 +157,8 @@ fn ask_game_path() -> Option<std::path::PathBuf> {
     let path = rfd::FileDialog::new()
         .set_title("Select where you installed Pseudoregalia's executable (e.g C:\\Program Files (x86)\\Steam\\steamapps\\common\\Pseudoregalia)")
         .pick_folder()?;
-    Some(path.join("pseudoregalia").join("Content").join("Paks"))
+    let paks = path.join("pseudoregalia").join("Content").join("Paks")
+    paks.exists().then_some(paks)
 }
 
 fn get_pak_str(pak: &std::path::Path) -> String {
