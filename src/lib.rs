@@ -155,11 +155,9 @@ impl Rando {
 
 fn ask_game_path() -> Option<std::path::PathBuf> {
     let path = rfd::FileDialog::new()
-        .set_title("Select where you have pseudoregalia installed (e.g C:/Program Files (x86)/Steam/steamapps/common/pseudoregalia)")
+        .set_title("Select where you installed Pseudoregalia's executable (e.g C:\\Program Files (x86)\\Steam\\steamapps\\common\\Pseudoregalia)")
         .pick_folder()?;
-    path.join("pseudoregalia/Content/Paks")
-        .exists()
-        .then(|| path.join("pseudoregalia\\Content\\Paks"))
+    Some(path.join("pseudoregalia").join("Content").join("Paks"))
 }
 
 fn get_pak_str(pak: &std::path::Path) -> String {
@@ -289,7 +287,7 @@ impl eframe::App for Rando {
                             ui.selectable_value(&mut self.hints, hint, hint.to_string());
                         }
                     });
-                
+
                 if ui[1].checkbox(&mut self.outfits, "Outfits").clicked() && self.outfits {
                     self.notifs
                         .dialog()
@@ -302,13 +300,13 @@ impl eframe::App for Rando {
                 ui[1].checkbox(&mut self.goatlings, "Goatlings");
                 ui[1].checkbox(&mut self.spawn, "Spawn");
                 ui[1].label(egui::RichText::new("Major Key Hints").color(ui[1].style().visuals.widgets.inactive.text_color()));
-                
+
                 ui[2].checkbox(&mut self.notes, "Notes");
                 ui[2].checkbox(&mut self.chairs, "Chairs");
                 ui[2].add_enabled(false, egui::Checkbox::new(&mut false, "Enemies?"));
                 ui[2].add_enabled(false, egui::Checkbox::new(&mut false, "Levers?"));
                 ui[2].checkbox(&mut self.music, "Music");
-                
+
                 ui[3].add_enabled(
                     self.abilities,
                     egui::Checkbox::new(&mut self.split_greaves, "Split greaves"),
