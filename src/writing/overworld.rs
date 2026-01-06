@@ -24,7 +24,72 @@ pub fn write(
                         include_bytes!("../assets/drops.uexp"),
                     )?;
                     match location {
-                        "ZONE_Dungeon" => transplant(36, &mut map, &donor)?,
+                        "ZONE_Dungeon" => {
+                            let comp = map.asset_data.exports.len() + 7;
+                            transplant(36, &mut map, &donor)?;
+                            let mut names = map.get_name_map();
+                            let core = names.get_mut().add_fname("/Script/CoreUObject");
+                            let package = names.get_mut().add_fname("Package");
+                            let mut package = unreal_asset::Import {
+                                class_package: core,
+                                class_name: package,
+                                outer_index: Default::default(),
+                                object_name: names.get_mut().add_fname("/Game/Meshes/Characters/spudling"),
+                                optional: false,
+                            };
+                            let engine = names.get_mut().add_fname("/Script/Engine");
+                            let skeletalmesh = names.get_mut().add_fname("SkeletalMesh");
+                            let mut pakref = unreal_asset::Import {
+                                class_package: engine,
+                                class_name: skeletalmesh.clone(),
+                                outer_index: Default::default(),
+                                object_name: names.get_mut().add_fname("spudling"),
+                                optional: false,
+                            };
+                        
+                            pakref.outer_index = map.add_import(package.clone());
+                            let mesh = map.add_import(pakref.clone());
+                            
+                            package.object_name = names.get_mut().add_fname("/Game/MatTex/Materials/Characters/MI_n64_SpudlingBody");
+                            pakref.outer_index = map.add_import(package);
+                            pakref.object_name = names.get_mut().add_fname("MI_n64_SpudlingBody");
+                            let mat = map.add_import(pakref);
+                            let Some(norm) = map.asset_data.exports[comp].get_normal_export_mut() else {
+                                return Err(Error::Spudling);
+                            };
+                            norm.properties.push(Property::ObjectProperty(object_property::ObjectProperty {
+                                name: skeletalmesh,
+                                ancestry: Default::default(),
+                                property_guid: Some(Default::default()),
+                                duplication_index: Default::default(),
+                                value: mesh,
+                            }));
+                            let arr_type = names.get_mut().add_fname("ObjectProperty");
+                            norm.properties.push(Property::ArrayProperty(array_property::ArrayProperty{
+                                name: names.get_mut().add_fname("OverrideMaterials"),
+                                ancestry: Default::default(),
+                                property_guid: Some(Default::default()),
+                                duplication_index: Default::default(),
+                                array_type: Some(arr_type),
+                                value: vec![
+                                    Property::ObjectProperty(object_property::ObjectProperty {
+                                        name: FName::new_dummy("0".into(), 0),
+                                        ancestry: Default::default(),
+                                        property_guid: Some(Default::default()),
+                                        duplication_index: Default::default(),
+                                        value: Default::default(),
+                                    }),
+                                    Property::ObjectProperty(object_property::ObjectProperty {
+                                        name: FName::new_dummy("1".into(), 0),
+                                        ancestry: Default::default(),
+                                        property_guid: Some(Default::default()),
+                                        duplication_index: Default::default(),
+                                        value: mat,
+                                    })
+                                ],
+                                dummy_property: None,
+                            }));
+                        },
                         "Zone_Library" if app.split_greaves => {
                             use unreal_asset::types::vector::Vector;
                             delete(324, &mut map);

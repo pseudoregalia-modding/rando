@@ -19,6 +19,8 @@ pub enum Error {
     Strip(#[from] std::path::StripPrefixError),
     #[error("thread failed to complete")]
     Thread,
+    #[error("somehow the spudling's bones are gone")]
+    Spudling,
 }
 
 impl From<Box<dyn std::any::Any + Send + 'static>> for Error {
@@ -216,6 +218,30 @@ pub fn write(
             include_bytes!("assets/LimitSetter.uexp"),
         )?;
     }
+    mod_pak.write_file(
+        "pseudoregalia/Content/Meshes/Characters/spudling.uasset",
+        include_bytes!("assets/spudling/spudling.uasset"),
+    )?;
+    mod_pak.write_file(
+        "pseudoregalia/Content/Meshes/Characters/spudling.uexp",
+        include_bytes!("assets/spudling/spudling.uexp"),
+    )?;
+    mod_pak.write_file(
+        "pseudoregalia/Content/MatTex/Materials/Characters/MI_n64_SpudlingBody.uasset",
+        include_bytes!("assets/spudling/MI_n64_SpudlingBody.uasset"),
+    )?;
+    mod_pak.write_file(
+        "pseudoregalia/Content/MatTex/Materials/Characters/MI_n64_SpudlingBody.uexp",
+        include_bytes!("assets/spudling/MI_n64_SpudlingBody.uexp"),
+    )?;
+    mod_pak.write_file(
+        "pseudoregalia/Content/MatTex/Textures/Characters/NPC/tex_SpudlingBody.uasset",
+        include_bytes!("assets/spudling/tex_SpudlingBody.uasset"),
+    )?;
+    mod_pak.write_file(
+        "pseudoregalia/Content/MatTex/Textures/Characters/NPC/tex_SpudlingBody.uexp",
+        include_bytes!("assets/spudling/tex_SpudlingBody.uexp"),
+    )?;
     mod_pak.write_index()?;
     Ok(())
 }
