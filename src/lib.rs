@@ -224,7 +224,7 @@ impl eframe::App for Rando {
                 ui.collapsing("where can i talk with people about the rando?", |ui| {
                     ui.horizontal(|ui| {
                         ui.label("you can chat about the rando on the");
-                        ui.hyperlink_to("pseudoregalia discord", "http://discord.gg/Mny2HfNMrT");
+                        ui.hyperlink_to("pseudoregalia discord", "https://discord.gg/9P9TvPykj5");
                     })
                 });
                 ui.collapsing("how can i share seeds/race people?", |ui| {
